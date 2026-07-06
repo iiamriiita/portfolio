@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 
 // ---- 你的資料：之後改這裡就好 ----
 const DEV = {
@@ -237,9 +237,6 @@ export default function Portfolio() {
               </>
             )}
           </div>
-
-          {/* terminal */}
-          <Terminal />
         </div>
       </div>
     </UI.Provider>
@@ -381,33 +378,6 @@ function PCard({ p, onClick }) {
   );
 }
 
-function Terminal() {
-  const { isMobile } = useContext(UI);
-  const [lines, setLines] = useState([]);
-  const timers = useRef([]);
-  useEffect(() => {
-    const seq = [
-      { html: <><span style={{ color: "#808080" }}>→ loading projects...</span></>, d: 500 },
-      { html: <><span style={{ color: "#a8a8a8" }}>✓ 3 projects loaded</span></>, d: 700 },
-      { html: <><span style={{ color: "#808080" }}>→ 點左側檔案或右側卡片探索 ✨</span></>, d: 500 },
-    ];
-    let acc = 0;
-    seq.forEach((s) => {
-      acc += s.d;
-      timers.current.push(setTimeout(() => setLines((l) => [...l, s.html]), acc));
-    });
-    return () => timers.current.forEach(clearTimeout);
-  }, []);
-  return (
-    <div style={{ ...S.term, ...(isMobile ? S.termM : {}) }}>
-      <div style={S.thead}>Terminal</div>
-      <div><span style={{ color: "#a8a8a8" }}>➜ ~/portfolio</span> npm run showcase</div>
-      {lines.map((l, i) => (<div key={i}>{l}</div>))}
-      <span style={S.cursor} />
-    </div>
-  );
-}
-
 // helpers
 function splitExt(label) { const i = label.lastIndexOf("."); return i < 0 ? [label, ""] : [label.slice(0, i), label.slice(i)]; }
 function fileNameOf(id) {
@@ -418,6 +388,8 @@ function fileNameOf(id) {
 
 // ---- styles ----
 const mono = "'SF Mono','JetBrains Mono','Fira Code',Consolas,monospace";
+// 長文用一般字體，比 mono 好讀（介面元素維持 mono 保留編輯器氛圍）
+const sans = "-apple-system,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',Roboto,sans-serif";
 const S = {
   app: { display: "grid", gridTemplateColumns: "220px 1fr", height: "100dvh", fontFamily: mono, background: "#1e1e1e", color: "#d4d4d4", fontSize: 14 },
   side: { background: "#171717", borderRight: "1px solid #444444", overflowY: "auto", padding: "8px 0" },
@@ -439,8 +411,8 @@ const S = {
   phead: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   pcard: { background: "#262626", border: "1px solid #444444", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
   thumb: { height: 135, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 34 },
-  pcardH: { fontSize: 15, color: "#d4d4d4", marginBottom: 3 },
-  pcardP: { fontSize: 13, color: "#808080", lineHeight: 1.5 },
+  pcardH: { fontSize: 15.5, color: "#e6e6e6", marginBottom: 4, fontFamily: sans, fontWeight: 700 },
+  pcardP: { fontSize: 13.5, color: "#a6a6a6", lineHeight: 1.6, fontFamily: sans },
   stRow: { display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" },
   st: { fontSize: 11.5, background: "#1e1e1e", color: "#a8a8a8", padding: "2px 8px", borderRadius: 12 },
   detail: { color: "#d4d4d4" },
@@ -452,17 +424,14 @@ const S = {
   showcase: { overflowY: "auto", background: "#1e1e1e", padding: "32px 24px" },
   showInner: { maxWidth: 620, margin: "0 auto" },
   hero: { height: 220, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24, border: "1px solid #444444" },
-  showRole: { fontSize: 14, color: "#a8a8a8", marginBottom: 6 },
-  showTitle: { fontSize: 30, fontWeight: 700, color: "#d4d4d4", letterSpacing: "-.01em", marginBottom: 14, lineHeight: 1.2 },
-  showDesc: { fontSize: 16, color: "#c2c2c2", lineHeight: 1.8, marginBottom: 18 },
+  showRole: { fontSize: 14, color: "#b4b4b4", marginBottom: 6, fontFamily: sans },
+  showTitle: { fontSize: 30, fontWeight: 700, color: "#efefef", letterSpacing: "-.01em", marginBottom: 14, lineHeight: 1.3, fontFamily: sans },
+  showDesc: { fontSize: 16, color: "#d2d2d2", lineHeight: 1.9, marginBottom: 18, fontFamily: sans },
   stBig: { fontSize: 13, background: "#262626", color: "#a8a8a8", padding: "5px 12px", borderRadius: 14, border: "1px solid #444444" },
   showLink: { display: "inline-block", marginTop: 20, color: "#cfcfcf", fontSize: 14, textDecoration: "none", borderBottom: "1px solid #cfcfcf44", paddingBottom: 2 },
   moreRow: { marginTop: 44, paddingTop: 24, borderTop: "1px solid #333333" },
   moreLabel: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   moreItem: { display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", background: "#262626", border: "1px solid #444444", borderRadius: 8, padding: "10px 14px", marginBottom: 8, color: "#d4d4d4", fontFamily: mono, fontSize: 14, cursor: "pointer" },
-  term: { background: "#0d0d0d", borderTop: "1px solid #444444", padding: "10px 16px", fontSize: 13, lineHeight: 1.7, maxHeight: 150, overflowY: "auto", flexShrink: 0 },
-  thead: { fontSize: 10, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 },
-  cursor: { display: "inline-block", width: 8, height: 14, background: "#a8a8a8", verticalAlign: "middle" },
 
   // ---- 手機頂部列 / 抽屜 ----
   mtop: { display: "flex", alignItems: "center", gap: 10, background: "#171717", borderBottom: "1px solid #444444", padding: "8px 12px", flexShrink: 0 },
@@ -478,5 +447,4 @@ const S = {
   heroM: { height: 150, marginBottom: 18 },
   showTitleM: { fontSize: 23, marginBottom: 10 },
   showDescM: { fontSize: 14, lineHeight: 1.7, marginBottom: 14 },
-  termM: { maxHeight: 110, fontSize: 12.5, padding: "8px 14px" },
 };
