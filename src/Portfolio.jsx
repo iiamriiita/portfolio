@@ -125,7 +125,7 @@ export default function Portfolio() {
   // 內容區：桌面雙欄；手機一律單欄堆疊並整塊捲動
   const splitStyle = isMobile
     ? { ...S.split, display: "flex", flexDirection: "column", overflowY: "auto" }
-    : { ...S.split, gridTemplateColumns: isProj ? "1fr" : "2fr 3fr" };
+    : { ...S.split, gridTemplateColumns: isProj ? "1fr" : "1fr 2fr" };
 
   return (
     <UI.Provider value={{ isMobile }}>
