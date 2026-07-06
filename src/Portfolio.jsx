@@ -151,7 +151,9 @@ export default function Portfolio() {
             >
               ☰
             </button>
-            <span style={S.mTitle}>📂 YING CI</span>
+            <span style={S.mTitle}>
+              YING CI<span className="brandCursor">_</span>
+            </span>
             <span style={S.mFile}>{fileNameOf(openFile)}</span>
           </div>
         )}
@@ -163,7 +165,9 @@ export default function Portfolio() {
 
         {/* ---- Explorer ---- */}
         <aside style={sideStyle}>
-          <div style={S.root}>📂 YING CI</div>
+          <div style={S.root}>
+            YING CI<span className="brandCursor">_</span>
+          </div>
           {/* 點資料夾名稱 → 開首頁專案頁；點三角形 → 展開/收合 */}
           <div
             onClick={() => openTab("projects")}
@@ -417,7 +421,7 @@ const mono = "'SF Mono','JetBrains Mono','Fira Code',Consolas,monospace";
 const S = {
   app: { display: "grid", gridTemplateColumns: "220px 1fr", height: "100dvh", fontFamily: mono, background: "#1e1e1e", color: "#d4d4d4", fontSize: 14 },
   side: { background: "#171717", borderRight: "1px solid #444444", overflowY: "auto", padding: "8px 0" },
-  root: { fontSize: 13, color: "#808080", padding: "10px 14px 8px" },
+  root: { fontSize: 18, fontWeight: 700, color: "#f0f0f0", letterSpacing: ".22em", padding: "16px 14px 12px", userSelect: "none" },
   sideTitle: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", padding: "8px 14px" },
   folder: { fontSize: 14, color: "#d4d4d4", padding: "9px 14px", display: "flex", alignItems: "center", gap: 6, cursor: "pointer" },
   file: { display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", fontSize: 14, color: "#d4d4d4", cursor: "pointer" },
@@ -463,7 +467,7 @@ const S = {
   // ---- 手機頂部列 / 抽屜 ----
   mtop: { display: "flex", alignItems: "center", gap: 10, background: "#171717", borderBottom: "1px solid #444444", padding: "8px 12px", flexShrink: 0 },
   mBurger: { background: "none", border: "none", color: "#d4d4d4", fontSize: 20, lineHeight: 1, cursor: "pointer", padding: "2px 4px" },
-  mTitle: { fontSize: 12, color: "#808080" },
+  mTitle: { fontSize: 14, fontWeight: 700, color: "#f0f0f0", letterSpacing: ".18em", userSelect: "none" },
   mFile: { fontSize: 12, color: "#cfcfcf", marginLeft: "auto", maxWidth: "45%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
   backdrop: { position: "fixed", inset: 0, background: "#000a", zIndex: 40 },
 
