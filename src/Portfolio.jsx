@@ -16,43 +16,45 @@ const DEV = {
 
 const PROJECTS = [
   {
-    id: "whiteboard",
-    file: "whiteboard.jsx",
-    name: "即時協作白板",
-    emoji: "🎨",
+    id: "team-retro",
+    file: "team-retro.tsx",
+    name: "Team Retro－給小組的團隊回饋 AI 工具",
+    emoji: "💬",
     grad: "linear-gradient(135deg,#89b4fa44,#cba6f744)",
-    tags: ["React", "WebSocket", "Canvas"],
-    short: "多人同步繪圖 web app，WebSocket 即時同步，離線可編輯。",
+    tags: ["Next.js", "TypeScript", "Supabase", "Gemini"],
+    short: "給 2–5 人小組的匿名回饋工具，AI 即時把關讓回饋更建設性。",
     detail:
-      "支援多位使用者同時在同一張畫布上繪圖。用 WebSocket 處理即時狀態同步，並以 CRDT 概念解決衝突，離線編輯後重新連線會自動合併。",
+      "讓小組成員互相給回饋（agile retro 形式）。填寫時採兩段式把關：關鍵字黑名單先擋明顯的人身攻擊，再用 LLM 判斷是否具建設性並給出更友善的改寫建議；服務中斷時自動降級、不擋使用者。全部完成後，系統彙整去識別化的結果，並用 AI 產生主題／優點／改進方向的摘要。以 Next.js App Router + Supabase（Postgres + RLS + Realtime）打造。",
     role: "獨立開發 · 前後端",
-    link: "github.com/yourname/whiteboard",
+    link: "github.com/iiamriiita/retro",
   },
   {
-    id: "recipe-ai",
-    file: "recipe-ai.jsx",
-    name: "AI 食譜產生器",
-    emoji: "🍳",
+    id: "catch-butterfly",
+    file: "butterfly.jsx",
+    name: "抓蝴蝶－為手指復健者增添樂趣",
+    emoji: "🦋",
     grad: "linear-gradient(135deg,#a6e3a144,#fab38744)",
-    tags: ["Next.js", "TypeScript", "LLM API"],
-    short: "輸入現有食材自動生成食譜，含快取與串流回應。",
+    // TODO: 以下為草稿，待你補正確資訊
+    tags: ["React", "Canvas"],
+    short: "把手指復健變成小遊戲，讓復健過程多一點樂趣。",
     detail:
-      "輸入冰箱裡現有的食材，自動生成可行的食譜。串接 LLM API，做了回應串流（streaming）讓使用者即時看到結果，並用快取降低重複請求成本。",
-    role: "獨立開發",
-    link: "github.com/yourname/recipe-ai",
+      "為手指復健者設計的互動遊戲：用抓蝴蝶的動作引導手指運動，邊玩邊練、降低復健的枯燥感。（實作細節待補）",
+    role: "（待補）",
+    link: "github.com/iiamriiita",
   },
   {
-    id: "dashboard",
-    file: "dashboard.jsx",
-    name: "數據儀表板",
-    emoji: "📊",
+    id: "music-viz",
+    file: "music-viz.jsx",
+    name: "音樂視覺化動畫",
+    emoji: "🎵",
     grad: "linear-gradient(135deg,#f38ba844,#89dceb44)",
-    tags: ["D3", "React", "Node"],
-    short: "可自訂圖表儀表板，拖拉排版，即時資料串接。",
+    // TODO: 以下為草稿，待你補正確資訊
+    tags: ["Web Audio API", "Canvas"],
+    short: "隨音樂即時生成的視覺化動畫。",
     detail:
-      "可拖拉排版的數據儀表板，使用者能自由組合圖表。用 D3 繪製視覺化，後端以 Node 提供即時資料，支援自動刷新與匯出。",
-    role: "團隊專案 · 負責前端",
-    link: "github.com/yourname/dashboard",
+      "分析音訊並即時繪製對應的視覺化動畫，讓聲音變成畫面。（技術與細節待補）",
+    role: "（待補）",
+    link: "github.com/iiamriiita",
   },
 ];
 
@@ -245,7 +247,7 @@ function Line({ n, children }) {
 function ProjectsIndex() {
   return (
     <>
-      <Line n={1}><span style={T.cmt}>// projects.jsx — 精選作品（點右側卡片看細節）</span></Line>
+      <Line n={1}><span style={T.cmt}>// projects.jsx — 點右側卡片看細節</span></Line>
       <Line n={2}><span style={T.kw}>export const</span> <span style={T.fn}>projects</span> = [</Line>
       {PROJECTS.map((p, i) => (
         <Line n={3 + i} key={p.id}>
