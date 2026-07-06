@@ -1,3 +1,56 @@
+/* ---- 主題色票：深色為預設，data-theme="light" 覆寫 ---- */
+:root {
+  --bg: #1e1e1e;
+  --bg-side: #171717;
+  --bg-preview: #141414;
+  --bg-card: #262626;
+  --bg-active: #2d2d2d;
+  --hover: #333333;
+  --border: #444444;
+  --border-strong: #8a8a8a;
+  --text: #d4d4d4;
+  --text-bright: #f0f0f0;
+  --text-soft: #d2d2d2;
+  --text-mid: #a6a6a6;
+  --text-dim: #808080;
+  --link: #cfcfcf;
+  --link-underline: #cfcfcf44;
+  --thumb-a: #3a3a3a;
+  --thumb-b: #242424;
+  --green: #27c93f;
+  --syn-kw: #cba6f7;
+  --syn-str: #a6e3a1;
+  --syn-fn: #89b4fa;
+  --syn-num: #fab387;
+  --syn-prop: #89dceb;
+}
+
+:root[data-theme="light"] {
+  --bg: #fafafa;
+  --bg-side: #f0f0ef;
+  --bg-preview: #f4f4f3;
+  --bg-card: #ffffff;
+  --bg-active: #e3e3e1;
+  --hover: #e9e9e7;
+  --border: #d6d6d4;
+  --border-strong: #9a9a9a;
+  --text: #333333;
+  --text-bright: #111111;
+  --text-soft: #3d3d3d;
+  --text-mid: #5f5f5f;
+  --text-dim: #8c8c8c;
+  --link: #3c3c3c;
+  --link-underline: #3c3c3c55;
+  --thumb-a: #ececea;
+  --thumb-b: #dcdcda;
+  --green: #16a02b;
+  --syn-kw: #8839ef;
+  --syn-str: #40a02b;
+  --syn-fn: #1e66f5;
+  --syn-num: #e64d0e;
+  --syn-prop: #209fb5;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +64,7 @@ body,
 }
 
 body {
-  background: #1e1e1e;
+  background: var(--bg);
   /* Avoid horizontal scroll on mobile */
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -26,16 +79,16 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333333;
+  background: var(--hover);
   border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #444444;
+  background: var(--border);
 }
 
 /* 標題尾端的終端機游標 */
 .brandCursor {
-  color: #27c93f;
+  color: var(--green);
   animation: brand-blink 1.1s steps(1) infinite;
 }
 @keyframes brand-blink {
