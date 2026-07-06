@@ -2,7 +2,7 @@
 
 VS Code 風格的個人作品集，用 **React + Vite** 打造，支援桌機與手機（RWD）。
 
-🔗 線上版：https://iiamriiita.github.io/portfolio/
+部署於 **Vercel**（push 到 `main` 會自動重新部署）。
 
 ## 開發
 
@@ -28,8 +28,12 @@ npm run dev
   程式碼區與作品卡片改為單欄垂直堆疊。
 - 桌機版維持原本的三欄編輯器排版。
 
-## 部署
+## 部署（Vercel）
 
-已內建 GitHub Actions（`.github/workflows/deploy.yml`）：push 到 `main`
-會自動 build 並把成品推到 `gh-pages` 分支。到 repo Settings → Pages →
-Source 選「Deploy from a branch」→ `gh-pages` / `(root)` 即可上線。
+到 https://vercel.com/new 匯入這個 repo 即可，Vercel 會自動偵測為 Vite：
+
+- Framework Preset：Vite
+- Build command：`npm run build`
+- Output directory：`dist`
+
+之後 push 到 `main`，Vercel 會自動重新部署；每個 PR / 分支也會有預覽網址。
