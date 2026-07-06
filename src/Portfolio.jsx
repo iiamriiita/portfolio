@@ -135,10 +135,12 @@ export default function Portfolio() {
       }
     : S.side;
 
-  // 內容區：桌面雙欄；手機一律單欄堆疊並整塊捲動
+  const isAbout = openFile === "about";
+
+  // 內容區：桌面雙欄（about、作品頁單欄）；手機一律單欄堆疊並整塊捲動
   const splitStyle = isMobile
     ? { ...S.split, display: "flex", flexDirection: "column", overflowY: "auto" }
-    : { ...S.split, gridTemplateColumns: isProj ? "1fr" : "1fr 2fr" };
+    : { ...S.split, gridTemplateColumns: isProj || isAbout ? "1fr" : "1fr 2fr" };
 
   return (
     <UI.Provider value={{ isMobile }}>
@@ -226,15 +228,17 @@ export default function Portfolio() {
               <ProjectShowcase p={PROJECTS.find((p) => p.id === openFile)} onOpen={openTab} />
             ) : (
               <>
-                <div style={{ ...S.codePane, ...(isMobile ? S.codePaneM : {}) }}>
+                <div style={{ ...S.codePane, ...(isMobile ? S.codePaneM : {}), ...(isAbout && !isMobile ? { borderRight: "none" } : {}) }}>
                   <CodeView id={openFile} />
                 </div>
-                <div style={{ ...S.preview, ...(isMobile ? S.paneM : {}) }}>
-                  <div style={S.phead}>◎ 精選作品</div>
-                  {PROJECTS.map((p) => (
-                    <PCard key={p.id} p={p} onClick={() => openTab(p.id)} />
-                  ))}
-                </div>
+                {!isAbout && (
+                  <div style={{ ...S.preview, ...(isMobile ? S.paneM : {}) }}>
+                    <div style={S.phead}>◎ 精選作品</div>
+                    {PROJECTS.map((p) => (
+                      <PCard key={p.id} p={p} onClick={() => openTab(p.id)} />
+                    ))}
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -383,7 +387,7 @@ function splitExt(label) { const i = label.lastIndexOf("."); return i < 0 ? [lab
 function fileNameOf(id) {
   const p = PROJECTS.find((x) => x.id === id);
   if (p) return p.file;
-  return { projects: "projects.jsx", about: "about" }[id] || id;
+  return { projects: "projects", about: "about" }[id] || id;
 }
 
 // ---- styles ----
