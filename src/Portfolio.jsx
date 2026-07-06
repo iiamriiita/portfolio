@@ -16,7 +16,7 @@ const DEV = {
 const PROJECTS = [
   {
     id: "team-retro",
-    file: "team-retro.tsx",
+    file: "team-retro.pj",
     name: "Team Retro－給小組的團隊回饋 AI 工具",
     en: "Team Retro (AI product)",
     emoji: "💬",
@@ -30,7 +30,7 @@ const PROJECTS = [
   },
   {
     id: "catch-butterfly",
-    file: "butterfly.jsx",
+    file: "butterfly.pj",
     name: "抓蝴蝶－為手指復健者增添樂趣",
     en: "Butterfly Catch Game",
     emoji: "🦋",
@@ -45,7 +45,7 @@ const PROJECTS = [
   },
   {
     id: "music-viz",
-    file: "music-viz.jsx",
+    file: "music-viz.pj",
     name: "音樂視覺化動畫",
     en: "Music Visualization",
     emoji: "🎵",
@@ -193,7 +193,7 @@ export default function Portfolio() {
             PROJECTS.map((p) => (
               <FileRow key={p.id} label={p.file} sub active={openFile === p.id} onClick={() => openTab(p.id)} />
             ))}
-          <FileRow icon="📄" label="about.md" active={openFile === "about"} onClick={() => openTab("about")} />
+          <FileRow icon="📄" label="about" active={openFile === "about"} onClick={() => openTab("about")} />
 
           {/* 外部連結：設計作品集（之後會導到另一個網站） */}
           <div
@@ -383,7 +383,7 @@ function splitExt(label) { const i = label.lastIndexOf("."); return i < 0 ? [lab
 function fileNameOf(id) {
   const p = PROJECTS.find((x) => x.id === id);
   if (p) return p.file;
-  return { projects: "projects.jsx", about: "about.md" }[id] || id;
+  return { projects: "projects.jsx", about: "about" }[id] || id;
 }
 
 // ---- styles ----
