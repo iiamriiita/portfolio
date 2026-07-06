@@ -189,7 +189,7 @@ export default function Portfolio() {
           </div>
           {foldersOpen &&
             PROJECTS.map((p) => (
-              <FileRow key={p.id} icon="⚛️" label={p.file} sub active={openFile === p.id} onClick={() => openTab(p.id)} />
+              <FileRow key={p.id} label={p.file} sub active={openFile === p.id} onClick={() => openTab(p.id)} />
             ))}
           <FileRow icon="📄" label="about.md" active={openFile === "about"} onClick={() => openTab("about")} />
           <FileRow icon="📬" label="contact.ts" active={openFile === "contact"} onClick={() => openTab("contact")} />
@@ -260,7 +260,7 @@ function FileRow({ icon, label, sub, active, onClick }) {
       onMouseEnter={(e) => !active && (e.currentTarget.style.background = "#333333")}
       onMouseLeave={(e) => !active && (e.currentTarget.style.background = "transparent")}
     >
-      {icon} {dot}<span style={{ color: "#808080" }}>{ext}</span>
+      {icon ? `${icon} ` : ""}{dot}<span style={{ color: "#808080" }}>{ext}</span>
     </div>
   );
 }
