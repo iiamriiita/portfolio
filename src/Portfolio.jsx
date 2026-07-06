@@ -313,7 +313,16 @@ function ProjectShowcase({ p, onOpen }) {
   const { isMobile } = useContext(UI);
   const others = PROJECTS.filter((x) => x.id !== p.id);
   return (
-    <div style={{ ...S.showcase, ...(isMobile ? S.showcaseM : {}) }}>
+    <div style={{ ...S.showcase, ...(isMobile ? S.showcaseM : {}), position: "relative" }}>
+      {/* 回專案列表 */}
+      <button
+        onClick={() => onOpen("projects")}
+        style={{ ...S.backBtn, ...(isMobile ? S.backBtnM : {}) }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = "#e6e6e6"; e.currentTarget.style.borderColor = "#8a8a8a"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = "#a0a0a0"; e.currentTarget.style.borderColor = "#444444"; }}
+      >
+        ← projects
+      </button>
       <div style={S.showInner}>
         {/* 大視覺：換成真實截圖 <img src=...> 效果更好 */}
         <div style={{ ...S.hero, ...(isMobile ? S.heroM : {}), background: p.grad }}>
@@ -420,7 +429,8 @@ const S = {
   stRow: { display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" },
   st: { fontSize: 11.5, background: "#1e1e1e", color: "#a8a8a8", padding: "2px 8px", borderRadius: 12 },
   detail: { color: "#d4d4d4" },
-  back: { background: "none", border: "1px solid #444444", color: "#89b4fa", fontFamily: mono, fontSize: 12, padding: "5px 10px", borderRadius: 6, cursor: "pointer", marginBottom: 14 },
+  backBtn: { position: "absolute", top: 28, left: 24, background: "none", border: "1px solid #444444", color: "#a0a0a0", fontFamily: mono, fontSize: 13, padding: "6px 12px", borderRadius: 6, cursor: "pointer", transition: "color .15s, border-color .15s" },
+  backBtnM: { position: "static", display: "inline-block", marginBottom: 16 },
   detailH: { fontSize: 18, marginTop: 14, marginBottom: 4 },
   detailRole: { fontSize: 12, color: "#89dceb", marginBottom: 10 },
   detailP: { fontSize: 13, color: "#c2c2c2", lineHeight: 1.7, marginBottom: 12 },
