@@ -368,7 +368,7 @@ function PCard({ p, onClick }) {
       style={{ ...S.pcard, transform: hover ? "translateY(-3px)" : "none", borderColor: hover ? "#8a8a8a" : "#444444" }}
     >
       <div style={{ ...S.thumb, background: p.grad }}>{p.emoji}</div>
-      <div style={{ padding: "10px 14px" }}>
+      <div style={{ padding: "13px 16px 15px" }}>
         <h4 style={S.pcardH}>{p.name}</h4>
         <p style={S.pcardP}>{p.short}</p>
         <div style={S.stRow}>{p.tags.map((t) => (<span key={t} style={S.st}>{t}</span>))}</div>
@@ -434,7 +434,7 @@ const S = {
   preview: { overflowY: "auto", background: "#141414", padding: 16 },
   phead: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   pcard: { background: "#262626", border: "1px solid #444444", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
-  thumb: { height: 100, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30 },
+  thumb: { height: 135, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 34 },
   pcardH: { fontSize: 15, color: "#d4d4d4", marginBottom: 3 },
   pcardP: { fontSize: 13, color: "#808080", lineHeight: 1.5 },
   stRow: { display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" },
