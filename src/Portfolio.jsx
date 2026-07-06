@@ -3,7 +3,7 @@ import { useState, useEffect, createContext, useContext } from "react";
 // ---- 你的資料：之後改這裡就好 ----
 const DEV = {
   name: "你的名字",
-  role: "Frontend Developer",
+  role: "UX Design Engineer",
   based: "Taiwan",
   stack: ["React", "TypeScript", "Node"],
   skills: {
@@ -67,7 +67,9 @@ const DESIGN_PORTFOLIO_URL = "";
 const T = {
   kw: { color: "#cba6f7" }, str: { color: "#a6e3a1" }, fn: { color: "#89b4fa" },
   num: { color: "#fab387" }, cmt: { color: "#808080", fontStyle: "italic" },
-  prop: { color: "#89dceb" }, txt: { color: "#d4d4d4" },
+  prop: { color: "#7a7a7a" }, txt: { color: "#d4d4d4" },
+  dim: { color: "#7a7a7a" }, // 不重要的字（屬性名、標點）
+  hero: { color: "#e8e8e8", fontStyle: "italic" }, // 開頭打招呼那行
 };
 
 // ---- 響應式：偵測手機寬度 ----
@@ -278,14 +280,27 @@ function Line({ n, children }) {
 function ProjectsIndex() {
   return (
     <>
-      <Line n={1}><span style={T.cmt}>// projects.jsx — click a card for details</span></Line>
-      <Line n={2}><span style={T.kw}>export const</span> <span style={T.fn}>projects</span> = [</Line>
+      <Line n={1}><span style={T.hero}>// Hi, I'm YING CI 👋</span></Line>
+      <Line n={2}>
+        <span style={T.kw}>const</span> <span style={T.fn}>role</span><span style={T.dim}> = </span>
+        <span style={T.str}>"UX Design Engineer"</span><span style={T.dim}>;</span>
+      </Line>
+      <Line n={3}>
+        <span style={T.kw}>const</span> <span style={T.fn}>motto</span><span style={T.dim}> = </span>
+        <span style={T.str}>"把想法變成可以互動的東西"</span><span style={T.dim}>;</span>
+      </Line>
+      <Line n={4}> </Line>
+      <Line n={5}>
+        <span style={T.kw}>export const</span> <span style={T.fn}>projects</span><span style={T.dim}> = [</span>
+      </Line>
       {PROJECTS.map((p, i) => (
-        <Line n={3 + i} key={p.id}>
-          {"  { "}<span style={T.prop}>name</span>: <span style={T.str}>"{p.en}"</span>{" },"}
+        <Line n={6 + i} key={p.id}>
+          <span style={T.dim}>{"  { name: "}</span>
+          <span style={T.str}>"{p.en}"</span>
+          <span style={T.dim}>{" },"}</span>
         </Line>
       ))}
-      <Line n={3 + PROJECTS.length}>];</Line>
+      <Line n={6 + PROJECTS.length}><span style={T.dim}>];</span></Line>
     </>
   );
 }
