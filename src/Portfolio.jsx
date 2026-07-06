@@ -192,7 +192,6 @@ export default function Portfolio() {
               <FileRow key={p.id} label={p.file} sub active={openFile === p.id} onClick={() => openTab(p.id)} />
             ))}
           <FileRow icon="📄" label="about.md" active={openFile === "about"} onClick={() => openTab("about")} />
-          <FileRow icon="📬" label="contact.ts" active={openFile === "contact"} onClick={() => openTab("contact")} />
 
           {/* 外部連結：設計作品集（之後會導到另一個網站） */}
           <div
@@ -264,7 +263,6 @@ function FileRow({ icon, label, sub, active, onClick }) {
 
 function CodeView({ id }) {
   if (id === "about") return <AboutCode />;
-  if (id === "contact") return <ContactCode />;
   return <ProjectsIndex />;
 }
 
@@ -346,19 +344,6 @@ function AboutCode() {
   );
 }
 
-function ContactCode() {
-  const rows = [["email", "you@example.com"], ["github", "github.com/yourname"], ["linkedin", "in/yourname"]];
-  return (
-    <>
-      <Line n={1}><span style={T.kw}>export const</span> <span style={T.fn}>contact</span> = {"{"}</Line>
-      {rows.map(([k, v], i) => (
-        <Line n={2 + i} key={k}>{"  "}<span style={T.prop}>{k}</span>: <span style={T.str}>"{v}"</span>,</Line>
-      ))}
-      <Line n={2 + rows.length}>{"}"};</Line>
-    </>
-  );
-}
-
 function PCard({ p, onClick }) {
   const [hover, setHover] = useState(false);
   return (
@@ -383,7 +368,7 @@ function splitExt(label) { const i = label.lastIndexOf("."); return i < 0 ? [lab
 function fileNameOf(id) {
   const p = PROJECTS.find((x) => x.id === id);
   if (p) return p.file;
-  return { projects: "projects.jsx", about: "about.md", contact: "contact.ts" }[id] || id;
+  return { projects: "projects.jsx", about: "about.md" }[id] || id;
 }
 
 // ---- styles ----
