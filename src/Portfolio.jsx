@@ -5,7 +5,6 @@ const DEV = {
   name: "你的名字",
   role: "Frontend Developer",
   based: "Taiwan",
-  photo: "", // ← 放你的照片網址，例如 "/me.jpg"；留空會顯示佔位
   stack: ["React", "TypeScript", "Node"],
   skills: {
     frontend: "React, TypeScript, Tailwind",
@@ -19,6 +18,7 @@ const PROJECTS = [
     id: "team-retro",
     file: "team-retro.tsx",
     name: "Team Retro－給小組的團隊回饋 AI 工具",
+    en: "Team Retro (AI product)",
     emoji: "💬",
     grad: "linear-gradient(135deg,#3a3a3a,#242424)",
     tags: ["Next.js", "TypeScript", "Supabase", "Gemini"],
@@ -32,6 +32,7 @@ const PROJECTS = [
     id: "catch-butterfly",
     file: "butterfly.jsx",
     name: "抓蝴蝶－為手指復健者增添樂趣",
+    en: "Butterfly Catch Game",
     emoji: "🦋",
     grad: "linear-gradient(135deg,#343434,#232323)",
     // TODO: 以下為草稿，待你補正確資訊
@@ -46,6 +47,7 @@ const PROJECTS = [
     id: "music-viz",
     file: "music-viz.jsx",
     name: "音樂視覺化動畫",
+    en: "Music Visualization",
     emoji: "🎵",
     grad: "linear-gradient(135deg,#3e3e3e,#2a2a2a)",
     // TODO: 以下為草稿，待你補正確資訊
@@ -192,7 +194,7 @@ export default function Portfolio() {
           <div
             onClick={openDesignPortfolio}
             title={DESIGN_PORTFOLIO_URL || "之後會加上連結"}
-            style={{ ...S.file, paddingLeft: 16, marginTop: 8, paddingTop: 12, borderTop: "1px solid #333333", whiteSpace: "nowrap" }}
+            style={{ ...S.file, paddingLeft: 30, whiteSpace: "nowrap", borderLeft: "2px solid transparent" }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "#333333")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
           >
@@ -213,7 +215,7 @@ export default function Portfolio() {
             ))}
           </div>
 
-          {/* content：作品→展示頁；about→照片；其他 code 頁→精選作品 */}
+          {/* content：作品→展示頁；code 頁→左程式右精選作品 */}
           <div style={splitStyle}>
             {isProj ? (
               <ProjectShowcase p={PROJECTS.find((p) => p.id === openFile)} onOpen={openTab} />
@@ -222,16 +224,12 @@ export default function Portfolio() {
                 <div style={{ ...S.codePane, ...(isMobile ? S.codePaneM : {}) }}>
                   <CodeView id={openFile} />
                 </div>
-                {openFile === "about" ? (
-                  <AboutPhoto />
-                ) : (
-                  <div style={{ ...S.preview, ...(isMobile ? S.paneM : {}) }}>
-                    <div style={S.phead}>◎ 精選作品</div>
-                    {PROJECTS.map((p) => (
-                      <PCard key={p.id} p={p} onClick={() => openTab(p.id)} />
-                    ))}
-                  </div>
-                )}
+                <div style={{ ...S.preview, ...(isMobile ? S.paneM : {}) }}>
+                  <div style={S.phead}>◎ 精選作品</div>
+                  {PROJECTS.map((p) => (
+                    <PCard key={p.id} p={p} onClick={() => openTab(p.id)} />
+                  ))}
+                </div>
               </>
             )}
           </div>
@@ -281,11 +279,11 @@ function Line({ n, children }) {
 function ProjectsIndex() {
   return (
     <>
-      <Line n={1}><span style={T.cmt}>// projects.jsx — 點右側卡片看細節</span></Line>
+      <Line n={1}><span style={T.cmt}>// projects.jsx — click a card for details</span></Line>
       <Line n={2}><span style={T.kw}>export const</span> <span style={T.fn}>projects</span> = [</Line>
       {PROJECTS.map((p, i) => (
         <Line n={3 + i} key={p.id}>
-          {"  { "}<span style={T.prop}>name</span>: <span style={T.str}>"{p.name}"</span>{" },"}
+          {"  { "}<span style={T.prop}>name</span>: <span style={T.str}>"{p.en}"</span>{" },"}
         </Line>
       ))}
       <Line n={3 + PROJECTS.length}>];</Line>
@@ -360,31 +358,6 @@ function ContactCode() {
   );
 }
 
-function AboutPhoto() {
-  const { isMobile } = useContext(UI);
-  return (
-    <div style={{ ...S.photoPane, ...(isMobile ? S.paneM : {}) }}>
-      <div style={S.phead}>◎ whoami</div>
-      <div style={{ ...S.photoFrame, ...(isMobile ? S.photoFrameM : {}) }}>
-        {DEV.photo ? (
-          <img src={DEV.photo} alt={DEV.name} style={S.photoImg} />
-        ) : (
-          <div style={S.photoPlaceholder}>
-            <span style={{ fontSize: 40 }}>🧑‍💻</span>
-            <span style={{ fontSize: 12, color: "#808080", marginTop: 10 }}>
-              放上你的照片<br />（設定 DEV.photo）
-            </span>
-          </div>
-        )}
-      </div>
-      <div style={S.photoCap}>
-        <span style={{ color: "#d4d4d4" }}>{DEV.name}</span>
-        <span style={{ color: "#808080" }}> · {DEV.based}</span>
-      </div>
-    </div>
-  );
-}
-
 function PCard({ p, onClick }) {
   const [hover, setHover] = useState(false);
   return (
@@ -442,15 +415,15 @@ function fileNameOf(id) {
 // ---- styles ----
 const mono = "'SF Mono','JetBrains Mono','Fira Code',Consolas,monospace";
 const S = {
-  app: { display: "grid", gridTemplateColumns: "210px 1fr", height: "100dvh", fontFamily: mono, background: "#1e1e1e", color: "#d4d4d4", fontSize: 13 },
+  app: { display: "grid", gridTemplateColumns: "220px 1fr", height: "100dvh", fontFamily: mono, background: "#1e1e1e", color: "#d4d4d4", fontSize: 14 },
   side: { background: "#171717", borderRight: "1px solid #444444", overflowY: "auto", padding: "8px 0" },
-  root: { fontSize: 12, color: "#808080", padding: "6px 14px" },
+  root: { fontSize: 13, color: "#808080", padding: "10px 14px 8px" },
   sideTitle: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", padding: "8px 14px" },
-  folder: { fontSize: 13, color: "#d4d4d4", padding: "5px 14px", display: "flex", gap: 6, cursor: "pointer" },
-  file: { display: "flex", alignItems: "center", gap: 8, padding: "5px 14px", fontSize: 13, color: "#d4d4d4", cursor: "pointer" },
+  folder: { fontSize: 14, color: "#d4d4d4", padding: "9px 14px", display: "flex", alignItems: "center", gap: 6, cursor: "pointer" },
+  file: { display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", fontSize: 14, color: "#d4d4d4", cursor: "pointer" },
   main: { display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0, flex: 1 },
   tabs: { display: "flex", background: "#171717", borderBottom: "1px solid #444444", overflowX: "auto", flexShrink: 0 },
-  tab: { padding: "8px 12px 8px 16px", fontSize: 13, color: "#808080", borderRight: "1px solid #444444", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
+  tab: { padding: "12px 14px 12px 18px", fontSize: 14, color: "#808080", borderRight: "1px solid #444444", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
   tabActive: { color: "#d4d4d4", background: "#1e1e1e", borderTop: "2px solid #8a8a8a" },
   close: { color: "#808080", fontSize: 15, lineHeight: 1 },
   split: { display: "grid", flex: 1, overflow: "hidden", minHeight: 0 },
@@ -459,18 +432,13 @@ const S = {
   gutter: { textAlign: "right", color: "#444444", padding: "0 12px", minWidth: 40, userSelect: "none" },
   lineTxt: { paddingRight: 16 },
   preview: { overflowY: "auto", background: "#141414", padding: 16 },
-  photoPane: { overflowY: "auto", background: "#141414", padding: 16, display: "flex", flexDirection: "column" },
-  photoFrame: { flex: 1, minHeight: 260, borderRadius: 14, overflow: "hidden", border: "1px solid #444444", background: "#1e1e1e", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 },
-  photoImg: { width: "100%", height: "100%", objectFit: "cover" },
-  photoPlaceholder: { display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", background: "linear-gradient(135deg,#2e2e2e,#232323)", width: "100%", height: "100%", justifyContent: "center" },
-  photoCap: { fontSize: 13, textAlign: "center" },
   phead: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   pcard: { background: "#262626", border: "1px solid #444444", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
   thumb: { height: 100, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30 },
-  pcardH: { fontSize: 14, color: "#d4d4d4", marginBottom: 3 },
-  pcardP: { fontSize: 12, color: "#808080", lineHeight: 1.5 },
+  pcardH: { fontSize: 15, color: "#d4d4d4", marginBottom: 3 },
+  pcardP: { fontSize: 13, color: "#808080", lineHeight: 1.5 },
   stRow: { display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" },
-  st: { fontSize: 10.5, background: "#1e1e1e", color: "#a8a8a8", padding: "2px 8px", borderRadius: 12 },
+  st: { fontSize: 11.5, background: "#1e1e1e", color: "#a8a8a8", padding: "2px 8px", borderRadius: 12 },
   detail: { color: "#d4d4d4" },
   back: { background: "none", border: "1px solid #444444", color: "#89b4fa", fontFamily: mono, fontSize: 12, padding: "5px 10px", borderRadius: 6, cursor: "pointer", marginBottom: 14 },
   detailH: { fontSize: 18, marginTop: 14, marginBottom: 4 },
@@ -480,15 +448,15 @@ const S = {
   showcase: { overflowY: "auto", background: "#1e1e1e", padding: "32px 24px" },
   showInner: { maxWidth: 620, margin: "0 auto" },
   hero: { height: 220, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24, border: "1px solid #444444" },
-  showRole: { fontSize: 13, color: "#a8a8a8", marginBottom: 6 },
+  showRole: { fontSize: 14, color: "#a8a8a8", marginBottom: 6 },
   showTitle: { fontSize: 30, fontWeight: 700, color: "#d4d4d4", letterSpacing: "-.01em", marginBottom: 14, lineHeight: 1.2 },
-  showDesc: { fontSize: 15, color: "#c2c2c2", lineHeight: 1.8, marginBottom: 18 },
-  stBig: { fontSize: 12.5, background: "#262626", color: "#a8a8a8", padding: "5px 12px", borderRadius: 14, border: "1px solid #444444" },
+  showDesc: { fontSize: 16, color: "#c2c2c2", lineHeight: 1.8, marginBottom: 18 },
+  stBig: { fontSize: 13, background: "#262626", color: "#a8a8a8", padding: "5px 12px", borderRadius: 14, border: "1px solid #444444" },
   showLink: { display: "inline-block", marginTop: 20, color: "#cfcfcf", fontSize: 14, textDecoration: "none", borderBottom: "1px solid #cfcfcf44", paddingBottom: 2 },
   moreRow: { marginTop: 44, paddingTop: 24, borderTop: "1px solid #333333" },
   moreLabel: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
-  moreItem: { display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", background: "#262626", border: "1px solid #444444", borderRadius: 8, padding: "10px 14px", marginBottom: 8, color: "#d4d4d4", fontFamily: mono, fontSize: 13, cursor: "pointer" },
-  term: { background: "#0d0d0d", borderTop: "1px solid #444444", padding: "10px 16px", fontSize: 12.5, lineHeight: 1.7, maxHeight: 150, overflowY: "auto", flexShrink: 0 },
+  moreItem: { display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", background: "#262626", border: "1px solid #444444", borderRadius: 8, padding: "10px 14px", marginBottom: 8, color: "#d4d4d4", fontFamily: mono, fontSize: 14, cursor: "pointer" },
+  term: { background: "#0d0d0d", borderTop: "1px solid #444444", padding: "10px 16px", fontSize: 13, lineHeight: 1.7, maxHeight: 150, overflowY: "auto", flexShrink: 0 },
   thead: { fontSize: 10, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 },
   cursor: { display: "inline-block", width: 8, height: 14, background: "#a8a8a8", verticalAlign: "middle" },
 
@@ -501,11 +469,10 @@ const S = {
 
   // ---- 手機版樣式覆寫 ----
   paneM: { overflowY: "visible", flexShrink: 0 },
-  codePaneM: { overflowY: "visible", borderRight: "none", borderBottom: "1px solid #444444", flexShrink: 0, fontSize: 12 },
+  codePaneM: { overflowY: "visible", borderRight: "none", borderBottom: "1px solid #444444", flexShrink: 0, fontSize: 13 },
   showcaseM: { overflowY: "visible", padding: "22px 16px", flex: 1 },
   heroM: { height: 150, marginBottom: 18 },
   showTitleM: { fontSize: 23, marginBottom: 10 },
   showDescM: { fontSize: 14, lineHeight: 1.7, marginBottom: 14 },
-  photoFrameM: { minHeight: 220 },
-  termM: { maxHeight: 110, fontSize: 11.5, padding: "8px 14px" },
+  termM: { maxHeight: 110, fontSize: 12.5, padding: "8px 14px" },
 };
