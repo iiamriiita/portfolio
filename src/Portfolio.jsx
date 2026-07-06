@@ -20,7 +20,7 @@ const PROJECTS = [
     file: "team-retro.tsx",
     name: "Team Retro－給小組的團隊回饋 AI 工具",
     emoji: "💬",
-    grad: "linear-gradient(135deg,#89b4fa44,#cba6f744)",
+    grad: "linear-gradient(135deg,#3a3a3a,#242424)",
     tags: ["Next.js", "TypeScript", "Supabase", "Gemini"],
     short: "給 2–5 人小組的匿名回饋工具，AI 即時把關讓回饋更建設性。",
     detail:
@@ -33,7 +33,7 @@ const PROJECTS = [
     file: "butterfly.jsx",
     name: "抓蝴蝶－為手指復健者增添樂趣",
     emoji: "🦋",
-    grad: "linear-gradient(135deg,#a6e3a144,#fab38744)",
+    grad: "linear-gradient(135deg,#343434,#232323)",
     // TODO: 以下為草稿，待你補正確資訊
     tags: ["React", "Canvas"],
     short: "把手指復健變成小遊戲，讓復健過程多一點樂趣。",
@@ -47,7 +47,7 @@ const PROJECTS = [
     file: "music-viz.jsx",
     name: "音樂視覺化動畫",
     emoji: "🎵",
-    grad: "linear-gradient(135deg,#f38ba844,#89dceb44)",
+    grad: "linear-gradient(135deg,#3e3e3e,#2a2a2a)",
     // TODO: 以下為草稿，待你補正確資訊
     tags: ["Web Audio API", "Canvas"],
     short: "隨音樂即時生成的視覺化動畫。",
@@ -64,8 +64,8 @@ const DESIGN_PORTFOLIO_URL = "";
 // ---- 語法高亮小工具 ----
 const T = {
   kw: { color: "#cba6f7" }, str: { color: "#a6e3a1" }, fn: { color: "#89b4fa" },
-  num: { color: "#fab387" }, cmt: { color: "#6c7086", fontStyle: "italic" },
-  prop: { color: "#89dceb" }, txt: { color: "#cdd6f4" },
+  num: { color: "#fab387" }, cmt: { color: "#808080", fontStyle: "italic" },
+  prop: { color: "#89dceb" }, txt: { color: "#d4d4d4" },
 };
 
 // ---- 響應式：偵測手機寬度 ----
@@ -167,14 +167,14 @@ export default function Portfolio() {
             onClick={() => openTab("projects")}
             style={{
               ...S.folder,
-              background: openFile === "projects" ? "#2a2a3c" : "transparent",
-              borderLeft: openFile === "projects" ? "2px solid #89b4fa" : "2px solid transparent",
+              background: openFile === "projects" ? "#2d2d2d" : "transparent",
+              borderLeft: openFile === "projects" ? "2px solid #8a8a8a" : "2px solid transparent",
             }}
-            onMouseEnter={(e) => openFile !== "projects" && (e.currentTarget.style.background = "#313244")}
+            onMouseEnter={(e) => openFile !== "projects" && (e.currentTarget.style.background = "#333333")}
             onMouseLeave={(e) => openFile !== "projects" && (e.currentTarget.style.background = "transparent")}
           >
             <span
-              style={{ color: "#6c7086", cursor: "pointer" }}
+              style={{ color: "#808080", cursor: "pointer" }}
               onClick={(e) => { e.stopPropagation(); setFoldersOpen((v) => !v); }}
             >
               {foldersOpen ? "▾" : "▸"}
@@ -192,12 +192,12 @@ export default function Portfolio() {
           <div
             onClick={openDesignPortfolio}
             title={DESIGN_PORTFOLIO_URL || "之後會加上連結"}
-            style={{ ...S.file, paddingLeft: 16, marginTop: 8, paddingTop: 12, borderTop: "1px solid #313244", whiteSpace: "nowrap" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#313244")}
+            style={{ ...S.file, paddingLeft: 16, marginTop: 8, paddingTop: 12, borderTop: "1px solid #333333", whiteSpace: "nowrap" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#333333")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
           >
             🎨 Design portfolio
-            <span style={{ marginLeft: "auto", color: "#6c7086" }}>↗</span>
+            <span style={{ marginLeft: "auto", color: "#808080" }}>↗</span>
           </div>
         </aside>
 
@@ -252,13 +252,13 @@ function FileRow({ icon, label, sub, active, onClick }) {
       style={{
         ...S.file,
         paddingLeft: sub ? 44 : 30,
-        background: active ? "#2a2a3c" : "transparent",
-        borderLeft: active ? "2px solid #89b4fa" : "2px solid transparent",
+        background: active ? "#2d2d2d" : "transparent",
+        borderLeft: active ? "2px solid #8a8a8a" : "2px solid transparent",
       }}
-      onMouseEnter={(e) => !active && (e.currentTarget.style.background = "#313244")}
+      onMouseEnter={(e) => !active && (e.currentTarget.style.background = "#333333")}
       onMouseLeave={(e) => !active && (e.currentTarget.style.background = "transparent")}
     >
-      {icon} {dot}<span style={{ color: "#6c7086" }}>{ext}</span>
+      {icon} {dot}<span style={{ color: "#808080" }}>{ext}</span>
     </div>
   );
 }
@@ -315,7 +315,7 @@ function ProjectShowcase({ p, onOpen }) {
             <button key={o.id} style={S.moreItem} onClick={() => onOpen(o.id)}>
               <span style={{ fontSize: 20 }}>{o.emoji}</span>
               <span>{o.name}</span>
-              <span style={{ color: "#6c7086", marginLeft: "auto" }}>→</span>
+              <span style={{ color: "#808080", marginLeft: "auto" }}>→</span>
             </button>
           ))}
         </div>
@@ -371,15 +371,15 @@ function AboutPhoto() {
         ) : (
           <div style={S.photoPlaceholder}>
             <span style={{ fontSize: 40 }}>🧑‍💻</span>
-            <span style={{ fontSize: 12, color: "#6c7086", marginTop: 10 }}>
+            <span style={{ fontSize: 12, color: "#808080", marginTop: 10 }}>
               放上你的照片<br />（設定 DEV.photo）
             </span>
           </div>
         )}
       </div>
       <div style={S.photoCap}>
-        <span style={{ color: "#a6e3a1" }}>{DEV.name}</span>
-        <span style={{ color: "#6c7086" }}> · {DEV.based}</span>
+        <span style={{ color: "#d4d4d4" }}>{DEV.name}</span>
+        <span style={{ color: "#808080" }}> · {DEV.based}</span>
       </div>
     </div>
   );
@@ -392,7 +392,7 @@ function PCard({ p, onClick }) {
       onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{ ...S.pcard, transform: hover ? "translateY(-3px)" : "none", borderColor: hover ? "#89b4fa" : "#45475a" }}
+      style={{ ...S.pcard, transform: hover ? "translateY(-3px)" : "none", borderColor: hover ? "#8a8a8a" : "#444444" }}
     >
       <div style={{ ...S.thumb, background: p.grad }}>{p.emoji}</div>
       <div style={{ padding: "10px 14px" }}>
@@ -410,9 +410,9 @@ function Terminal() {
   const timers = useRef([]);
   useEffect(() => {
     const seq = [
-      { html: <><span style={{ color: "#6c7086" }}>→ loading projects...</span></>, d: 500 },
-      { html: <><span style={{ color: "#a6e3a1" }}>✓ 3 projects loaded</span></>, d: 700 },
-      { html: <><span style={{ color: "#6c7086" }}>→ 點左側檔案或右側卡片探索 ✨</span></>, d: 500 },
+      { html: <><span style={{ color: "#808080" }}>→ loading projects...</span></>, d: 500 },
+      { html: <><span style={{ color: "#a8a8a8" }}>✓ 3 projects loaded</span></>, d: 700 },
+      { html: <><span style={{ color: "#808080" }}>→ 點左側檔案或右側卡片探索 ✨</span></>, d: 500 },
     ];
     let acc = 0;
     seq.forEach((s) => {
@@ -424,7 +424,7 @@ function Terminal() {
   return (
     <div style={{ ...S.term, ...(isMobile ? S.termM : {}) }}>
       <div style={S.thead}>Terminal</div>
-      <div><span style={{ color: "#27c93f" }}>➜ ~/portfolio</span> npm run showcase</div>
+      <div><span style={{ color: "#a8a8a8" }}>➜ ~/portfolio</span> npm run showcase</div>
       {lines.map((l, i) => (<div key={i}>{l}</div>))}
       <span style={S.cursor} />
     </div>
@@ -442,66 +442,66 @@ function fileNameOf(id) {
 // ---- styles ----
 const mono = "'SF Mono','JetBrains Mono','Fira Code',Consolas,monospace";
 const S = {
-  app: { display: "grid", gridTemplateColumns: "210px 1fr", height: "100dvh", fontFamily: mono, background: "#1e1e2e", color: "#cdd6f4", fontSize: 13 },
-  side: { background: "#181825", borderRight: "1px solid #45475a", overflowY: "auto", padding: "8px 0" },
-  root: { fontSize: 12, color: "#6c7086", padding: "6px 14px" },
-  sideTitle: { fontSize: 11, color: "#6c7086", textTransform: "uppercase", letterSpacing: ".1em", padding: "8px 14px" },
-  folder: { fontSize: 13, color: "#cdd6f4", padding: "5px 14px", display: "flex", gap: 6, cursor: "pointer" },
-  file: { display: "flex", alignItems: "center", gap: 8, padding: "5px 14px", fontSize: 13, color: "#cdd6f4", cursor: "pointer" },
+  app: { display: "grid", gridTemplateColumns: "210px 1fr", height: "100dvh", fontFamily: mono, background: "#1e1e1e", color: "#d4d4d4", fontSize: 13 },
+  side: { background: "#171717", borderRight: "1px solid #444444", overflowY: "auto", padding: "8px 0" },
+  root: { fontSize: 12, color: "#808080", padding: "6px 14px" },
+  sideTitle: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", padding: "8px 14px" },
+  folder: { fontSize: 13, color: "#d4d4d4", padding: "5px 14px", display: "flex", gap: 6, cursor: "pointer" },
+  file: { display: "flex", alignItems: "center", gap: 8, padding: "5px 14px", fontSize: 13, color: "#d4d4d4", cursor: "pointer" },
   main: { display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0, flex: 1 },
-  tabs: { display: "flex", background: "#181825", borderBottom: "1px solid #45475a", overflowX: "auto", flexShrink: 0 },
-  tab: { padding: "8px 12px 8px 16px", fontSize: 13, color: "#6c7086", borderRight: "1px solid #45475a", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
-  tabActive: { color: "#cdd6f4", background: "#1e1e2e", borderTop: "2px solid #89b4fa" },
-  close: { color: "#6c7086", fontSize: 15, lineHeight: 1 },
+  tabs: { display: "flex", background: "#171717", borderBottom: "1px solid #444444", overflowX: "auto", flexShrink: 0 },
+  tab: { padding: "8px 12px 8px 16px", fontSize: 13, color: "#808080", borderRight: "1px solid #444444", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
+  tabActive: { color: "#d4d4d4", background: "#1e1e1e", borderTop: "2px solid #8a8a8a" },
+  close: { color: "#808080", fontSize: 15, lineHeight: 1 },
   split: { display: "grid", flex: 1, overflow: "hidden", minHeight: 0 },
-  codePane: { overflowY: "auto", padding: "14px 0", background: "#1e1e2e", borderRight: "1px solid #45475a", lineHeight: 1.75 },
+  codePane: { overflowY: "auto", padding: "14px 0", background: "#1e1e1e", borderRight: "1px solid #444444", lineHeight: 1.75 },
   line: { display: "flex", whiteSpace: "pre-wrap" },
-  gutter: { textAlign: "right", color: "#45475a", padding: "0 12px", minWidth: 40, userSelect: "none" },
+  gutter: { textAlign: "right", color: "#444444", padding: "0 12px", minWidth: 40, userSelect: "none" },
   lineTxt: { paddingRight: 16 },
-  preview: { overflowY: "auto", background: "#15151f", padding: 16 },
-  photoPane: { overflowY: "auto", background: "#15151f", padding: 16, display: "flex", flexDirection: "column" },
-  photoFrame: { flex: 1, minHeight: 260, borderRadius: 14, overflow: "hidden", border: "1px solid #45475a", background: "#1e1e2e", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 },
+  preview: { overflowY: "auto", background: "#141414", padding: 16 },
+  photoPane: { overflowY: "auto", background: "#141414", padding: 16, display: "flex", flexDirection: "column" },
+  photoFrame: { flex: 1, minHeight: 260, borderRadius: 14, overflow: "hidden", border: "1px solid #444444", background: "#1e1e1e", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 },
   photoImg: { width: "100%", height: "100%", objectFit: "cover" },
-  photoPlaceholder: { display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", background: "linear-gradient(135deg,#89b4fa22,#cba6f722)", width: "100%", height: "100%", justifyContent: "center" },
+  photoPlaceholder: { display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", background: "linear-gradient(135deg,#2e2e2e,#232323)", width: "100%", height: "100%", justifyContent: "center" },
   photoCap: { fontSize: 13, textAlign: "center" },
-  phead: { fontSize: 11, color: "#6c7086", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
-  pcard: { background: "#252537", border: "1px solid #45475a", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
+  phead: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
+  pcard: { background: "#262626", border: "1px solid #444444", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
   thumb: { height: 100, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30 },
-  pcardH: { fontSize: 14, color: "#cdd6f4", marginBottom: 3 },
-  pcardP: { fontSize: 12, color: "#6c7086", lineHeight: 1.5 },
+  pcardH: { fontSize: 14, color: "#d4d4d4", marginBottom: 3 },
+  pcardP: { fontSize: 12, color: "#808080", lineHeight: 1.5 },
   stRow: { display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" },
-  st: { fontSize: 10.5, background: "#1e1e2e", color: "#89dceb", padding: "2px 8px", borderRadius: 12 },
-  detail: { color: "#cdd6f4" },
-  back: { background: "none", border: "1px solid #45475a", color: "#89b4fa", fontFamily: mono, fontSize: 12, padding: "5px 10px", borderRadius: 6, cursor: "pointer", marginBottom: 14 },
+  st: { fontSize: 10.5, background: "#1e1e1e", color: "#a8a8a8", padding: "2px 8px", borderRadius: 12 },
+  detail: { color: "#d4d4d4" },
+  back: { background: "none", border: "1px solid #444444", color: "#89b4fa", fontFamily: mono, fontSize: 12, padding: "5px 10px", borderRadius: 6, cursor: "pointer", marginBottom: 14 },
   detailH: { fontSize: 18, marginTop: 14, marginBottom: 4 },
   detailRole: { fontSize: 12, color: "#89dceb", marginBottom: 10 },
-  detailP: { fontSize: 13, color: "#bac2de", lineHeight: 1.7, marginBottom: 12 },
+  detailP: { fontSize: 13, color: "#c2c2c2", lineHeight: 1.7, marginBottom: 12 },
   link: { display: "inline-block", marginTop: 14, color: "#89b4fa", fontSize: 13, textDecoration: "none" },
-  showcase: { overflowY: "auto", background: "#1e1e2e", padding: "32px 24px" },
+  showcase: { overflowY: "auto", background: "#1e1e1e", padding: "32px 24px" },
   showInner: { maxWidth: 620, margin: "0 auto" },
-  hero: { height: 220, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24, border: "1px solid #45475a" },
-  showRole: { fontSize: 13, color: "#89dceb", marginBottom: 6 },
-  showTitle: { fontSize: 30, fontWeight: 700, color: "#cdd6f4", letterSpacing: "-.01em", marginBottom: 14, lineHeight: 1.2 },
-  showDesc: { fontSize: 15, color: "#bac2de", lineHeight: 1.8, marginBottom: 18 },
-  stBig: { fontSize: 12.5, background: "#252537", color: "#89dceb", padding: "5px 12px", borderRadius: 14, border: "1px solid #45475a" },
-  showLink: { display: "inline-block", marginTop: 20, color: "#89b4fa", fontSize: 14, textDecoration: "none", borderBottom: "1px solid #89b4fa44", paddingBottom: 2 },
-  moreRow: { marginTop: 44, paddingTop: 24, borderTop: "1px solid #313244" },
-  moreLabel: { fontSize: 11, color: "#6c7086", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
-  moreItem: { display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", background: "#252537", border: "1px solid #45475a", borderRadius: 8, padding: "10px 14px", marginBottom: 8, color: "#cdd6f4", fontFamily: mono, fontSize: 13, cursor: "pointer" },
-  term: { background: "#0a0e14", borderTop: "1px solid #45475a", padding: "10px 16px", fontSize: 12.5, lineHeight: 1.7, maxHeight: 150, overflowY: "auto", flexShrink: 0 },
-  thead: { fontSize: 10, color: "#6c7086", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 },
-  cursor: { display: "inline-block", width: 8, height: 14, background: "#27c93f", verticalAlign: "middle" },
+  hero: { height: 220, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24, border: "1px solid #444444" },
+  showRole: { fontSize: 13, color: "#a8a8a8", marginBottom: 6 },
+  showTitle: { fontSize: 30, fontWeight: 700, color: "#d4d4d4", letterSpacing: "-.01em", marginBottom: 14, lineHeight: 1.2 },
+  showDesc: { fontSize: 15, color: "#c2c2c2", lineHeight: 1.8, marginBottom: 18 },
+  stBig: { fontSize: 12.5, background: "#262626", color: "#a8a8a8", padding: "5px 12px", borderRadius: 14, border: "1px solid #444444" },
+  showLink: { display: "inline-block", marginTop: 20, color: "#cfcfcf", fontSize: 14, textDecoration: "none", borderBottom: "1px solid #cfcfcf44", paddingBottom: 2 },
+  moreRow: { marginTop: 44, paddingTop: 24, borderTop: "1px solid #333333" },
+  moreLabel: { fontSize: 11, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
+  moreItem: { display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", background: "#262626", border: "1px solid #444444", borderRadius: 8, padding: "10px 14px", marginBottom: 8, color: "#d4d4d4", fontFamily: mono, fontSize: 13, cursor: "pointer" },
+  term: { background: "#0d0d0d", borderTop: "1px solid #444444", padding: "10px 16px", fontSize: 12.5, lineHeight: 1.7, maxHeight: 150, overflowY: "auto", flexShrink: 0 },
+  thead: { fontSize: 10, color: "#808080", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 6 },
+  cursor: { display: "inline-block", width: 8, height: 14, background: "#a8a8a8", verticalAlign: "middle" },
 
   // ---- 手機頂部列 / 抽屜 ----
-  mtop: { display: "flex", alignItems: "center", gap: 10, background: "#181825", borderBottom: "1px solid #45475a", padding: "8px 12px", flexShrink: 0 },
-  mBurger: { background: "none", border: "none", color: "#cdd6f4", fontSize: 20, lineHeight: 1, cursor: "pointer", padding: "2px 4px" },
-  mTitle: { fontSize: 12, color: "#6c7086" },
-  mFile: { fontSize: 12, color: "#89b4fa", marginLeft: "auto", maxWidth: "45%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  mtop: { display: "flex", alignItems: "center", gap: 10, background: "#171717", borderBottom: "1px solid #444444", padding: "8px 12px", flexShrink: 0 },
+  mBurger: { background: "none", border: "none", color: "#d4d4d4", fontSize: 20, lineHeight: 1, cursor: "pointer", padding: "2px 4px" },
+  mTitle: { fontSize: 12, color: "#808080" },
+  mFile: { fontSize: 12, color: "#cfcfcf", marginLeft: "auto", maxWidth: "45%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
   backdrop: { position: "fixed", inset: 0, background: "#000a", zIndex: 40 },
 
   // ---- 手機版樣式覆寫 ----
   paneM: { overflowY: "visible", flexShrink: 0 },
-  codePaneM: { overflowY: "visible", borderRight: "none", borderBottom: "1px solid #45475a", flexShrink: 0, fontSize: 12 },
+  codePaneM: { overflowY: "visible", borderRight: "none", borderBottom: "1px solid #444444", flexShrink: 0, fontSize: 12 },
   showcaseM: { overflowY: "visible", padding: "22px 16px", flex: 1 },
   heroM: { height: 150, marginBottom: 18 },
   showTitleM: { fontSize: 23, marginBottom: 10 },

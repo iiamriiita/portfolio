@@ -11,7 +11,7 @@ body,
 }
 
 body {
-  background: #1e1e2e;
+  background: #1e1e1e;
   /* Avoid horizontal scroll on mobile */
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -26,9 +26,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #313244;
+  background: #333333;
   border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #45475a;
+  background: #444444;
 }
