@@ -58,6 +58,9 @@ const PROJECTS = [
   },
 ];
 
+// ---- 之後把你的設計作品集網址貼進來（例如 "https://www.behance.net/yourname"）----
+const DESIGN_PORTFOLIO_URL = "";
+
 // ---- 語法高亮小工具 ----
 const T = {
   kw: { color: "#cba6f7" }, str: { color: "#a6e3a1" }, fn: { color: "#89b4fa" },
@@ -101,6 +104,10 @@ export default function Portfolio() {
     setTabs(next);
     if (openFile === id && next.length) setOpenFile(next[next.length - 1]);
   };
+  const openDesignPortfolio = () => {
+    if (DESIGN_PORTFOLIO_URL) window.open(DESIGN_PORTFOLIO_URL, "_blank", "noreferrer");
+    if (isMobile) setDrawerOpen(false);
+  };
 
   const isProj = PROJECTS.some((p) => p.id === openFile);
 
@@ -142,7 +149,7 @@ export default function Portfolio() {
             >
               ☰
             </button>
-            <span style={S.mTitle}>📂 your-name</span>
+            <span style={S.mTitle}>📂 YING CI</span>
             <span style={S.mFile}>{fileNameOf(openFile)}</span>
           </div>
         )}
@@ -154,10 +161,25 @@ export default function Portfolio() {
 
         {/* ---- Explorer ---- */}
         <aside style={sideStyle}>
-          <div style={S.root}>📂 your-name</div>
-          <div style={S.sideTitle}>Explorer</div>
-          <div style={S.folder} onClick={() => setFoldersOpen((v) => !v)}>
-            <span style={{ color: "#6c7086" }}>{foldersOpen ? "▾" : "▸"}</span>📂 projects
+          <div style={S.root}>📂 YING CI</div>
+          {/* 點資料夾名稱 → 開首頁專案頁；點三角形 → 展開/收合 */}
+          <div
+            onClick={() => openTab("projects")}
+            style={{
+              ...S.folder,
+              background: openFile === "projects" ? "#2a2a3c" : "transparent",
+              borderLeft: openFile === "projects" ? "2px solid #89b4fa" : "2px solid transparent",
+            }}
+            onMouseEnter={(e) => openFile !== "projects" && (e.currentTarget.style.background = "#313244")}
+            onMouseLeave={(e) => openFile !== "projects" && (e.currentTarget.style.background = "transparent")}
+          >
+            <span
+              style={{ color: "#6c7086", cursor: "pointer" }}
+              onClick={(e) => { e.stopPropagation(); setFoldersOpen((v) => !v); }}
+            >
+              {foldersOpen ? "▾" : "▸"}
+            </span>
+            📂 projects
           </div>
           {foldersOpen &&
             PROJECTS.map((p) => (
@@ -165,6 +187,18 @@ export default function Portfolio() {
             ))}
           <FileRow icon="📄" label="about.md" active={openFile === "about"} onClick={() => openTab("about")} />
           <FileRow icon="📬" label="contact.ts" active={openFile === "contact"} onClick={() => openTab("contact")} />
+
+          {/* 外部連結：設計作品集（之後會導到另一個網站） */}
+          <div
+            onClick={openDesignPortfolio}
+            title={DESIGN_PORTFOLIO_URL || "之後會加上連結"}
+            style={{ ...S.file, paddingLeft: 16, marginTop: 8, paddingTop: 12, borderTop: "1px solid #313244", whiteSpace: "nowrap" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#313244")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          >
+            🎨 Design portfolio
+            <span style={{ marginLeft: "auto", color: "#6c7086" }}>↗</span>
+          </div>
         </aside>
 
         {/* ---- Main ---- */}
