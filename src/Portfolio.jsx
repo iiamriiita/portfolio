@@ -22,7 +22,7 @@ const PROJECTS = [
     emoji: "💬",
     img: "/team-retro-banner.png",
     video: "", // ← 貼 YouTube 網址（例如 "https://www.youtube.com/watch?v=xxxx"），留空不顯示
-    demo: "", // ← 貼線上 demo 網址，卡片右上角會出現「Try now ↗」按鈕；留空不顯示
+    demo: "https://retro-six-orcin.vercel.app/", // ← 線上 demo 網址，卡片右上角會出現「Try now ↗」按鈕；留空不顯示
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["Next.js 15", "TypeScript", "Supabase", "Gemini API", "Prompt Engineering", "RLS", "i18n", "Tailwind CSS"],
     short: "用一條分享連結發起團隊回顧（Retrospective），AI 根據回答自動產出洞察與調整建議，支援逐句討論與跨場趨勢洞察。",
@@ -97,7 +97,7 @@ const PROJECTS = [
     emoji: "🦋",
     img: "/butterfly-banner.png",
     video: "",
-    demo: "",
+    demo: "https://iiamriiita.github.io/butterflygame/finalver",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["JavaScript", "MediaPipe", "電腦視覺", "Canvas API", "Supabase", "即時手勢辨識"],
     short: "透過相機即時追蹤手部動作，用「握拳」手勢抓取畫面中飛舞的蝴蝶，含拍照與線上排行榜的手指復健遊戲。",
@@ -701,8 +701,8 @@ function PCard({ p, onClick }) {
           rel="noreferrer"
           onClick={(e) => e.stopPropagation()}
           style={S.tryBtn}
-          onMouseEnter={(e) => { e.currentTarget.style.background = "#000d"; e.currentTarget.style.borderColor = "#ffffff88"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "#000a"; e.currentTarget.style.borderColor = "#ffffff44"; }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#f2f2f2"; e.currentTarget.style.transform = "scale(1.05)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.transform = "scale(1)"; }}
         >
           Try now ↗
         </a>
@@ -760,7 +760,7 @@ const S = {
   preview: { overflowY: "auto", background: "var(--bg-preview)", padding: 16 },
   phead: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   pcard: { position: "relative", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
-  tryBtn: { position: "absolute", top: 10, right: 10, zIndex: 2, fontFamily: mono, fontSize: 12, background: "#000a", color: "#fff", border: "1px solid #ffffff44", padding: "5px 11px", borderRadius: 14, textDecoration: "none", backdropFilter: "blur(4px)", transition: "background .15s, border-color .15s" },
+  tryBtn: { position: "absolute", top: 10, right: 10, zIndex: 2, fontFamily: mono, fontSize: 12, fontWeight: 700, background: "#fff", color: "#111", border: "1px solid #00000022", padding: "5px 11px", borderRadius: 14, textDecoration: "none", boxShadow: "0 2px 8px #0005", transition: "background .15s, transform .15s" },
   thumb: { height: 185, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 },
   pcardH: { fontSize: 15.5, color: "var(--text-bright)", marginBottom: 4, fontFamily: sans, fontWeight: 700 },
   pcardP: { fontSize: 13.5, color: "var(--text-mid)", lineHeight: 1.6, fontFamily: sans },
