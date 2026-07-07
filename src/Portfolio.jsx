@@ -701,8 +701,8 @@ function PCard({ p, onClick }) {
           rel="noreferrer"
           onClick={(e) => e.stopPropagation()}
           style={S.tryBtn}
-          onMouseEnter={(e) => { e.currentTarget.style.background = "#f2f2f2"; e.currentTarget.style.transform = "scale(1.05)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.transform = "scale(1)"; }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "var(--text-bright)"; e.currentTarget.style.borderColor = "var(--border-strong)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-mid)"; e.currentTarget.style.borderColor = "var(--border)"; }}
         >
           Try now ↗
         </a>
@@ -760,14 +760,14 @@ const S = {
   preview: { overflowY: "auto", background: "var(--bg-preview)", padding: 16 },
   phead: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   pcard: { position: "relative", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
-  tryBtn: { position: "absolute", top: 10, right: 10, zIndex: 2, fontFamily: mono, fontSize: 12, fontWeight: 700, background: "#fff", color: "#111", border: "1px solid #00000022", padding: "5px 11px", borderRadius: 14, textDecoration: "none", boxShadow: "0 2px 8px #0005", transition: "background .15s, transform .15s" },
+  tryBtn: { position: "absolute", top: 10, right: 10, zIndex: 2, fontFamily: mono, fontSize: 13, background: "var(--bg)", color: "var(--text-mid)", border: "1px solid var(--border)", padding: "6px 12px", borderRadius: 6, textDecoration: "none", transition: "color .15s, border-color .15s" },
   thumb: { height: 185, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 },
   pcardH: { fontSize: 15.5, color: "var(--text-bright)", marginBottom: 4, fontFamily: sans, fontWeight: 700 },
   pcardP: { fontSize: 13.5, color: "var(--text-mid)", lineHeight: 1.6, fontFamily: sans },
   stRow: { display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" },
   st: { fontSize: 11.5, background: "var(--bg)", color: "var(--text-mid)", padding: "2px 8px", borderRadius: 12 },
   detail: { color: "var(--text)" },
-  backBtn: { position: "sticky", top: 10, zIndex: 10, background: "var(--bg)", border: "1px solid var(--border)", color: "var(--text-mid)", fontFamily: mono, fontSize: 13, padding: "6px 12px", borderRadius: 6, cursor: "pointer", transition: "color .15s, border-color .15s", boxShadow: "0 2px 10px #0003" },
+  backBtn: { position: "sticky", top: 10, zIndex: 10, background: "var(--bg)", border: "1px solid var(--border)", color: "var(--text-mid)", fontFamily: mono, fontSize: 13, padding: "6px 12px", borderRadius: 6, cursor: "pointer", transition: "color .15s, border-color .15s" },
   backBtnM: { position: "static", display: "inline-block", marginBottom: 16 },
   detailH: { fontSize: 18, marginTop: 14, marginBottom: 4 },
   detailRole: { fontSize: 12, color: "var(--syn-prop)", marginBottom: 10 },
