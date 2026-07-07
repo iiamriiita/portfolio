@@ -35,6 +35,7 @@ const PROJECTS = [
     name: "抓蝴蝶－為手指復健者增添樂趣",
     en: "Butterfly Catch Game",
     emoji: "🦋",
+    img: "/butterfly-banner.png",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     // TODO: 以下為草稿，待你補正確資訊
     tags: ["React", "Canvas"],
