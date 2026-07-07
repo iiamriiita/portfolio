@@ -139,7 +139,7 @@ const PROJECTS = [
       },
     ],
     role: "獨立開發",
-    link: "github.com/iiamriiita",
+    link: "github.com/iiamriiita/butterflygame",
   },
   {
     id: "music-viz",
@@ -186,7 +186,7 @@ const PROJECTS = [
       },
     ],
     role: "獨立開發",
-    link: "github.com/iiamriiita",
+    link: "", // ← 留空則專案頁不顯示 GitHub 按鈕
   },
 ];
 
@@ -569,9 +569,25 @@ function ProjectsIndex() {
   );
 }
 
+// 統一樣式的連結按鈕（與「← projects」同款）
+function BtnLink({ href, style, children }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      style={{ ...S.btnLink, ...style }}
+      onMouseEnter={(e) => { e.currentTarget.style.color = "var(--text-bright)"; e.currentTarget.style.borderColor = "var(--border-strong)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-mid)"; e.currentTarget.style.borderColor = "var(--border)"; }}
+    >
+      {children}
+    </a>
+  );
+}
+
 function ProjectShowcase({ p, onOpen }) {
   const { isMobile } = useContext(UI);
-  const others = PROJECTS.filter((x) => x.id !== p.id);
   return (
     <div style={{ ...S.showcase, ...(isMobile ? S.showcaseM : {}), position: "relative" }}>
       {/* 回專案列表 */}
@@ -604,6 +620,12 @@ function ProjectShowcase({ p, onOpen }) {
             <span style={{ fontSize: isMobile ? 52 : 72 }}>{p.emoji}</span>
           </div>
         )}
+        {(p.link || p.demo) && (
+          <div style={S.heroBtns}>
+            {p.link && <BtnLink href={"https://" + p.link}>GitHub ↗</BtnLink>}
+            {p.demo && <BtnLink href={p.demo}>Try it now ↗</BtnLink>}
+          </div>
+        )}
         <div style={S.showRole}>{p.role}</div>
         <h1 style={{ ...S.showTitle, ...(isMobile ? S.showTitleM : {}) }}>{p.name}</h1>
         <p style={{ ...S.showDesc, ...(isMobile ? S.showDescM : {}) }}>{p.detail}</p>
@@ -625,18 +647,6 @@ function ProjectShowcase({ p, onOpen }) {
         ))}
 
         <div style={S.stRow}>{p.tags.map((t) => (<span key={t} style={S.stBig}>{t}</span>))}</div>
-        <a href={"https://" + p.link} target="_blank" rel="noreferrer" style={S.showLink}>↗ {p.link}</a>
-
-        <div style={S.moreRow}>
-          <div style={S.moreLabel}>其他作品</div>
-          {others.map((o) => (
-            <button key={o.id} style={S.moreItem} onClick={() => onOpen(o.id)}>
-              <span style={{ fontSize: 20 }}>{o.emoji}</span>
-              <span>{o.name}</span>
-              <span style={{ color: "var(--text-dim)", marginLeft: "auto" }}>→</span>
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );
@@ -694,19 +704,7 @@ function PCard({ p, onClick }) {
       onMouseLeave={() => setHover(false)}
       style={{ ...S.pcard, transform: hover ? "translateY(-3px)" : "none", borderColor: hover ? "var(--border-strong)" : "var(--border)" }}
     >
-      {p.demo && (
-        <a
-          href={p.demo}
-          target="_blank"
-          rel="noreferrer"
-          onClick={(e) => e.stopPropagation()}
-          style={S.tryBtn}
-          onMouseEnter={(e) => { e.currentTarget.style.color = "var(--text-bright)"; e.currentTarget.style.borderColor = "var(--border-strong)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-mid)"; e.currentTarget.style.borderColor = "var(--border)"; }}
-        >
-          Try now ↗
-        </a>
-      )}
+      {p.demo && <BtnLink href={p.demo} style={S.tryBtnPos}>Try now ↗</BtnLink>}
       {p.img ? (
         <img src={p.img} alt={p.name} style={{ ...S.thumb, width: "100%", objectFit: "cover", display: "block" }} />
       ) : (
@@ -760,7 +758,9 @@ const S = {
   preview: { overflowY: "auto", background: "var(--bg-preview)", padding: 16 },
   phead: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   pcard: { position: "relative", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
-  tryBtn: { position: "absolute", top: 10, right: 10, zIndex: 2, fontFamily: mono, fontSize: 13, background: "var(--bg)", color: "var(--text-mid)", border: "1px solid var(--border)", padding: "6px 12px", borderRadius: 6, textDecoration: "none", transition: "color .15s, border-color .15s" },
+  btnLink: { display: "inline-block", fontFamily: mono, fontSize: 13, background: "var(--bg)", color: "var(--text-mid)", border: "1px solid var(--border)", padding: "6px 12px", borderRadius: 6, textDecoration: "none", transition: "color .15s, border-color .15s" },
+  tryBtnPos: { position: "absolute", top: 10, right: 10, zIndex: 2 },
+  heroBtns: { display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 20 },
   thumb: { height: 185, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 },
   pcardH: { fontSize: 15.5, color: "var(--text-bright)", marginBottom: 4, fontFamily: sans, fontWeight: 700 },
   pcardP: { fontSize: 13.5, color: "var(--text-mid)", lineHeight: 1.6, fontFamily: sans },
@@ -780,16 +780,12 @@ const S = {
   showTitle: { fontSize: 30, fontWeight: 700, color: "var(--text-bright)", letterSpacing: "-.01em", marginBottom: 14, lineHeight: 1.3, fontFamily: sans },
   showDesc: { fontSize: 16, color: "var(--text-soft)", lineHeight: 1.9, marginBottom: 18, fontFamily: sans },
   stBig: { fontSize: 13, background: "var(--bg-card)", color: "var(--text-mid)", padding: "5px 12px", borderRadius: 14, border: "1px solid var(--border)" },
-  showLink: { display: "inline-block", marginTop: 20, color: "var(--link)", fontSize: 14, textDecoration: "none", borderBottom: "1px solid var(--link-underline)", paddingBottom: 2 },
   secH: { fontSize: 16, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 26, marginBottom: 8 },
   secH4: { fontSize: 15, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 18, marginBottom: 6 },
   secP: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans, marginBottom: 10 },
   secList: { paddingLeft: 22, margin: 0 },
   secLi: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans, marginBottom: 6 },
   heroVideo: { width: "100%", aspectRatio: "16 / 9", border: "1px solid var(--border)", borderRadius: 14, display: "block", background: "#000", marginBottom: 24 },
-  moreRow: { marginTop: 44, paddingTop: 24, borderTop: "1px solid var(--hover)" },
-  moreLabel: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
-  moreItem: { display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 8, padding: "10px 14px", marginBottom: 8, color: "var(--text)", fontFamily: mono, fontSize: 14, cursor: "pointer" },
 
   // ---- 手機頂部列 / 抽屜 ----
   mtop: { display: "flex", alignItems: "center", gap: 10, background: "var(--bg-side)", borderBottom: "1px solid var(--border)", padding: "8px 12px", flexShrink: 0 },
