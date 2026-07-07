@@ -2,14 +2,14 @@ import { useState, useEffect, createContext, useContext } from "react";
 
 // ---- 你的資料：之後改這裡就好 ----
 const DEV = {
-  name: "你的名字",
+  name: "Ying Ci Luo",
   role: "UX Design Engineer",
   based: "Taiwan",
-  stack: ["React", "TypeScript", "Node"],
   skills: {
-    frontend: "React, TypeScript, Tailwind",
-    backend: "Node, Express, PostgreSQL",
-    tooling: "Git, Docker, Vite",
+    frontend: "HTML, CSS, JavaScript",
+    backend: "Supabase (PostgreSQL / RLS), REST API, Python",
+    creative: "Canvas API, Web Audio, MediaPipe",
+    aiCollab: "Gemini API, prompt engineering, building with AI",
   },
 };
 
