@@ -8,7 +8,7 @@ const DEV = {
   skills: {
     frontend: "HTML, CSS, JavaScript",
     backend: "Supabase (PostgreSQL / RLS), REST API, Python",
-    creative: "Canvas API, Web Audio, MediaPipe",
+    creative: "p5.js, Canvas API, Web Audio, MediaPipe",
     aiCollab: "Gemini API, prompt engineering, building with AI",
   },
 };
@@ -877,7 +877,14 @@ function AboutCode() {
       <Line n={10 + sk.length}>{"}"};</Line>
       <Line n={11 + sk.length}> </Line>
       <Line n={12 + sk.length}><span style={T.cmt}>/* I love turning ideas into interactive things. Open to new opportunities. */</span></Line>
-      <Line n={13 + sk.length}><span style={T.kw}>export default</span> <span style={T.fn}>developer</span>;</Line>
+      <Line n={13 + sk.length}>
+        <span style={T.cmt}>
+          {"/* Questions or collaboration → "}
+          <a href="mailto:yingciluo1015@gmail.com" style={{ color: "inherit", textDecoration: "underline" }}>yingciluo1015@gmail.com</a>
+          {" */"}
+        </span>
+      </Line>
+      <Line n={14 + sk.length}><span style={T.kw}>export default</span> <span style={T.fn}>developer</span>;</Line>
     </>
   );
 }
