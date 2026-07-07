@@ -119,7 +119,12 @@ export default function Portfolio() {
   const [foldersOpen, setFoldersOpen] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false); // 手機側邊抽屜
   const [theme, setTheme] = useState(() => {
-    try { return localStorage.getItem("theme") || "dark"; } catch { return "dark"; }
+    // 記住使用者選過的；沒選過就跟系統，系統沒偏好預設亮色
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved) return saved;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    } catch { return "light"; }
   });
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
 
@@ -427,7 +432,7 @@ function AboutCode() {
   const sk = Object.entries(DEV.skills);
   return (
     <>
-      <Line n={1}><span style={T.cmt}>// about.me</span></Line>
+      <Line n={1}><span style={T.hero}>// about me 🙋‍♀️</span></Line>
       <Line n={2}><span style={T.kw}>const</span> <span style={T.fn}>developer</span> = {"{"}</Line>
       <Line n={3}>{"  "}<span style={T.prop}>name</span>: <span style={T.str}>"{DEV.name}"</span>,</Line>
       <Line n={4}>{"  "}<span style={T.prop}>role</span>: <span style={T.str}>"{DEV.role}"</span>,</Line>
