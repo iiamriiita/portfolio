@@ -511,7 +511,7 @@ const S = {
   preview: { overflowY: "auto", background: "var(--bg-preview)", padding: 16 },
   phead: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   pcard: { background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
-  thumb: { height: 135, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 34 },
+  thumb: { height: 160, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36 },
   pcardH: { fontSize: 15.5, color: "var(--text-bright)", marginBottom: 4, fontFamily: sans, fontWeight: 700 },
   pcardP: { fontSize: 13.5, color: "var(--text-mid)", lineHeight: 1.6, fontFamily: sans },
   stRow: { display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" },
