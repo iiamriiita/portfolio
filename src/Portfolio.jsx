@@ -20,6 +20,7 @@ const PROJECTS = [
     name: "Team Retro－給小組的團隊回饋 AI 工具",
     en: "Team Retro (AI product)",
     emoji: "💬",
+    img: "", // ← banner 圖檔放進 public/ 後填路徑，例如 "/team-retro-banner.png"
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["Next.js", "TypeScript", "Supabase", "Gemini"],
     short: "給 2–5 人小組的匿名回饋工具，AI 即時把關讓回饋更建設性。",
@@ -404,10 +405,14 @@ function ProjectShowcase({ p, onOpen }) {
         ← projects
       </button>
       <div style={S.showInner}>
-        {/* 大視覺：換成真實截圖 <img src=...> 效果更好 */}
-        <div style={{ ...S.hero, ...(isMobile ? S.heroM : {}), background: p.grad }}>
-          <span style={{ fontSize: isMobile ? 52 : 72 }}>{p.emoji}</span>
-        </div>
+        {/* 大視覺：有真實截圖用截圖，否則 emoji 佔位 */}
+        {p.img ? (
+          <img src={p.img} alt={p.name} style={{ ...S.hero, ...(isMobile ? S.heroM : {}), width: "100%", objectFit: "cover", display: "block" }} />
+        ) : (
+          <div style={{ ...S.hero, ...(isMobile ? S.heroM : {}), background: p.grad }}>
+            <span style={{ fontSize: isMobile ? 52 : 72 }}>{p.emoji}</span>
+          </div>
+        )}
         <div style={S.showRole}>{p.role}</div>
         <h1 style={{ ...S.showTitle, ...(isMobile ? S.showTitleM : {}) }}>{p.name}</h1>
         <p style={{ ...S.showDesc, ...(isMobile ? S.showDescM : {}) }}>{p.detail}</p>
@@ -462,7 +467,11 @@ function PCard({ p, onClick }) {
       onMouseLeave={() => setHover(false)}
       style={{ ...S.pcard, transform: hover ? "translateY(-3px)" : "none", borderColor: hover ? "var(--border-strong)" : "var(--border)" }}
     >
-      <div style={{ ...S.thumb, background: p.grad }}>{p.emoji}</div>
+      {p.img ? (
+        <img src={p.img} alt={p.name} style={{ ...S.thumb, width: "100%", objectFit: "cover", display: "block" }} />
+      ) : (
+        <div style={{ ...S.thumb, background: p.grad }}>{p.emoji}</div>
+      )}
       <div style={{ padding: "13px 16px 15px" }}>
         <h4 style={S.pcardH}>{p.name}</h4>
         <p style={S.pcardP}>{p.short}</p>
