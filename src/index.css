@@ -43,12 +43,12 @@
   --link-underline: #3c3c3c55;
   --thumb-a: #ececea;
   --thumb-b: #dcdcda;
-  --green: #16a02b;
-  --syn-kw: #8839ef;
-  --syn-str: #40a02b;
-  --syn-fn: #1e66f5;
-  --syn-num: #e64d0e;
-  --syn-prop: #209fb5;
+  --green: #148425;
+  --syn-kw: #66399a;
+  --syn-str: #33702c;
+  --syn-fn: #274f9e;
+  --syn-num: #a34e0e;
+  --syn-prop: #17667a;
 }
 
 * {
