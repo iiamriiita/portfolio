@@ -97,6 +97,7 @@ export default function Portfolio() {
   const [theme, setTheme] = useState(() => {
     try { return localStorage.getItem("theme") || "dark"; } catch { return "dark"; }
   });
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -222,24 +223,52 @@ export default function Portfolio() {
         {/* ---- Main ---- */}
         <div style={S.main}>
           {/* tabs */}
-          <div style={S.tabs}>
-            {tabs.map((id) => (
-              <div key={id} style={{ ...S.tab, ...(openFile === id ? S.tabActive : {}) }} onClick={() => setOpenFile(id)}>
-                <span>{fileNameOf(id)}</span>
-                <span style={S.close} onClick={(e) => closeTab(id, e)}>×</span>
-              </div>
-            ))}
-            {/* 右上角：深色 / 亮色切換 */}
-            <button
-              aria-label={theme === "dark" ? "切換亮色模式" : "切換深色模式"}
-              title={theme === "dark" ? "Light mode" : "Dark mode"}
-              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-              style={S.themeBtn}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-            >
-              {theme === "dark" ? "☀️" : "🌙"}
-            </button>
+          <div style={S.tabbar}>
+            <div style={S.tabScroll}>
+              {tabs.map((id) => (
+                <div key={id} style={{ ...S.tab, ...(openFile === id ? S.tabActive : {}) }} onClick={() => setOpenFile(id)}>
+                  <span>{fileNameOf(id)}</span>
+                  <span style={S.close} onClick={(e) => closeTab(id, e)}>×</span>
+                </div>
+              ))}
+            </div>
+
+            {/* 右上角：主題下拉選單 */}
+            <div style={S.themeWrap}>
+              <button
+                aria-label="選擇主題"
+                onClick={() => setThemeMenuOpen((v) => !v)}
+                style={S.themeBtn}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+              >
+                {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+                <span style={{ color: "var(--text-dim)", fontSize: 10 }}>▾</span>
+              </button>
+              {themeMenuOpen && (
+                <>
+                  <div style={S.menuBackdrop} onClick={() => setThemeMenuOpen(false)} />
+                  <div style={S.themeMenu}>
+                    {[
+                      { id: "dark", icon: "🌙", label: "Dark" },
+                      { id: "light", icon: "☀️", label: "Light" },
+                    ].map((opt) => (
+                      <div
+                        key={opt.id}
+                        onClick={() => { setTheme(opt.id); setThemeMenuOpen(false); }}
+                        style={{ ...S.themeItem, ...(theme === opt.id ? S.themeItemActive : {}) }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = theme === opt.id ? "var(--bg-active)" : "transparent")}
+                      >
+                        <span>{opt.icon}</span>
+                        <span>{opt.label}</span>
+                        {theme === opt.id && <span style={{ marginLeft: "auto", color: "var(--text-dim)" }}>✓</span>}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           {/* content：作品→展示頁；code 頁→左程式右精選作品 */}
@@ -431,10 +460,16 @@ const S = {
   folder: { fontSize: 14, color: "var(--text)", padding: "9px 14px", display: "flex", alignItems: "center", gap: 6, cursor: "pointer" },
   file: { display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", fontSize: 14, color: "var(--text)", cursor: "pointer" },
   main: { display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0, flex: 1 },
-  tabs: { display: "flex", background: "var(--bg-side)", borderBottom: "1px solid var(--border)", overflowX: "auto", flexShrink: 0 },
+  tabbar: { display: "flex", alignItems: "stretch", background: "var(--bg-side)", borderBottom: "1px solid var(--border)", flexShrink: 0 },
+  tabScroll: { display: "flex", overflowX: "auto", flex: 1, minWidth: 0 },
   tab: { padding: "12px 14px 12px 18px", fontSize: 14, color: "var(--text-dim)", borderRight: "1px solid var(--border)", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
   tabActive: { color: "var(--text)", background: "var(--bg)", borderTop: "2px solid var(--border-strong)" },
-  themeBtn: { marginLeft: "auto", flexShrink: 0, alignSelf: "center", background: "none", border: "none", fontSize: 17, padding: "6px 14px", cursor: "pointer", borderRadius: 6, lineHeight: 1 },
+  themeWrap: { position: "relative", flexShrink: 0, display: "flex", alignItems: "center", padding: "0 10px" },
+  themeBtn: { display: "flex", alignItems: "center", gap: 6, background: "none", border: "1px solid var(--border)", color: "var(--text-mid)", fontFamily: mono, fontSize: 13, padding: "6px 12px", cursor: "pointer", borderRadius: 6, lineHeight: 1, whiteSpace: "nowrap" },
+  menuBackdrop: { position: "fixed", inset: 0, zIndex: 60 },
+  themeMenu: { position: "absolute", top: "calc(100% - 4px)", right: 10, zIndex: 61, background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 8, padding: 4, minWidth: 130, boxShadow: "0 8px 24px #0006" },
+  themeItem: { display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", fontSize: 13, fontFamily: mono, color: "var(--text)", borderRadius: 6, cursor: "pointer", whiteSpace: "nowrap" },
+  themeItemActive: { background: "var(--bg-active)" },
   close: { color: "var(--text-dim)", fontSize: 15, lineHeight: 1 },
   split: { display: "grid", flex: 1, overflow: "hidden", minHeight: 0 },
   codePane: { overflowY: "auto", padding: "14px 0", background: "var(--bg)", borderRight: "1px solid var(--border)", lineHeight: 1.75 },
