@@ -364,26 +364,27 @@ function ProjectsIndex() {
   return (
     <>
       <Line n={1}><span style={T.hero}>// Hi, I'm YING CI 👋</span></Line>
-      <Line n={2}>
+      <Line n={2}> </Line>
+      <Line n={3}>
         <span style={T.kw}>const</span> <span style={T.fn}>role</span><span style={T.dim}> = </span>
         <span style={T.str}>"UX Design Engineer"</span><span style={T.dim}>;</span>
       </Line>
-      <Line n={3}>
+      <Line n={4}>
         <span style={T.kw}>const</span> <span style={T.fn}>motto</span><span style={T.dim}> = </span>
         <span style={T.str}>"把想法變成可以互動的東西"</span><span style={T.dim}>;</span>
       </Line>
-      <Line n={4}> </Line>
-      <Line n={5}>
+      <Line n={5}> </Line>
+      <Line n={6}>
         <span style={T.kw}>export const</span> <span style={T.fn}>projects</span><span style={T.dim}> = [</span>
       </Line>
       {PROJECTS.map((p, i) => (
-        <Line n={6 + i} key={p.id}>
+        <Line n={7 + i} key={p.id}>
           <span style={T.dim}>{"  { name: "}</span>
           <span style={T.str}>"{p.en}"</span>
           <span style={T.dim}>{" },"}</span>
         </Line>
       ))}
-      <Line n={6 + PROJECTS.length}><span style={T.dim}>];</span></Line>
+      <Line n={7 + PROJECTS.length}><span style={T.dim}>];</span></Line>
     </>
   );
 }
@@ -433,20 +434,21 @@ function AboutCode() {
   return (
     <>
       <Line n={1}><span style={T.hero}>// about me 🙋‍♀️</span></Line>
-      <Line n={2}><span style={T.kw}>const</span> <span style={T.fn}>developer</span> = {"{"}</Line>
-      <Line n={3}>{"  "}<span style={T.prop}>name</span>: <span style={T.str}>"{DEV.name}"</span>,</Line>
-      <Line n={4}>{"  "}<span style={T.prop}>role</span>: <span style={T.str}>"{DEV.role}"</span>,</Line>
-      <Line n={5}>{"  "}<span style={T.prop}>based</span>: <span style={T.str}>"{DEV.based}"</span>,</Line>
-      <Line n={6}>{"  "}<span style={T.prop}>coffee</span>: <span style={T.num}>Infinity</span>,</Line>
-      <Line n={7}>{"  "}<span style={T.prop}>skills</span>: {"{"}</Line>
+      <Line n={2}> </Line>
+      <Line n={3}><span style={T.kw}>const</span> <span style={T.fn}>developer</span> = {"{"}</Line>
+      <Line n={4}>{"  "}<span style={T.prop}>name</span>: <span style={T.str}>"{DEV.name}"</span>,</Line>
+      <Line n={5}>{"  "}<span style={T.prop}>role</span>: <span style={T.str}>"{DEV.role}"</span>,</Line>
+      <Line n={6}>{"  "}<span style={T.prop}>based</span>: <span style={T.str}>"{DEV.based}"</span>,</Line>
+      <Line n={7}>{"  "}<span style={T.prop}>coffee</span>: <span style={T.num}>Infinity</span>,</Line>
+      <Line n={8}>{"  "}<span style={T.prop}>skills</span>: {"{"}</Line>
       {sk.map(([k, v], i) => (
-        <Line n={8 + i} key={k}>{"    "}<span style={T.prop}>{k}</span>: <span style={T.str}>"{v}"</span>,</Line>
+        <Line n={9 + i} key={k}>{"    "}<span style={T.prop}>{k}</span>: <span style={T.str}>"{v}"</span>,</Line>
       ))}
-      <Line n={8 + sk.length}>{"  "}{"}"},</Line>
-      <Line n={9 + sk.length}>{"}"};</Line>
-      <Line n={10 + sk.length}> </Line>
-      <Line n={11 + sk.length}><span style={T.cmt}>/* 熱愛把想法變成可以互動的東西，目前正在找機會。 */</span></Line>
-      <Line n={12 + sk.length}><span style={T.kw}>export default</span> <span style={T.fn}>developer</span>;</Line>
+      <Line n={9 + sk.length}>{"  "}{"}"},</Line>
+      <Line n={10 + sk.length}>{"}"};</Line>
+      <Line n={11 + sk.length}> </Line>
+      <Line n={12 + sk.length}><span style={T.cmt}>/* 熱愛把想法變成可以互動的東西，目前正在找機會。 */</span></Line>
+      <Line n={13 + sk.length}><span style={T.kw}>export default</span> <span style={T.fn}>developer</span>;</Line>
     </>
   );
 }
