@@ -750,7 +750,7 @@ const S = {
   stRow: { display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" },
   st: { fontSize: 11.5, background: "var(--bg)", color: "var(--text-mid)", padding: "2px 8px", borderRadius: 12 },
   detail: { color: "var(--text)" },
-  backBtn: { position: "absolute", top: 28, left: 24, background: "none", border: "1px solid var(--border)", color: "var(--text-mid)", fontFamily: mono, fontSize: 13, padding: "6px 12px", borderRadius: 6, cursor: "pointer", transition: "color .15s, border-color .15s" },
+  backBtn: { position: "sticky", top: 10, zIndex: 10, background: "var(--bg)", border: "1px solid var(--border)", color: "var(--text-mid)", fontFamily: mono, fontSize: 13, padding: "6px 12px", borderRadius: 6, cursor: "pointer", transition: "color .15s, border-color .15s", boxShadow: "0 2px 10px #0003" },
   backBtnM: { position: "static", display: "inline-block", marginBottom: 16 },
   detailH: { fontSize: 18, marginTop: 14, marginBottom: 4 },
   detailRole: { fontSize: 12, color: "var(--syn-prop)", marginBottom: 10 },
