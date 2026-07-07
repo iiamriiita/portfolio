@@ -3,7 +3,7 @@ import { useState, useEffect, createContext, useContext } from "react";
 // ---- 你的資料：之後改這裡就好 ----
 const DEV = {
   name: "Ying Ci Luo",
-  role: "UX Design Engineer",
+  role: "UX Design Engineer · AI-assisted Programmer",
   based: "Taiwan",
   skills: {
     frontend: "HTML, CSS, JavaScript",
@@ -727,7 +727,7 @@ function ProjectsIndex() {
       <Line n={2}> </Line>
       <Line n={3}>
         <span style={T.kw}>const</span> <span style={T.fn}>role</span><span style={T.dim}> = </span>
-        <span style={T.str}>"UX Design Engineer"</span><span style={T.dim}>;</span>
+        <span style={T.str}>"UX Design Engineer · AI-assisted Programmer"</span><span style={T.dim}>;</span>
       </Line>
       <Line n={4}>
         <span style={T.kw}>const</span> <span style={T.fn}>motto</span><span style={T.dim}> = </span>
@@ -971,8 +971,8 @@ const S = {
   showTitle: { fontSize: 30, fontWeight: 700, color: "var(--text-bright)", letterSpacing: "-.01em", marginBottom: 14, lineHeight: 1.3, fontFamily: sans },
   showDesc: { fontSize: 16, color: "var(--text-soft)", lineHeight: 1.9, marginBottom: 18, fontFamily: sans },
   stBig: { fontSize: 13, background: "var(--bg-card)", color: "var(--text-mid)", padding: "5px 12px", borderRadius: 14, border: "1px solid var(--border)" },
-  secH: { fontSize: 16, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 26, marginBottom: 8 },
-  secH4: { fontSize: 15, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 18, marginBottom: 6 },
+  secH: { fontSize: 20, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 34, marginBottom: 10 },
+  secH4: { fontSize: 16.5, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 20, marginBottom: 6 },
   secP: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans, marginBottom: 10 },
   secList: { paddingLeft: 22, margin: 0 },
   secLi: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans, marginBottom: 6 },
