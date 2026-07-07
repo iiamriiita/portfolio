@@ -17,49 +17,141 @@ const PROJECTS = [
   {
     id: "team-retro",
     file: "team-retro.pj",
-    name: "Team Retro－給小組的團隊回饋 AI 工具",
+    name: "Team Retro — AI 團隊回顧平台",
     en: "Team Retro (AI product)",
     emoji: "💬",
     img: "/team-retro-banner.png",
     video: "", // ← 貼 YouTube 網址（例如 "https://www.youtube.com/watch?v=xxxx"），留空不顯示
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
-    tags: ["Next.js", "TypeScript", "Supabase", "Gemini"],
-    short: "給 2–5 人小組的匿名回饋工具，AI 即時把關讓回饋更建設性。",
+    tags: ["Next.js 15", "TypeScript", "Supabase", "Gemini API", "Prompt Engineering", "RLS", "i18n", "Tailwind CSS"],
+    short: "用一條分享連結發起團隊回顧（Retrospective），AI 自動把回答分類成「亮點／待改善／行動建議」並標註來源，支援逐句討論與跨場趨勢洞察。",
     detail:
-      "讓小組成員互相給回饋（agile retro 形式）。填寫時採兩段式把關：關鍵字黑名單先擋明顯的人身攻擊，再用 LLM 判斷是否具建設性並給出更友善的改寫建議；服務中斷時自動降級、不擋使用者。全部完成後，系統彙整去識別化的結果，並用 AI 產生主題／優點／改進方向的摘要。以 Next.js App Router + Supabase（Postgres + RLS + Realtime）打造。",
+      "一個全端 SaaS 網站。發起人選擇情境模板（帆船／花園／太空任務）建立回顧，把連結丟給 2–5 人的團隊；成員免登入填寫，可選匿名。截止後 AI 生成結構化報告——一句話總結、綠色亮點區、紅色待改善區、行動建議——每條結論都附上可點擊的來源標籤，點了會捲動到下方對應的原始回答。發起人可控制分享頁面顯示的內容（原始回答／AI 報告），並開啟「逐句討論」讓團隊針對某句話留言。Dashboard 彙整多場回顧，用圖表與 AI 短評追蹤團隊健康度的走向。",
+    sections: [
+      {
+        title: "動機",
+        text: "團隊回顧常見兩個死法：當面講太尷尬，沒人說真話；線上表單收完沒人整理，回饋石沉大海。我想做一個「降低說真話成本」的工具——匿名降低心理門檻、AI 負責整理歸納，讓回顧的產出直接是可以行動的結論，而不是一堆散落的便利貼。",
+      },
+      {
+        title: "核心功能",
+        items: [
+          "一條連結收回饋：成員免註冊填寫，支援匿名／具名、截止時間、心情評分。",
+          "AI 結構化報告：總結＋亮點＋待改善＋AI 生成的調整建議，含來源追溯標籤。",
+          "逐句討論：在別人的回答上圈選文字留言，像 Google Docs 的評論。",
+          "跨場團隊洞察：參與率、討論熱度、心情趨勢圖表（純計算），搭配 AI 撰寫的近況短評。",
+        ],
+      },
+      {
+        title: "技術亮點",
+        subs: [
+          {
+            title: "與 LLM 的結構化協作（本專案最花心思的部分）",
+            text: "AI 報告不是「丟 prompt 拿文章」，而是用 Gemini 的 JSON mode + response schema 強制輸出結構。過程中踩過並解決了一系列 LLM 工程的實際問題：",
+            items: [
+              "逐條標註取代自由歸納：直接要求模型填「亮點陣列＋待改善陣列」時，flash 級模型會系統性地漏填其中一欄，甚至把「效率差」改寫成「效率很好」。最後改成要求模型逐條為每個回答貼標籤（{text, kind: \"well\"|\"improve\"}，enum 鎖死），綠紅兩欄由後端依標籤拆分——把「模型可以偷懶的欄位」變成「從標籤推導的結果」，漏填問題徹底消失。",
+              "欄位生成順序控制：一句話總結偶爾會失控寫成長篇（thinking 模型的退化模式），把 token 預算耗盡導致後面的分類陣列變空。用 propertyOrdering 強制「分類先生成、總結最後」，再加上後端硬截斷（只保留第一句、長度上限），讓失控只影響它自己。",
+              "來源可追溯（citation）：組 context 時為每條回答編號 [#N]，schema 要求模型回傳每個結論引用的編號；後端把編號解析回 answer id 與回覆者，前端渲染成小圓標籤，點擊平滑捲動到原始回答並高亮。具名場次顯示名字首字母，匿名場次只給編號。",
+              "可靠性：503/500 指數退避重試、429 額度與各種錯誤的雙語友善訊息、code fence 剝除與最外層 JSON 擷取、關閉不必要的 thinking（thinkingBudget: 0）避免簡單任務被思考 token 吃掉輸出。",
+            ],
+          },
+          {
+            title: "權限模型（Supabase）",
+            text: "資料庫全程開啟 Row-Level Security；瀏覽器端不直接碰資料庫，所有寫入走 Next.js Route Handlers，由伺服器端以 service role 執行並自行做授權檢查（發起人才能生成報告／改設定、結束前不得看結果）。免登入填寫靠 session 連結中的 UUID 授權，登入則用 Supabase Auth 的 Email OTP。",
+          },
+          {
+            title: "逐句討論的錨定",
+            text: "留言錨定到「某則回答的第幾到第幾個字元」，選取文字後浮出評論按鈕，儲存 quote 與 offset；渲染時把錨點區間轉成高亮標記，處理了選取範圍跨節點與重疊高亮的切分。",
+          },
+          {
+            title: "無套件的 UX 細節",
+            text: "自製全站頂部路由進度條（攔截站內連結點擊＋pathname 變化偵測，含 10 秒失效保護）、AI 生成中的階段動畫、圖表長條進場與數字 count-up、全站彈窗統一進場動效——全部原生 CSS/React 實作，零額外依賴，且都尊重 prefers-reduced-motion。插圖（首頁場景、空狀態帆船）為手刻 inline SVG，用設計 token 上色以跟主題一致。",
+          },
+          {
+            title: "自製輕量 i18n",
+            text: "Cookie 決定語系、扁平 key 加變數插值，伺服器與客戶端元件共用同一份字典；所有使用者可見文案（含 AI 的 prompt 與錯誤訊息）皆雙語。",
+          },
+        ],
+      },
+      {
+        title: "挑戰與取捨",
+        text: [
+          "最大的挑戰是讓 LLM 的輸出穩定到可以當產品功能。同一個 prompt，模型十次有八次對、兩次錯，對 demo 夠用、對產品是災難。我的結論是：能用結構解決的就不要用措辭解決——把任務拆小（逐條分類 > 整體歸納）、用 schema 與 enum 收窄輸出空間、把驗證與兜底放在後端（截斷、預設值、來源解析失敗就靜默降級成無標籤），prompt 只負責語意判斷本身。過程中也學到用「生成順序」管理 token 預算這類非直覺的技巧。",
+          "另一個取捨是匿名與可追溯的平衡：報告需要來源標籤才有說服力，但匿名場次不能洩露身份。最後設計成雙軌——標籤資料只存 answer id 與回覆者索引，名字首字母只在具名場次於生成當下寫入，匿名場次從頭到尾不查名字表。",
+        ],
+      },
+      {
+        title: "技術棧",
+        text: "Next.js 15 (App Router / RSC) · React 19 · TypeScript · Tailwind CSS · Supabase (PostgreSQL / RLS / Auth / Realtime) · Google Gemini API (JSON mode / response schema) · Vercel",
+      },
+    ],
     role: "獨立開發 · 前後端",
     link: "github.com/iiamriiita/retro",
   },
   {
     id: "catch-butterfly",
     file: "butterfly.pj",
-    name: "抓蝴蝶－為手指復健者增添樂趣",
-    en: "Butterfly Catch Game",
+    name: "AR抓蝴蝶復健遊戲",
+    en: "AR Butterfly Catch Game",
     emoji: "🦋",
     img: "/butterfly-banner.png",
     video: "",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
-    // TODO: 以下為草稿，待你補正確資訊
-    tags: ["React", "Canvas"],
-    short: "把手指復健變成小遊戲，讓復健過程多一點樂趣。",
+    tags: ["JavaScript", "MediaPipe", "電腦視覺", "Canvas API", "Supabase", "即時手勢辨識"],
+    short: "透過相機即時追蹤手部動作，用「握拳」手勢抓取畫面中飛舞的蝴蝶，含拍照與線上排行榜的手指復健遊戲。",
     detail:
-      "為手指復健者設計的互動遊戲：用抓蝴蝶的動作引導手指運動，邊玩邊練、降低復健的枯燥感。（實作細節待補）",
-    role: "（待補）",
+      "一個在瀏覽器中運行的擴增實境（AR）體感遊戲。程式即時追蹤手部關節，當玩家把手移到蝴蝶上並「握拳」時即完成抓取。60 秒限時內盡量抓蝴蝶得分，抓到蜜蜂則會凍結並扣時間。遊戲結束前會自動拍下一張含遊戲元素的紀念照，最終成績上傳至跨裝置共享的線上排行榜。",
+    sections: [
+      {
+        title: "動機",
+        text: "經常看媽媽進行手指復健動作，但單純的機械式重複既枯燥又難以堅持。我想把這個動作「藏」進一個有趣的遊戲裡。遊戲的核心互動就設計成「張開手 → 握拳」，復健者可以配合平常練習的張力手指套遊戲。",
+      },
+      {
+        title: "核心功能",
+        items: [
+          "即時手勢辨識：以 MediaPipe Hands 追蹤 21 個手部關節點，透過比對指尖與掌心的相對距離判定「張開／握拳」，只在「張開→握合」的瞬間觸發抓取。",
+          "遊戲制度：藍蝴蝶 +1、稀有粉蝴蝶 +3、蜜蜂則扣除 5 秒時間。",
+          "動態合成拍照：在計時最後三秒提示並擷取相機畫面，玩家可下載。",
+          "跨裝置線上排行榜：成績寫入雲端資料庫，任何裝置玩完都能即時看到全球前十名。",
+        ],
+      },
+      {
+        title: "技術亮點",
+        items: [
+          "前端電腦視覺：手部追蹤模型完全在瀏覽器端（WebAssembly）運行，不需伺服器運算，兼顧隱私與延遲。座標需處理鏡像翻轉與螢幕比例映射，才能讓虛擬手部游標與真實手部對齊。",
+          "Canvas 畫面合成：拍照功能將即時影像與遊戲精靈（程式生成的像素向量圖，非點陣素材）依螢幕座標換算後合成到單一 Canvas 匯出。",
+          "無伺服器後端整合：以 Supabase（PostgreSQL）作為後端，透過 REST API 直接讀寫，並用 Row-Level Security 政策限制公開金鑰只能讀取與新增分數，安全地把資料庫金鑰放在純前端。",
+          "零建置部署：純 HTML/CSS/JS 單檔，可直接部署到 GitHub Pages 等靜態託管，讓家人在任何裝置上打開網頁就能練習，沒有安裝門檻。",
+        ],
+      },
+      {
+        title: "挑戰與取捨",
+        text: [
+          "最大的挑戰在「握拳」判定的穩定性——不同手掌大小、與鏡頭的距離、光線都會影響關節座標。這對復健場景尤其重要，因為使用者的手部動作可能不如常人靈活、幅度也較小，判定必須夠寬容又不能誤觸。若用固定的絕對距離判定，遠近手勢就會失準；最後改用指尖相對於掌心的比例來判定，讓辨識不受手的遠近與個人手型影響。",
+          "後端則遇到金鑰授權問題：新版金鑰在 REST 端點回傳 401，透過瀏覽器開發者工具直接對 API 發請求逐步排查，最終定位到金鑰類型與資料表權限（RLS / schema grant）的設定，理解了「公開金鑰為何能安全放在前端」的權限模型。",
+        ],
+      },
+      {
+        title: "技術棧",
+        text: "JavaScript · MediaPipe Hands · HTML Canvas API · Supabase (PostgreSQL / REST) · requestAnimationFrame",
+      },
+    ],
+    role: "獨立開發",
     link: "github.com/iiamriiita",
   },
   {
     id: "music-viz",
     file: "techno-vj.pj",
     name: "東方電音 Eastern Techno VJ",
+    cardName: "中國風即時音樂 VJ 系統",
     en: "Eastern Techno VJ",
     emoji: "🎵",
     img: "/music-viz-banner.jpg",
     video: "https://vimeo.com/1207678884",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["JavaScript", "Canvas API", "Web Audio API", "即時繪圖"],
-    short: "敲拍即鎖定節奏，十種東方美學特效隨 techno 律動的零依賴 VJ 工具。",
+    short: "敲拍即鎖定節奏，十種東方美學特效隨 techno 律動的零依賴視覺演出工具。",
     detail:
-      "一個為 techno 音樂現場設計的即時視覺演出（VJ）系統。表演者跟著音樂敲擊空白鍵定速，畫面便自動鎖定節拍持續律動，並可即時切換十種以中國傳統建築元素（瓦當、燈籠、藻井、寺門、飛雲）為主題的滿版動態特效。整個專案是單一 HTML 檔、零外部依賴，雙擊即可在任何瀏覽器全螢幕運行。",
+      "一個為 techno 音樂現場設計的即時視覺演出（VJ）系統。表演者跟著音樂敲擊空白鍵定速，畫面便自動鎖定節拍持續律動，並可即時切換十種以中國傳統建築元素為主題的滿版動態特效。",
     sections: [
       {
         title: "動機",
@@ -68,23 +160,21 @@ const PROJECTS = [
       {
         title: "核心功能",
         items: [
-          "Tap-tempo 節拍鎖定：記錄敲擊時間差計算 BPM，之後由程式自動打拍，不依賴麥克風收音品質。",
+          "Tap-tempo 節拍鎖定：敲擊空白鍵，記錄敲擊時間差計算 BPM，之後由程式自動打拍。",
           "十種特效，依能量由靜到爆排序，對應一首曲子的 intro → build → drop 能量曲線。",
-          "重拍強調：每四拍的第一拍反應加大，還原 techno 的律動層次。",
-          "統一的中國傳統配色（朱紅、金箔、青瓷），滿版四方連續鋪排，適合投影。",
+          "按「下」按鍵即可切換效果。",
         ],
       },
       {
         title: "技術亮點",
         items: [
-          "純 Canvas 2D 逐幀繪製，維持 60fps；所有圖案為程式生成的向量構件，非點陣圖，故任意解析度皆清晰、無版權素材。",
+          "純 Canvas 2D 逐幀繪製，維持 60fps；所有圖案為程式生成的向量構件，非點陣圖，故任意解析度皆清晰。",
           "節拍以「衰減脈衝值」驅動視覺——一個每幀衰減的變數乘進大小／亮度／位移，即得到跟拍鼓動的效果。",
-          "零依賴、單檔部署，適合現場臨時環境。",
         ],
       },
       {
         title: "挑戰與取捨",
-        text: "最初嘗試用 Web Audio 即時分析音訊自動偵測 kick，但麥克風收音在吵雜現場極不穩定，常漏拍或誤觸。最終改採 tap-tempo 手動定速——犧牲全自動，換取現場可靠性，這對演出工具是更正確的取捨。",
+        text: "最初嘗試用 Web Audio 即時分析音訊自動偵測 kick，但麥克風收音在吵雜現場極不穩定，常漏拍或誤觸。最終改採 tap-tempo 手動定速——犧牲全自動，換取現場可靠性，並且如果遇到過門想改變拍子也較好掌控。",
       },
       {
         title: "技術棧",
@@ -518,14 +608,15 @@ function ProjectShowcase({ p, onOpen }) {
         {p.sections?.map((sec) => (
           <div key={sec.title}>
             <h3 style={S.secH}>{sec.title}</h3>
-            {sec.text && <p style={S.secP}>{sec.text}</p>}
-            {sec.items && (
-              <ul style={S.secList}>
-                {sec.items.map((it, i) => (
-                  <li key={i} style={S.secLi}>{it}</li>
-                ))}
-              </ul>
-            )}
+            <SecText text={sec.text} />
+            <SecItems items={sec.items} />
+            {sec.subs?.map((sub) => (
+              <div key={sub.title}>
+                <h4 style={S.secH4}>{sub.title}</h4>
+                <SecText text={sub.text} />
+                <SecItems items={sub.items} />
+              </div>
+            ))}
           </div>
         ))}
 
@@ -544,6 +635,25 @@ function ProjectShowcase({ p, onOpen }) {
         </div>
       </div>
     </div>
+  );
+}
+
+// 段落文字：接受字串或字串陣列（多段落）
+function SecText({ text }) {
+  if (!text) return null;
+  return (Array.isArray(text) ? text : [text]).map((t, i) => (
+    <p key={i} style={S.secP}>{t}</p>
+  ));
+}
+
+function SecItems({ items }) {
+  if (!items) return null;
+  return (
+    <ul style={S.secList}>
+      {items.map((it, i) => (
+        <li key={i} style={S.secLi}>{it}</li>
+      ))}
+    </ul>
   );
 }
 
@@ -586,7 +696,7 @@ function PCard({ p, onClick }) {
         <div style={{ ...S.thumb, background: p.grad }}>{p.emoji}</div>
       )}
       <div style={{ padding: "13px 16px 15px" }}>
-        <h4 style={S.pcardH}>{p.name}</h4>
+        <h4 style={S.pcardH}>{p.cardName || p.name}</h4>
         <p style={S.pcardP}>{p.short}</p>
         <div style={S.stRow}>{p.tags.map((t) => (<span key={t} style={S.st}>{t}</span>))}</div>
       </div>
@@ -654,7 +764,8 @@ const S = {
   stBig: { fontSize: 13, background: "var(--bg-card)", color: "var(--text-mid)", padding: "5px 12px", borderRadius: 14, border: "1px solid var(--border)" },
   showLink: { display: "inline-block", marginTop: 20, color: "var(--link)", fontSize: 14, textDecoration: "none", borderBottom: "1px solid var(--link-underline)", paddingBottom: 2 },
   secH: { fontSize: 16, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 26, marginBottom: 8 },
-  secP: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans },
+  secH4: { fontSize: 15, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 18, marginBottom: 6 },
+  secP: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans, marginBottom: 10 },
   secList: { paddingLeft: 22, margin: 0 },
   secLi: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans, marginBottom: 6 },
   heroVideo: { width: "100%", aspectRatio: "16 / 9", border: "1px solid var(--border)", borderRadius: 14, display: "block", background: "#000", marginBottom: 24 },
