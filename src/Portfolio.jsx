@@ -53,6 +53,7 @@ const PROJECTS = [
     name: "音樂視覺化動畫",
     en: "Music Visualization",
     emoji: "🎵",
+    img: "/music-viz-banner.jpg",
     video: "https://vimeo.com/1207678884",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     // TODO: 以下為草稿，待你補正確資訊
