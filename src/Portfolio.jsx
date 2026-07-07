@@ -20,7 +20,7 @@ const PROJECTS = [
     name: "Team Retro－給小組的團隊回饋 AI 工具",
     en: "Team Retro (AI product)",
     emoji: "💬",
-    img: "", // ← banner 圖檔放進 public/ 後填路徑，例如 "/team-retro-banner.png"
+    img: "/team-retro-banner.png",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["Next.js", "TypeScript", "Supabase", "Gemini"],
     short: "給 2–5 人小組的匿名回饋工具，AI 即時把關讓回饋更建設性。",
