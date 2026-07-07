@@ -72,6 +72,30 @@ const T = {
   hero: { color: "var(--text-bright)", fontStyle: "italic", fontSize: 20, fontWeight: 700 }, // 開頭打招呼那行
 };
 
+// ---- 單色主題 icon（跟文字同色）----
+function SunIcon({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" />
+      <line x1="12" y1="2" x2="12" y2="4.5" />
+      <line x1="12" y1="19.5" x2="12" y2="22" />
+      <line x1="2" y1="12" x2="4.5" y2="12" />
+      <line x1="19.5" y1="12" x2="22" y2="12" />
+      <line x1="4.9" y1="4.9" x2="6.7" y2="6.7" />
+      <line x1="17.3" y1="17.3" x2="19.1" y2="19.1" />
+      <line x1="4.9" y1="19.1" x2="6.7" y2="17.3" />
+      <line x1="17.3" y1="6.7" x2="19.1" y2="4.9" />
+    </svg>
+  );
+}
+function MoonIcon({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+    </svg>
+  );
+}
+
 // ---- 響應式：偵測手機寬度 ----
 const UI = createContext({ isMobile: false });
 
@@ -242,7 +266,8 @@ export default function Portfolio() {
                 onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
               >
-                {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+                {theme === "dark" ? <MoonIcon /> : <SunIcon />}
+                {theme === "dark" ? "Dark" : "Light"}
                 <span style={{ color: "var(--text-dim)", fontSize: 10 }}>▾</span>
               </button>
               {themeMenuOpen && (
@@ -250,8 +275,8 @@ export default function Portfolio() {
                   <div style={S.menuBackdrop} onClick={() => setThemeMenuOpen(false)} />
                   <div style={S.themeMenu}>
                     {[
-                      { id: "dark", icon: "🌙", label: "Dark" },
-                      { id: "light", icon: "☀️", label: "Light" },
+                      { id: "dark", Icon: MoonIcon, label: "Dark" },
+                      { id: "light", Icon: SunIcon, label: "Light" },
                     ].map((opt) => (
                       <div
                         key={opt.id}
@@ -260,7 +285,7 @@ export default function Portfolio() {
                         onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
                         onMouseLeave={(e) => (e.currentTarget.style.background = theme === opt.id ? "var(--bg-active)" : "transparent")}
                       >
-                        <span>{opt.icon}</span>
+                        <opt.Icon />
                         <span>{opt.label}</span>
                         {theme === opt.id && <span style={{ marginLeft: "auto", color: "var(--text-dim)" }}>✓</span>}
                       </div>
