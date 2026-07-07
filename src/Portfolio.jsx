@@ -49,19 +49,49 @@ const PROJECTS = [
   },
   {
     id: "music-viz",
-    file: "music-viz.pj",
-    name: "音樂視覺化動畫",
-    en: "Music Visualization",
+    file: "techno-vj.pj",
+    name: "東方電音 Eastern Techno VJ",
+    en: "Eastern Techno VJ",
     emoji: "🎵",
     img: "/music-viz-banner.jpg",
     video: "https://vimeo.com/1207678884",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
-    // TODO: 以下為草稿，待你補正確資訊
-    tags: ["Web Audio API", "Canvas"],
-    short: "隨音樂即時生成的視覺化動畫。",
+    tags: ["JavaScript", "Canvas API", "Web Audio API", "即時繪圖"],
+    short: "敲拍即鎖定節奏，十種東方美學特效隨 techno 律動的零依賴 VJ 工具。",
     detail:
-      "分析音訊並即時繪製對應的視覺化動畫，讓聲音變成畫面。（技術與細節待補）",
-    role: "（待補）",
+      "一個為 techno 音樂現場設計的即時視覺演出（VJ）系統。表演者跟著音樂敲擊空白鍵定速，畫面便自動鎖定節拍持續律動，並可即時切換十種以中國傳統建築元素（瓦當、燈籠、藻井、寺門、飛雲）為主題的滿版動態特效。整個專案是單一 HTML 檔、零外部依賴，雙擊即可在任何瀏覽器全螢幕運行。",
+    sections: [
+      {
+        title: "動機",
+        text: "市面上的 VJ 軟體功能強大但操作複雜、且視覺多為西方賽博風格。我想做一個「上手只需兩個按鍵、視覺具東方辨識度」的輕量工具，讓非專業者也能在小型派對現場即興演出。",
+      },
+      {
+        title: "核心功能",
+        items: [
+          "Tap-tempo 節拍鎖定：記錄敲擊時間差計算 BPM，之後由程式自動打拍，不依賴麥克風收音品質。",
+          "十種特效，依能量由靜到爆排序，對應一首曲子的 intro → build → drop 能量曲線。",
+          "重拍強調：每四拍的第一拍反應加大，還原 techno 的律動層次。",
+          "統一的中國傳統配色（朱紅、金箔、青瓷），滿版四方連續鋪排，適合投影。",
+        ],
+      },
+      {
+        title: "技術亮點",
+        items: [
+          "純 Canvas 2D 逐幀繪製，維持 60fps；所有圖案為程式生成的向量構件，非點陣圖，故任意解析度皆清晰、無版權素材。",
+          "節拍以「衰減脈衝值」驅動視覺——一個每幀衰減的變數乘進大小／亮度／位移，即得到跟拍鼓動的效果。",
+          "零依賴、單檔部署，適合現場臨時環境。",
+        ],
+      },
+      {
+        title: "挑戰與取捨",
+        text: "最初嘗試用 Web Audio 即時分析音訊自動偵測 kick，但麥克風收音在吵雜現場極不穩定，常漏拍或誤觸。最終改採 tap-tempo 手動定速——犧牲全自動，換取現場可靠性，這對演出工具是更正確的取捨。",
+      },
+      {
+        title: "技術棧",
+        text: "JavaScript · HTML Canvas API · Web Audio API · requestAnimationFrame",
+      },
+    ],
+    role: "獨立開發",
     link: "github.com/iiamriiita",
   },
 ];
@@ -432,6 +462,22 @@ function ProjectShowcase({ p, onOpen }) {
         <div style={S.showRole}>{p.role}</div>
         <h1 style={{ ...S.showTitle, ...(isMobile ? S.showTitleM : {}) }}>{p.name}</h1>
         <p style={{ ...S.showDesc, ...(isMobile ? S.showDescM : {}) }}>{p.detail}</p>
+
+        {/* 分節內容（動機 / 核心功能 / 技術亮點…），專案有提供才顯示 */}
+        {p.sections?.map((sec) => (
+          <div key={sec.title}>
+            <h3 style={S.secH}>{sec.title}</h3>
+            {sec.text && <p style={S.secP}>{sec.text}</p>}
+            {sec.items && (
+              <ul style={S.secList}>
+                {sec.items.map((it, i) => (
+                  <li key={i} style={S.secLi}>{it}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+
         <div style={S.stRow}>{p.tags.map((t) => (<span key={t} style={S.stBig}>{t}</span>))}</div>
         <a href={"https://" + p.link} target="_blank" rel="noreferrer" style={S.showLink}>↗ {p.link}</a>
 
@@ -574,6 +620,10 @@ const S = {
   showDesc: { fontSize: 16, color: "var(--text-soft)", lineHeight: 1.9, marginBottom: 18, fontFamily: sans },
   stBig: { fontSize: 13, background: "var(--bg-card)", color: "var(--text-mid)", padding: "5px 12px", borderRadius: 14, border: "1px solid var(--border)" },
   showLink: { display: "inline-block", marginTop: 20, color: "var(--link)", fontSize: 14, textDecoration: "none", borderBottom: "1px solid var(--link-underline)", paddingBottom: 2 },
+  secH: { fontSize: 16, fontWeight: 700, color: "var(--text-bright)", fontFamily: sans, marginTop: 26, marginBottom: 8 },
+  secP: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans },
+  secList: { paddingLeft: 22, margin: 0 },
+  secLi: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans, marginBottom: 6 },
   demoRow: { marginTop: 32 },
   demoFrame: { width: "100%", aspectRatio: "16 / 9", border: "1px solid var(--border)", borderRadius: 14, display: "block", background: "#000" },
   moreRow: { marginTop: 44, paddingTop: 24, borderTop: "1px solid var(--hover)" },
