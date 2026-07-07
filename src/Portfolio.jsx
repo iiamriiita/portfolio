@@ -143,6 +143,19 @@ function videoEmbed(url) {
   return { type: "iframe", src: url }; // 其他嵌入網址直接用
 }
 
+// ---- 路由：每頁有自己的網址，可直接分享 ----
+// "/" → projects、"/about" → about、"/<專案id>" → 專案頁
+function pathFor(id) {
+  return id === "projects" ? "/" : `/${id}`;
+}
+function idFromPath(pathname) {
+  const seg = pathname.replace(/\/+$/, "").replace(/^\//, "");
+  if (!seg) return "projects";
+  if (seg === "about") return "about";
+  if (PROJECTS.some((p) => p.id === seg)) return seg;
+  return "projects";
+}
+
 // ---- 響應式：偵測手機寬度 ----
 const UI = createContext({ isMobile: false });
 
@@ -161,8 +174,14 @@ function useMediaQuery(query) {
 }
 
 export default function Portfolio() {
-  const [openFile, setOpenFile] = useState("projects");
-  const [tabs, setTabs] = useState(["projects", "about"]);
+  // 從網址還原目前頁面（深連結直接打開該頁）
+  const [openFile, setOpenFile] = useState(() =>
+    typeof window !== "undefined" ? idFromPath(window.location.pathname) : "projects"
+  );
+  const [tabs, setTabs] = useState(() => {
+    const initial = typeof window !== "undefined" ? idFromPath(window.location.pathname) : "projects";
+    return ["projects", "about", ...(["projects", "about"].includes(initial) ? [] : [initial])];
+  });
   const [foldersOpen, setFoldersOpen] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false); // 手機側邊抽屜
   const [theme, setTheme] = useState(() => {
@@ -182,8 +201,28 @@ export default function Portfolio() {
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const openTab = (id) => {
+  // 切頁時同步網址；瀏覽器上一頁/下一頁也能用
+  const go = (id) => {
     setOpenFile(id);
+    if (window.location.pathname !== pathFor(id)) {
+      window.history.pushState({}, "", pathFor(id));
+    }
+  };
+  useEffect(() => {
+    const onPop = () => {
+      const id = idFromPath(window.location.pathname);
+      setOpenFile(id);
+      setTabs((t) => (t.includes(id) ? t : [...t, id]));
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+  useEffect(() => {
+    document.title = `${fileNameOf(openFile)} · YING CI`;
+  }, [openFile]);
+
+  const openTab = (id) => {
+    go(id);
     if (!tabs.includes(id)) setTabs([...tabs, id]);
     if (isMobile) setDrawerOpen(false); // 手機點檔案後收起抽屜
   };
@@ -191,7 +230,7 @@ export default function Portfolio() {
     e.stopPropagation();
     const next = tabs.filter((t) => t !== id);
     setTabs(next);
-    if (openFile === id && next.length) setOpenFile(next[next.length - 1]);
+    if (openFile === id && next.length) go(next[next.length - 1]);
   };
   const openDesignPortfolio = () => {
     if (DESIGN_PORTFOLIO_URL) window.open(DESIGN_PORTFOLIO_URL, "_blank", "noreferrer");
@@ -302,7 +341,7 @@ export default function Portfolio() {
           <div style={S.tabbar}>
             <div style={S.tabScroll}>
               {tabs.map((id) => (
-                <div key={id} style={{ ...S.tab, ...(openFile === id ? S.tabActive : {}) }} onClick={() => setOpenFile(id)}>
+                <div key={id} style={{ ...S.tab, ...(openFile === id ? S.tabActive : {}) }} onClick={() => go(id)}>
                   <span>{fileNameOf(id)}</span>
                   <span style={S.close} onClick={(e) => closeTab(id, e)}>×</span>
                 </div>
