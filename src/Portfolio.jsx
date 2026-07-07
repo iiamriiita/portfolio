@@ -451,8 +451,20 @@ function ProjectShowcase({ p, onOpen }) {
         ← projects
       </button>
       <div style={S.showInner}>
-        {/* 大視覺：有真實截圖用截圖，否則 emoji 佔位 */}
-        {p.img ? (
+        {/* 頁首大視覺：有 demo 影片直接放影片；否則放截圖／emoji 佔位 */}
+        {videoEmbed(p.video) ? (
+          videoEmbed(p.video).type === "video" ? (
+            <video src={videoEmbed(p.video).src} controls style={S.heroVideo} />
+          ) : (
+            <iframe
+              src={videoEmbed(p.video).src}
+              title={`${p.name} demo`}
+              style={S.heroVideo}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          )
+        ) : p.img ? (
           <img src={p.img} alt={p.name} style={{ ...S.hero, ...(isMobile ? S.heroM : {}), width: "100%", objectFit: "cover", display: "block" }} />
         ) : (
           <div style={{ ...S.hero, ...(isMobile ? S.heroM : {}), background: p.grad }}>
@@ -480,24 +492,6 @@ function ProjectShowcase({ p, onOpen }) {
 
         <div style={S.stRow}>{p.tags.map((t) => (<span key={t} style={S.stBig}>{t}</span>))}</div>
         <a href={"https://" + p.link} target="_blank" rel="noreferrer" style={S.showLink}>↗ {p.link}</a>
-
-        {/* Demo 影片（有填 video 才顯示） */}
-        {videoEmbed(p.video) && (
-          <div style={S.demoRow}>
-            <div style={S.moreLabel}>Demo</div>
-            {videoEmbed(p.video).type === "video" ? (
-              <video src={videoEmbed(p.video).src} controls style={S.demoFrame} />
-            ) : (
-              <iframe
-                src={videoEmbed(p.video).src}
-                title={`${p.name} demo`}
-                style={S.demoFrame}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            )}
-          </div>
-        )}
 
         <div style={S.moreRow}>
           <div style={S.moreLabel}>其他作品</div>
@@ -624,8 +618,7 @@ const S = {
   secP: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans },
   secList: { paddingLeft: 22, margin: 0 },
   secLi: { fontSize: 15, color: "var(--text-soft)", lineHeight: 1.85, fontFamily: sans, marginBottom: 6 },
-  demoRow: { marginTop: 32 },
-  demoFrame: { width: "100%", aspectRatio: "16 / 9", border: "1px solid var(--border)", borderRadius: 14, display: "block", background: "#000" },
+  heroVideo: { width: "100%", aspectRatio: "16 / 9", border: "1px solid var(--border)", borderRadius: 14, display: "block", background: "#000", marginBottom: 24 },
   moreRow: { marginTop: 44, paddingTop: 24, borderTop: "1px solid var(--hover)" },
   moreLabel: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   moreItem: { display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 8, padding: "10px 14px", marginBottom: 8, color: "var(--text)", fontFamily: mono, fontSize: 14, cursor: "pointer" },
