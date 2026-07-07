@@ -729,22 +729,18 @@ function ProjectsIndex() {
         <span style={T.kw}>const</span> <span style={T.fn}>role</span><span style={T.dim}> = </span>
         <span style={T.str}>"UX Design Engineer · AI-assisted Programmer"</span><span style={T.dim}>;</span>
       </Line>
-      <Line n={4}>
-        <span style={T.kw}>const</span> <span style={T.fn}>motto</span><span style={T.dim}> = </span>
-        <span style={T.str}>"turn ideas into things you can interact with"</span><span style={T.dim}>;</span>
-      </Line>
-      <Line n={5}> </Line>
-      <Line n={6}>
+      <Line n={4}> </Line>
+      <Line n={5}>
         <span style={T.kw}>export const</span> <span style={T.fn}>projects</span><span style={T.dim}> = [</span>
       </Line>
       {PROJECTS.map((p, i) => (
-        <Line n={7 + i} key={p.id}>
+        <Line n={6 + i} key={p.id}>
           <span style={T.dim}>{"  { name: "}</span>
           <span style={T.str}>"{p.codeName}"</span>
           <span style={T.dim}>{" },"}</span>
         </Line>
       ))}
-      <Line n={7 + PROJECTS.length}><span style={T.dim}>];</span></Line>
+      <Line n={6 + PROJECTS.length}><span style={T.dim}>];</span></Line>
     </>
   );
 }
