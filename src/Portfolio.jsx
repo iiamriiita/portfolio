@@ -17,13 +17,16 @@ const PROJECTS = [
   {
     id: "team-retro",
     file: "team-retro.pj",
-    name: "Team Retro — AI 團隊回顧平台",
-    en: "Team Retro (AI product)",
+    codeName: "Team Retro (AI product)",
     emoji: "💬",
     img: "/team-retro-banner.png",
     video: "", // ← 貼 YouTube 網址（例如 "https://www.youtube.com/watch?v=xxxx"），留空不顯示
     demo: "https://retro-six-orcin.vercel.app/", // ← 線上 demo 網址，卡片右上角會出現「Try now ↗」按鈕；留空不顯示
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
+    link: "github.com/iiamriiita/retro",
+    zh: {
+    name: "Team Retro — AI 團隊回顧平台",
+    role: "獨立開發 · AI-assisted programming",
     tags: ["Next.js 15", "TypeScript", "Supabase", "Gemini API", "Prompt Engineering", "RLS", "i18n", "Tailwind CSS"],
     short: "用一條分享連結發起團隊回顧（Retrospective），AI 根據回答自動產出洞察與調整建議，支援逐句討論與跨場趨勢洞察。",
     detail:
@@ -90,19 +93,91 @@ const PROJECTS = [
         text: "Next.js 15 (App Router / RSC) · React 19 · TypeScript · Tailwind CSS · Supabase (PostgreSQL / RLS / Auth / Realtime) · Google Gemini API (JSON mode / response schema) · Vercel",
       },
     ],
-    role: "獨立開發 · AI-assisted programming",
-    link: "github.com/iiamriiita/retro",
+    },
+    en: {
+      name: "Team Retro — AI Retrospective Platform",
+      role: "Solo project · AI-assisted programming",
+      tags: ["Next.js 15", "TypeScript", "Supabase", "Gemini API", "Prompt Engineering", "RLS", "i18n", "Tailwind CSS"],
+      short: "Launch a team retrospective with one share link — AI turns the answers into insights and action suggestions, with per-sentence discussion and cross-session trend insights.",
+      detail:
+        "A full-stack SaaS website. The organizer picks a scenario template to create a retrospective; members fill it in without signing up. After the deadline, AI generates a structured report — a one-line summary, a green highlights section, a red to-improve section, and action suggestions — and every conclusion carries a clickable source tag. The organizer can turn on per-sentence discussion so the team can comment on any sentence. A dashboard aggregates multiple retrospectives, tracking team health over time with charts and short AI commentary.",
+      sections: [
+        {
+          title: "Motivation",
+          text: "Team retrospectives usually die one of two ways: face to face it's too awkward, so nobody tells the truth; online forms get collected but never organized, so the feedback sinks without a trace. I wanted a tool that lowers the cost of telling the truth — anonymity lowers the psychological bar, AI does the organizing, and a retro's output becomes actionable conclusions instead of a pile of scattered sticky notes.",
+        },
+        {
+          title: "Core Features",
+          items: [
+            "Collect feedback with one link: members answer without registering; supports anonymous / named modes, deadlines, and mood scores.",
+            "A keyword blocklist filters obvious personal attacks first, then an LLM judges whether feedback is constructive and suggests a friendlier rewrite.",
+            "AI structured report: summary + highlights + areas to improve + AI-generated action suggestions, with source-traceable tags.",
+            "Per-sentence discussion: select text in someone's answer and leave a comment, like comments in Google Docs.",
+            "Cross-session team insights: participation rate, discussion activity, and mood-trend charts (pure computation), plus a short AI-written status note.",
+          ],
+        },
+        {
+          title: "Technical Highlights",
+          subs: [
+            {
+              title: "Structured collaboration with the LLM (where most of the effort went)",
+              text: "The AI report is not \"throw in a prompt, get an essay\" — it uses Gemini's JSON mode + response schema to force structured output. Along the way I hit and solved a series of practical LLM-engineering problems:",
+              items: [
+                "Per-item labeling instead of free-form summarization: when asked to fill a \"highlights array + improvements array\" directly, flash-tier models systematically leave one column empty — or even rewrite \"inefficient\" as \"very efficient\". I switched to having the model label every answer ({text, kind: \"well\"|\"improve\"}, locked with an enum) and let the backend split the green and red columns from the labels — turning \"fields the model can slack on\" into \"results derived from labels\". The missing-column problem disappeared completely.",
+                "Controlling field generation order: the one-line summary occasionally spirals into a long essay (a degenerate mode of thinking models), burning the token budget so the classification arrays behind it come back empty. propertyOrdering forces \"classification first, summary last\", plus a hard backend truncation (keep the first sentence, cap the length), so a runaway only hurts itself.",
+                "Source traceability (citations): every answer is numbered [#N] when the context is assembled; the schema requires the model to return the numbers each conclusion cites. The backend resolves the numbers back to answer ids and respondents, and the frontend renders them as small round tags that smooth-scroll to and highlight the original answer. Named sessions show initials; anonymous sessions only show numbers.",
+                "Reliability: exponential-backoff retries on 503/500, bilingual friendly messages for 429 quota and other errors, code-fence stripping and outermost-JSON extraction, and turning off unnecessary thinking (thinkingBudget: 0) so simple tasks don't get their output eaten by thinking tokens.",
+              ],
+            },
+            {
+              title: "Permission model (Supabase)",
+              text: "Row-Level Security is on for the entire database; the browser never touches the database directly. All writes go through Next.js Route Handlers, executed server-side with the service role and guarded by explicit authorization checks (only the organizer can generate reports or change settings; results stay hidden until the session closes). Login-free participation is authorized by a UUID in the session link; signed-in users use Supabase Auth Email OTP.",
+            },
+            {
+              title: "Anchoring per-sentence discussion",
+              text: "Comments anchor to \"characters m–n of a specific answer\": selecting text pops up a comment button and stores the quote and offsets; rendering converts anchor ranges into highlight marks, handling selections that span nodes and splitting overlapping highlights.",
+            },
+            {
+              title: "Zero-dependency UX details",
+              text: "A hand-rolled site-wide route progress bar (intercepting in-site link clicks + pathname-change detection, with a 10-second failsafe), staged animations while AI generates, bar-chart entrances and number count-ups, and unified modal transitions — all in plain CSS/React with zero extra dependencies, all respecting prefers-reduced-motion. Illustrations (home scene, empty-state sailboat) are hand-drawn inline SVG colored with design tokens to match the theme.",
+            },
+            {
+              title: "Lightweight homemade i18n",
+              text: "A cookie decides the locale; flat keys with variable interpolation; server and client components share a single dictionary. Every user-facing string (including AI prompts and error messages) is bilingual.",
+            },
+          ],
+        },
+        {
+          title: "Challenges & Trade-offs",
+          text: [
+            "The biggest challenge was making LLM output stable enough to ship as a product feature. With the same prompt the model gets it right eight times out of ten — fine for a demo, a disaster for a product. My conclusion: whatever can be solved with structure should not be solved with wording — split the task smaller (per-item labeling > holistic summarization), narrow the output space with schemas and enums, put validation and fallbacks in the backend (truncation, defaults, silently degrading to no tag when citation parsing fails), and let the prompt handle only the semantic judgment itself. I also picked up non-obvious tricks like managing the token budget through generation order.",
+            "The other trade-off was balancing anonymity with traceability: the report needs source tags to be convincing, but anonymous sessions must not leak identities. The final design is dual-track — tag data only stores answer ids and respondent indexes; initials are written in at generation time only for named sessions, and anonymous sessions never touch the name table at all.",
+          ],
+        },
+        {
+          title: "Reflection",
+          text: "This was my first time completing a full product in collaboration with AI. The biggest takeaway wasn't how much code got written, but learning to be a good technical decision-maker: breaking vague ideas into tasks an AI can execute, asking \"why is it written this way?\" about every output, and weighing different technical approaches. My existing programming foundation let me read the AI's output, discuss it on equal footing, and make the best decision.",
+        },
+        {
+          title: "Tech Stack",
+          text: "Next.js 15 (App Router / RSC) · React 19 · TypeScript · Tailwind CSS · Supabase (PostgreSQL / RLS / Auth / Realtime) · Google Gemini API (JSON mode / response schema) · Vercel",
+        },
+      ],
+    },
   },
   {
     id: "catch-butterfly",
     file: "butterfly.pj",
-    name: "AR抓蝴蝶復健遊戲",
-    en: "AR Butterfly Catch Game",
+    codeName: "AR Butterfly Catch Game",
     emoji: "🦋",
     img: "/butterfly-banner.png",
     video: "",
     demo: "https://iiamriiita.github.io/butterflygame/finalver",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
+    link: "github.com/iiamriiita/butterflygame",
+    zh: {
+    name: "AR抓蝴蝶復健遊戲",
+    role: "獨立開發",
     tags: ["JavaScript", "MediaPipe", "電腦視覺", "Canvas API", "Supabase", "即時手勢辨識"],
     short: "透過相機即時追蹤手部動作，用「握拳」手勢抓取畫面中飛舞的蝴蝶，含拍照與線上排行榜的手指復健遊戲。",
     detail:
@@ -142,20 +217,65 @@ const PROJECTS = [
         text: "JavaScript · MediaPipe Hands · HTML Canvas API · Supabase (PostgreSQL / REST) · requestAnimationFrame",
       },
     ],
-    role: "獨立開發",
-    link: "github.com/iiamriiita/butterflygame",
+    },
+    en: {
+      name: "AR Butterfly-Catching Rehab Game",
+      role: "Solo project",
+      tags: ["JavaScript", "MediaPipe", "Computer Vision", "Canvas API", "Supabase", "Real-time Gesture Recognition"],
+      short: "A finger-rehab game that tracks your hand through the camera in real time — catch fluttering butterflies with a fist gesture, with photo capture and an online leaderboard.",
+      detail:
+        "An AR motion game that runs in the browser. It tracks hand joints in real time: move your hand over a butterfly and make a fist to complete the catch. Before the game ends it automatically takes a commemorative photo with the game elements composited in, and the final score is uploaded to a cross-device shared online leaderboard.",
+      sections: [
+        {
+          title: "Motivation",
+          text: "I often watched my mom do finger-rehab exercises — pure mechanical repetition that is boring and hard to keep up. I wanted to hide that movement inside a fun game. The core interaction is designed as exactly \"open hand → make a fist\", so she can play along with the finger-tension bands she already practices with.",
+        },
+        {
+          title: "Core Features",
+          items: [
+            "Real-time gesture recognition: MediaPipe Hands tracks 21 hand landmarks; \"open / fist\" is judged by comparing fingertip-to-palm relative distances, and a catch only triggers at the instant of the open→close transition.",
+            "Game rules: blue butterflies +1, rare pink butterflies +3, and bees deduct 5 seconds.",
+            "Dynamic composite photo: in the final three seconds a prompt appears and the camera frame is captured; players can download it.",
+            "Cross-device online leaderboard: scores are written to a cloud database, and the global top ten updates instantly on any device.",
+          ],
+        },
+        {
+          title: "Technical Highlights",
+          items: [
+            "In-browser computer vision: the hand-tracking model runs entirely in the browser (WebAssembly) with no server compute, which is good for both privacy and latency. Coordinates need mirror flipping and screen-ratio mapping so the virtual hand cursor lines up with the real hand.",
+            "Canvas compositing: the photo feature maps the live video and the game sprites (procedurally generated pixel-style vector art, not bitmap assets) into screen coordinates and composites them onto a single exported Canvas.",
+            "Serverless backend: Supabase (PostgreSQL) accessed directly over its REST API, with Row-Level Security policies restricting the public key to reading and inserting scores — making it safe to ship the database key in a pure frontend.",
+            "Zero-build deployment: a single plain HTML/CSS/JS file, deployable to GitHub Pages or any static host, so family members can practice on any device just by opening a URL — no installation barrier.",
+          ],
+        },
+        {
+          title: "Challenges & Trade-offs",
+          text: [
+            "The hardest part was making the \"fist\" detection stable — palm size, distance from the camera, and lighting all affect the landmark coordinates. This matters even more in a rehab context, where users' hands may be less nimble and their range of motion smaller, so the detection has to be forgiving without misfiring. Fixed absolute-distance thresholds break as the hand moves closer or farther; the final solution judges fingertips relative to the palm as a ratio, making recognition independent of hand distance and hand shape.",
+            "On the backend I hit a key-authorization problem: the new-style key returned 401 on REST endpoints. I debugged by issuing requests directly against the API from the browser devtools, eventually pinning it down to the key type and table permissions (RLS / schema grants) — and came away actually understanding the permission model behind \"why a public key can safely live in the frontend\".",
+          ],
+        },
+        {
+          title: "Tech Stack",
+          text: "JavaScript · MediaPipe Hands · HTML Canvas API · Supabase (PostgreSQL / REST) · requestAnimationFrame",
+        },
+      ],
+    },
   },
   {
     id: "music-viz",
     file: "techno-vj.pj",
-    name: "東方電音 Eastern Techno VJ",
-    cardName: "中國風即時音樂 VJ 系統",
-    en: "Eastern Techno VJ",
+    codeName: "Eastern Techno VJ",
     emoji: "🎵",
     img: "/music-viz-banner.jpg",
     video: "https://vimeo.com/1207678884",
     demo: "",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
+    link: "", // ← 留空則專案頁不顯示 GitHub 按鈕
+    zh: {
+    name: "東方電音 Eastern Techno VJ",
+    cardName: "中國風即時音樂 VJ 系統",
+    role: "獨立開發",
     tags: ["JavaScript", "Canvas API", "Web Audio API", "即時繪圖"],
     short: "敲拍即鎖定節奏，十種東方美學特效隨 techno 律動的零依賴視覺演出工具。",
     detail:
@@ -189,8 +309,44 @@ const PROJECTS = [
         text: "JavaScript · HTML Canvas API · Web Audio API · requestAnimationFrame",
       },
     ],
-    role: "獨立開發",
-    link: "", // ← 留空則專案頁不顯示 GitHub 按鈕
+    },
+    en: {
+      name: "Eastern Techno VJ",
+      role: "Solo project",
+      tags: ["JavaScript", "Canvas API", "Web Audio API", "Real-time Graphics"],
+      short: "Tap to lock the tempo — ten Eastern-aesthetic effects pulse with the techno beat in a zero-dependency visual performance tool.",
+      detail:
+        "A real-time visual performance (VJ) system built for live techno. The performer taps the spacebar along with the music to set the tempo; the visuals lock onto the beat and keep pulsing, with ten full-screen animated effects themed on traditional Chinese architectural elements that can be switched live.",
+      sections: [
+        {
+          title: "Motivation",
+          text: "Existing VJ software is powerful but complicated to operate, and its visuals lean Western cyberpunk. I wanted a lightweight tool that takes only two keys to learn and looks unmistakably Eastern, so non-professionals can improvise visuals at small parties.",
+        },
+        {
+          title: "Core Features",
+          items: [
+            "Tap-tempo beat lock: tap the spacebar and the app computes the BPM from the intervals, then keeps the beat automatically.",
+            "Ten effects ordered from calm to explosive, matching a track's intro → build → drop energy curve.",
+            "Press the Down key to switch effects.",
+          ],
+        },
+        {
+          title: "Technical Highlights",
+          items: [
+            "Pure Canvas 2D drawn frame by frame at a steady 60fps; every pattern is a procedurally generated vector construction, not a bitmap, so it stays crisp at any resolution.",
+            "The beat drives the visuals through a \"decaying pulse value\" — a variable that decays every frame is multiplied into size / brightness / displacement, producing motion that thumps with the beat.",
+          ],
+        },
+        {
+          title: "Challenges & Trade-offs",
+          text: "I first tried Web Audio real-time analysis to auto-detect the kick, but microphone pickup at a loud venue is wildly unreliable — missed beats and false triggers. I switched to manual tap-tempo: trading full automation for on-stage reliability, and it is also easier to take control when a transition calls for a tempo change.",
+        },
+        {
+          title: "Tech Stack",
+          text: "JavaScript · HTML Canvas API · Web Audio API · requestAnimationFrame",
+        },
+      ],
+    },
   },
 ];
 
@@ -254,8 +410,8 @@ function idFromPath(pathname) {
   return "projects";
 }
 
-// ---- 響應式：偵測手機寬度 ----
-const UI = createContext({ isMobile: false });
+// ---- 響應式：偵測手機寬度；lang：專案內容語言（zh / en）----
+const UI = createContext({ isMobile: false, lang: "zh" });
 
 function useMediaQuery(query) {
   const [match, setMatch] = useState(
@@ -291,11 +447,22 @@ export default function Portfolio() {
     } catch { return "light"; }
   });
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
+  const [lang, setLang] = useState(() => {
+    // 記住使用者選過的；沒選過就跟瀏覽器語言（中文→中文版，其餘英文版）
+    try {
+      const saved = localStorage.getItem("lang");
+      if (saved === "zh" || saved === "en") return saved;
+      return (navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "en";
+    } catch { return "zh"; }
+  });
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     try { localStorage.setItem("theme", theme); } catch { /* ignore */ }
   }, [theme]);
+  useEffect(() => {
+    try { localStorage.setItem("lang", lang); } catch { /* ignore */ }
+  }, [lang]);
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -365,13 +532,13 @@ export default function Portfolio() {
     : { ...S.split, gridTemplateColumns: isProj || isAbout ? "1fr" : "1fr 2fr" };
 
   return (
-    <UI.Provider value={{ isMobile }}>
+    <UI.Provider value={{ isMobile, lang }}>
       <div style={appStyle}>
         {/* ---- 手機頂部列 ---- */}
         {isMobile && (
           <div style={S.mtop}>
             <button
-              aria-label="開啟檔案總管"
+              aria-label="Open explorer"
               style={S.mBurger}
               onClick={() => setDrawerOpen((v) => !v)}
             >
@@ -422,7 +589,7 @@ export default function Portfolio() {
           {/* 外部連結：設計作品集（之後會導到另一個網站） */}
           <div
             onClick={openDesignPortfolio}
-            title={DESIGN_PORTFOLIO_URL || "之後會加上連結"}
+            title={DESIGN_PORTFOLIO_URL || "Link coming soon"}
             style={{ ...S.file, paddingLeft: 30, whiteSpace: "nowrap", borderLeft: "2px solid transparent" }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
@@ -446,10 +613,19 @@ export default function Portfolio() {
               ))}
             </div>
 
-            {/* 右上角：主題下拉選單 */}
+            {/* 右上角：語言切換＋主題下拉選單 */}
             <div style={S.themeWrap}>
               <button
-                aria-label="選擇主題"
+                aria-label="Switch language"
+                onClick={() => setLang((v) => (v === "zh" ? "en" : "zh"))}
+                style={{ ...S.themeBtn, marginRight: 8 }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+              >
+                {lang === "zh" ? "EN" : "中"}
+              </button>
+              <button
+                aria-label="Select theme"
                 onClick={() => setThemeMenuOpen((v) => !v)}
                 style={S.themeBtn}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
@@ -496,7 +672,7 @@ export default function Portfolio() {
                 </div>
                 {!isAbout && (
                   <div style={{ ...S.preview, ...(isMobile ? S.paneM : {}) }}>
-                    <div style={S.phead}>◎ 精選作品</div>
+                    <div style={S.phead}>◎ Featured projects</div>
                     {PROJECTS.map((p) => (
                       <PCard key={p.id} p={p} onClick={() => openTab(p.id)} />
                     ))}
@@ -555,7 +731,7 @@ function ProjectsIndex() {
       </Line>
       <Line n={4}>
         <span style={T.kw}>const</span> <span style={T.fn}>motto</span><span style={T.dim}> = </span>
-        <span style={T.str}>"把想法變成可以互動的東西"</span><span style={T.dim}>;</span>
+        <span style={T.str}>"turn ideas into things you can interact with"</span><span style={T.dim}>;</span>
       </Line>
       <Line n={5}> </Line>
       <Line n={6}>
@@ -564,7 +740,7 @@ function ProjectsIndex() {
       {PROJECTS.map((p, i) => (
         <Line n={7 + i} key={p.id}>
           <span style={T.dim}>{"  { name: "}</span>
-          <span style={T.str}>"{p.en}"</span>
+          <span style={T.str}>"{p.codeName}"</span>
           <span style={T.dim}>{" },"}</span>
         </Line>
       ))}
@@ -597,7 +773,8 @@ function BtnLink({ href, style, cta, children }) {
 }
 
 function ProjectShowcase({ p, onOpen }) {
-  const { isMobile } = useContext(UI);
+  const { isMobile, lang } = useContext(UI);
+  const t = p[lang]; // 目前語言的專案內容
   return (
     <div style={{ ...S.showcase, ...(isMobile ? S.showcaseM : {}), position: "relative" }}>
       {/* 回專案列表 */}
@@ -617,14 +794,14 @@ function ProjectShowcase({ p, onOpen }) {
           ) : (
             <iframe
               src={videoEmbed(p.video).src}
-              title={`${p.name} demo`}
+              title={`${t.name} demo`}
               style={S.heroVideo}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
           )
         ) : p.img ? (
-          <img src={p.img} alt={p.name} style={{ ...S.hero, ...(isMobile ? S.heroM : {}), width: "100%", objectFit: "cover", display: "block" }} />
+          <img src={p.img} alt={t.name} style={{ ...S.hero, ...(isMobile ? S.heroM : {}), width: "100%", objectFit: "cover", display: "block" }} />
         ) : (
           <div style={{ ...S.hero, ...(isMobile ? S.heroM : {}), background: p.grad }}>
             <span style={{ fontSize: isMobile ? 52 : 72 }}>{p.emoji}</span>
@@ -636,12 +813,12 @@ function ProjectShowcase({ p, onOpen }) {
             {p.demo && <BtnLink href={p.demo} style={S.heroBtn} cta>Try it now ↗</BtnLink>}
           </div>
         )}
-        <div style={S.showRole}>{p.role}</div>
-        <h1 style={{ ...S.showTitle, ...(isMobile ? S.showTitleM : {}) }}>{p.name}</h1>
-        <p style={{ ...S.showDesc, ...(isMobile ? S.showDescM : {}) }}>{p.detail}</p>
+        <div style={S.showRole}>{t.role}</div>
+        <h1 style={{ ...S.showTitle, ...(isMobile ? S.showTitleM : {}) }}>{t.name}</h1>
+        <p style={{ ...S.showDesc, ...(isMobile ? S.showDescM : {}) }}>{t.detail}</p>
 
         {/* 分節內容（動機 / 核心功能 / 技術亮點…），專案有提供才顯示 */}
-        {p.sections?.map((sec) => (
+        {t.sections?.map((sec) => (
           <div key={sec.title}>
             <h3 style={S.secH}>{sec.title}</h3>
             <SecText text={sec.text} />
@@ -656,7 +833,7 @@ function ProjectShowcase({ p, onOpen }) {
           </div>
         ))}
 
-        <div style={S.stRow}>{p.tags.map((t) => (<span key={t} style={S.stBig}>{t}</span>))}</div>
+        <div style={S.stRow}>{t.tags.map((tag) => (<span key={tag} style={S.stBig}>{tag}</span>))}</div>
       </div>
     </div>
   );
@@ -699,7 +876,7 @@ function AboutCode() {
       <Line n={9 + sk.length}>{"  "}{"}"},</Line>
       <Line n={10 + sk.length}>{"}"};</Line>
       <Line n={11 + sk.length}> </Line>
-      <Line n={12 + sk.length}><span style={T.cmt}>/* 熱愛把想法變成可以互動的東西，目前正在找機會。 */</span></Line>
+      <Line n={12 + sk.length}><span style={T.cmt}>/* I love turning ideas into interactive things. Open to new opportunities. */</span></Line>
       <Line n={13 + sk.length}><span style={T.kw}>export default</span> <span style={T.fn}>developer</span>;</Line>
     </>
   );
@@ -707,6 +884,8 @@ function AboutCode() {
 
 function PCard({ p, onClick }) {
   const [hover, setHover] = useState(false);
+  const { lang } = useContext(UI);
+  const t = p[lang]; // 目前語言的專案內容
   return (
     <div
       onClick={onClick}
@@ -716,14 +895,14 @@ function PCard({ p, onClick }) {
     >
       {p.demo && <BtnLink href={p.demo} style={S.tryBtnPos}>Try now ↗</BtnLink>}
       {p.img ? (
-        <img src={p.img} alt={p.name} style={{ ...S.thumb, width: "100%", objectFit: "cover", display: "block" }} />
+        <img src={p.img} alt={t.name} style={{ ...S.thumb, width: "100%", objectFit: "cover", display: "block" }} />
       ) : (
         <div style={{ ...S.thumb, background: p.grad }}>{p.emoji}</div>
       )}
       <div style={{ padding: "13px 16px 15px" }}>
-        <h4 style={S.pcardH}>{p.cardName || p.name}</h4>
-        <p style={S.pcardP}>{p.short}</p>
-        <div style={S.stRow}>{p.tags.map((t) => (<span key={t} style={S.st}>{t}</span>))}</div>
+        <h4 style={S.pcardH}>{t.cardName || t.name}</h4>
+        <p style={S.pcardP}>{t.short}</p>
+        <div style={S.stRow}>{t.tags.map((tag) => (<span key={tag} style={S.st}>{tag}</span>))}</div>
       </div>
     </div>
   );
