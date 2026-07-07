@@ -22,6 +22,7 @@ const PROJECTS = [
     emoji: "💬",
     img: "/team-retro-banner.png",
     video: "", // ← 貼 YouTube 網址（例如 "https://www.youtube.com/watch?v=xxxx"），留空不顯示
+    demo: "", // ← 貼線上 demo 網址，卡片右上角會出現「Try now ↗」按鈕；留空不顯示
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["Next.js 15", "TypeScript", "Supabase", "Gemini API", "Prompt Engineering", "RLS", "i18n", "Tailwind CSS"],
     short: "用一條分享連結發起團隊回顧（Retrospective），AI 根據回答自動產出洞察與調整建議，支援逐句討論與跨場趨勢洞察。",
@@ -96,11 +97,12 @@ const PROJECTS = [
     emoji: "🦋",
     img: "/butterfly-banner.png",
     video: "",
+    demo: "",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["JavaScript", "MediaPipe", "電腦視覺", "Canvas API", "Supabase", "即時手勢辨識"],
     short: "透過相機即時追蹤手部動作，用「握拳」手勢抓取畫面中飛舞的蝴蝶，含拍照與線上排行榜的手指復健遊戲。",
     detail:
-      "一個在瀏覽器中運行的擴增實境（AR）體感遊戲。程式即時追蹤手部關節，當玩家把手移到蝴蝶上並「握拳」時即完成抓取。60 秒限時內盡量抓蝴蝶得分，抓到蜜蜂則會凍結並扣時間。遊戲結束前會自動拍下一張含遊戲元素的紀念照，最終成績上傳至跨裝置共享的線上排行榜。",
+      "一個在瀏覽器中運行的AR體感遊戲。程式即時追蹤手部關節，當玩家把手移到蝴蝶上並「握拳」時即完成抓取。遊戲結束前會自動拍下一張含遊戲元素的紀念照，最終成績上傳至跨裝置共享的線上排行榜。",
     sections: [
       {
         title: "動機",
@@ -148,6 +150,7 @@ const PROJECTS = [
     emoji: "🎵",
     img: "/music-viz-banner.jpg",
     video: "https://vimeo.com/1207678884",
+    demo: "",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["JavaScript", "Canvas API", "Web Audio API", "即時繪圖"],
     short: "敲拍即鎖定節奏，十種東方美學特效隨 techno 律動的零依賴視覺演出工具。",
@@ -691,6 +694,19 @@ function PCard({ p, onClick }) {
       onMouseLeave={() => setHover(false)}
       style={{ ...S.pcard, transform: hover ? "translateY(-3px)" : "none", borderColor: hover ? "var(--border-strong)" : "var(--border)" }}
     >
+      {p.demo && (
+        <a
+          href={p.demo}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          style={S.tryBtn}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#000d"; e.currentTarget.style.borderColor = "#ffffff88"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "#000a"; e.currentTarget.style.borderColor = "#ffffff44"; }}
+        >
+          Try now ↗
+        </a>
+      )}
       {p.img ? (
         <img src={p.img} alt={p.name} style={{ ...S.thumb, width: "100%", objectFit: "cover", display: "block" }} />
       ) : (
@@ -743,7 +759,8 @@ const S = {
   lineTxt: { paddingRight: 16 },
   preview: { overflowY: "auto", background: "var(--bg-preview)", padding: 16 },
   phead: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
-  pcard: { background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
+  pcard: { position: "relative", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
+  tryBtn: { position: "absolute", top: 10, right: 10, zIndex: 2, fontFamily: mono, fontSize: 12, background: "#000a", color: "#fff", border: "1px solid #ffffff44", padding: "5px 11px", borderRadius: 14, textDecoration: "none", backdropFilter: "blur(4px)", transition: "background .15s, border-color .15s" },
   thumb: { height: 185, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 },
   pcardH: { fontSize: 15.5, color: "var(--text-bright)", marginBottom: 4, fontFamily: sans, fontWeight: 700 },
   pcardP: { fontSize: 13.5, color: "var(--text-mid)", lineHeight: 1.6, fontFamily: sans },
