@@ -21,6 +21,7 @@ const PROJECTS = [
     en: "Team Retro (AI product)",
     emoji: "💬",
     img: "/team-retro-banner.png",
+    video: "", // ← 貼 YouTube 網址（例如 "https://www.youtube.com/watch?v=xxxx"），留空不顯示
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     tags: ["Next.js", "TypeScript", "Supabase", "Gemini"],
     short: "給 2–5 人小組的匿名回饋工具，AI 即時把關讓回饋更建設性。",
@@ -36,6 +37,7 @@ const PROJECTS = [
     en: "Butterfly Catch Game",
     emoji: "🦋",
     img: "/butterfly-banner.png",
+    video: "",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     // TODO: 以下為草稿，待你補正確資訊
     tags: ["React", "Canvas"],
@@ -51,6 +53,7 @@ const PROJECTS = [
     name: "音樂視覺化動畫",
     en: "Music Visualization",
     emoji: "🎵",
+    video: "",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     // TODO: 以下為草稿，待你補正確資訊
     tags: ["Web Audio API", "Canvas"],
@@ -96,6 +99,17 @@ function MoonIcon({ size = 14 }) {
       <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
     </svg>
   );
+}
+
+// ---- 影片網址 → 內嵌來源（支援 YouTube / Vimeo / 直接 mp4）----
+function videoEmbed(url) {
+  if (!url) return null;
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/);
+  if (yt) return { type: "iframe", src: `https://www.youtube.com/embed/${yt[1]}` };
+  const vm = url.match(/vimeo\.com\/(\d+)/);
+  if (vm) return { type: "iframe", src: `https://player.vimeo.com/video/${vm[1]}` };
+  if (/\.(mp4|webm|mov)(\?.*)?$/i.test(url)) return { type: "video", src: url };
+  return { type: "iframe", src: url }; // 其他嵌入網址直接用
 }
 
 // ---- 響應式：偵測手機寬度 ----
@@ -420,6 +434,24 @@ function ProjectShowcase({ p, onOpen }) {
         <div style={S.stRow}>{p.tags.map((t) => (<span key={t} style={S.stBig}>{t}</span>))}</div>
         <a href={"https://" + p.link} target="_blank" rel="noreferrer" style={S.showLink}>↗ {p.link}</a>
 
+        {/* Demo 影片（有填 video 才顯示） */}
+        {videoEmbed(p.video) && (
+          <div style={S.demoRow}>
+            <div style={S.moreLabel}>Demo</div>
+            {videoEmbed(p.video).type === "video" ? (
+              <video src={videoEmbed(p.video).src} controls style={S.demoFrame} />
+            ) : (
+              <iframe
+                src={videoEmbed(p.video).src}
+                title={`${p.name} demo`}
+                style={S.demoFrame}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            )}
+          </div>
+        )}
+
         <div style={S.moreRow}>
           <div style={S.moreLabel}>其他作品</div>
           {others.map((o) => (
@@ -541,6 +573,8 @@ const S = {
   showDesc: { fontSize: 16, color: "var(--text-soft)", lineHeight: 1.9, marginBottom: 18, fontFamily: sans },
   stBig: { fontSize: 13, background: "var(--bg-card)", color: "var(--text-mid)", padding: "5px 12px", borderRadius: 14, border: "1px solid var(--border)" },
   showLink: { display: "inline-block", marginTop: 20, color: "var(--link)", fontSize: 14, textDecoration: "none", borderBottom: "1px solid var(--link-underline)", paddingBottom: 2 },
+  demoRow: { marginTop: 32 },
+  demoFrame: { width: "100%", aspectRatio: "16 / 9", border: "1px solid var(--border)", borderRadius: 14, display: "block", background: "#000" },
   moreRow: { marginTop: 44, paddingTop: 24, borderTop: "1px solid var(--hover)" },
   moreLabel: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   moreItem: { display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 8, padding: "10px 14px", marginBottom: 8, color: "var(--text)", fontFamily: mono, fontSize: 14, cursor: "pointer" },
