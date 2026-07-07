@@ -86,7 +86,7 @@ const PROJECTS = [
         text: "Next.js 15 (App Router / RSC) · React 19 · TypeScript · Tailwind CSS · Supabase (PostgreSQL / RLS / Auth / Realtime) · Google Gemini API (JSON mode / response schema) · Vercel",
       },
     ],
-    role: "獨立開發 · 前後端",
+    role: "獨立開發 · AI-assisted programming",
     link: "github.com/iiamriiita/retro",
   },
   {
