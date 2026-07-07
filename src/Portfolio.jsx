@@ -569,17 +569,23 @@ function ProjectsIndex() {
   );
 }
 
-// 統一樣式的連結按鈕（與「← projects」同款）
-function BtnLink({ href, style, children }) {
+// 統一樣式的連結按鈕（與「← projects」同款）；cta 版為黑底白字
+function BtnLink({ href, style, cta, children }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noreferrer"
       onClick={(e) => e.stopPropagation()}
-      style={{ ...S.btnLink, ...style }}
-      onMouseEnter={(e) => { e.currentTarget.style.color = "var(--text-bright)"; e.currentTarget.style.borderColor = "var(--border-strong)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-mid)"; e.currentTarget.style.borderColor = "var(--border)"; }}
+      style={{ ...S.btnLink, ...(cta ? S.btnCta : {}), ...style }}
+      onMouseEnter={(e) => {
+        if (cta) { e.currentTarget.style.background = "#333"; }
+        else { e.currentTarget.style.color = "var(--text-bright)"; e.currentTarget.style.borderColor = "var(--border-strong)"; }
+      }}
+      onMouseLeave={(e) => {
+        if (cta) { e.currentTarget.style.background = "#111"; }
+        else { e.currentTarget.style.color = "var(--text-mid)"; e.currentTarget.style.borderColor = "var(--border)"; }
+      }}
     >
       {children}
     </a>
@@ -622,8 +628,8 @@ function ProjectShowcase({ p, onOpen }) {
         )}
         {(p.link || p.demo) && (
           <div style={S.heroBtns}>
-            {p.link && <BtnLink href={"https://" + p.link}>GitHub ↗</BtnLink>}
-            {p.demo && <BtnLink href={p.demo}>Try it now ↗</BtnLink>}
+            {p.link && <BtnLink href={"https://" + p.link} style={S.heroBtn}>GitHub ↗</BtnLink>}
+            {p.demo && <BtnLink href={p.demo} style={S.heroBtn} cta>Try it now ↗</BtnLink>}
           </div>
         )}
         <div style={S.showRole}>{p.role}</div>
@@ -758,9 +764,11 @@ const S = {
   preview: { overflowY: "auto", background: "var(--bg-preview)", padding: 16 },
   phead: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 },
   pcard: { position: "relative", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", marginBottom: 14, cursor: "pointer", transition: "transform .18s, border-color .18s" },
-  btnLink: { display: "inline-block", fontFamily: mono, fontSize: 13, background: "var(--bg)", color: "var(--text-mid)", border: "1px solid var(--border)", padding: "6px 12px", borderRadius: 6, textDecoration: "none", transition: "color .15s, border-color .15s" },
+  btnLink: { display: "inline-block", fontFamily: mono, fontSize: 13, background: "var(--bg)", color: "var(--text-mid)", border: "1px solid var(--border)", padding: "6px 12px", borderRadius: 6, textDecoration: "none", transition: "color .15s, border-color .15s, background .15s" },
+  btnCta: { background: "#111", color: "#fff", borderColor: "#111" },
   tryBtnPos: { position: "absolute", top: 10, right: 10, zIndex: 2 },
-  heroBtns: { display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 20 },
+  heroBtns: { display: "flex", gap: 10, marginBottom: 20 },
+  heroBtn: { flex: 1, textAlign: "center", fontSize: 14, padding: "11px 12px" },
   thumb: { height: 185, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 },
   pcardH: { fontSize: 15.5, color: "var(--text-bright)", marginBottom: 4, fontFamily: sans, fontWeight: 700 },
   pcardP: { fontSize: 13.5, color: "var(--text-mid)", lineHeight: 1.6, fontFamily: sans },
