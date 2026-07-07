@@ -69,7 +69,7 @@ const T = {
   num: { color: "var(--syn-num)" }, cmt: { color: "var(--text-dim)", fontStyle: "italic" },
   prop: { color: "var(--text-dim)" }, txt: { color: "var(--text)" },
   dim: { color: "var(--text-dim)" }, // 不重要的字（屬性名、標點）
-  hero: { color: "var(--text-bright)", fontStyle: "italic" }, // 開頭打招呼那行
+  hero: { color: "var(--text-bright)", fontStyle: "italic", fontSize: 20, fontWeight: 700 }, // 開頭打招呼那行
 };
 
 // ---- 響應式：偵測手機寬度 ----
@@ -217,15 +217,6 @@ export default function Portfolio() {
             <span style={{ marginLeft: "auto", color: "var(--text-dim)" }}>↗</span>
           </div>
 
-          {/* 深色 / 亮色切換 */}
-          <div
-            onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-            style={{ ...S.file, paddingLeft: 30, whiteSpace: "nowrap", borderLeft: "2px solid transparent", color: "var(--text-dim)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-          >
-            {theme === "dark" ? "☀️ Light mode" : "🌙 Dark mode"}
-          </div>
         </aside>
 
         {/* ---- Main ---- */}
@@ -238,6 +229,17 @@ export default function Portfolio() {
                 <span style={S.close} onClick={(e) => closeTab(id, e)}>×</span>
               </div>
             ))}
+            {/* 右上角：深色 / 亮色切換 */}
+            <button
+              aria-label={theme === "dark" ? "切換亮色模式" : "切換深色模式"}
+              title={theme === "dark" ? "Light mode" : "Dark mode"}
+              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+              style={S.themeBtn}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+            >
+              {theme === "dark" ? "☀️" : "🌙"}
+            </button>
           </div>
 
           {/* content：作品→展示頁；code 頁→左程式右精選作品 */}
@@ -432,6 +434,7 @@ const S = {
   tabs: { display: "flex", background: "var(--bg-side)", borderBottom: "1px solid var(--border)", overflowX: "auto", flexShrink: 0 },
   tab: { padding: "12px 14px 12px 18px", fontSize: 14, color: "var(--text-dim)", borderRight: "1px solid var(--border)", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
   tabActive: { color: "var(--text)", background: "var(--bg)", borderTop: "2px solid var(--border-strong)" },
+  themeBtn: { marginLeft: "auto", flexShrink: 0, alignSelf: "center", background: "none", border: "none", fontSize: 17, padding: "6px 14px", cursor: "pointer", borderRadius: 6, lineHeight: 1 },
   close: { color: "var(--text-dim)", fontSize: 15, lineHeight: 1 },
   split: { display: "grid", flex: 1, overflow: "hidden", minHeight: 0 },
   codePane: { overflowY: "auto", padding: "14px 0", background: "var(--bg)", borderRight: "1px solid var(--border)", lineHeight: 1.75 },
