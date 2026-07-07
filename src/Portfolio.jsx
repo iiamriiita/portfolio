@@ -864,33 +864,34 @@ function AboutCode() {
     <>
       <Line n={1}><span style={T.hero}>// about me 🙋‍♀️</span></Line>
       <Line n={2}> </Line>
-      <Line n={3}><span style={T.txt}>I built my foundations through university coursework — small games,</span></Line>
-      <Line n={4}><span style={T.txt}>interactive art pieces, and websites — and learned how the frontend and</span></Line>
-      <Line n={5}><span style={T.txt}>backend connect: databases, external API integrations, and how they work.</span></Line>
-      <Line n={6}><span style={T.txt}>AI-assisted development then got me hooked on shipping complete products,</span></Line>
-      <Line n={7}><span style={T.txt}>starting with digital tools for my family.</span></Line>
-      <Line n={8}> </Line>
-      <Line n={9}><span style={T.kw}>const</span> <span style={T.fn}>developer</span> = {"{"}</Line>
-      <Line n={10}>{"  "}<span style={T.prop}>name</span>: <span style={T.str}>"{DEV.name}"</span>,</Line>
-      <Line n={11}>{"  "}<span style={T.prop}>role</span>: <span style={T.str}>"{DEV.role}"</span>,</Line>
-      <Line n={12}>{"  "}<span style={T.prop}>based</span>: <span style={T.str}>"{DEV.based}"</span>,</Line>
-      <Line n={13}>{"  "}<span style={T.prop}>coffee</span>: <span style={T.num}>Infinity</span>,</Line>
-      <Line n={14}>{"  "}<span style={T.prop}>skills</span>: {"{"}</Line>
+      <Line n={3}><span style={T.cmt}>/* I built my foundations through university coursework — small games,</span></Line>
+      <Line n={4}><span style={T.cmt}>interactive art pieces, and websites — and learned how the frontend and</span></Line>
+      <Line n={5}><span style={T.cmt}>backend connect: databases, external API integrations, and how they work. */</span></Line>
+      <Line n={6}> </Line>
+      <Line n={7}><span style={T.cmt}>/* AI-assisted development then got me hooked on shipping complete products —</span></Line>
+      <Line n={8}><span style={T.cmt}>from digital tools for my family to a SaaS product. */</span></Line>
+      <Line n={9}> </Line>
+      <Line n={10}><span style={T.kw}>const</span> <span style={T.fn}>developer</span> = {"{"}</Line>
+      <Line n={11}>{"  "}<span style={T.prop}>name</span>: <span style={T.str}>"{DEV.name}"</span>,</Line>
+      <Line n={12}>{"  "}<span style={T.prop}>role</span>: <span style={T.str}>"{DEV.role}"</span>,</Line>
+      <Line n={13}>{"  "}<span style={T.prop}>based</span>: <span style={T.str}>"{DEV.based}"</span>,</Line>
+      <Line n={14}>{"  "}<span style={T.prop}>coffee</span>: <span style={T.num}>Infinity</span>,</Line>
+      <Line n={15}>{"  "}<span style={T.prop}>skills</span>: {"{"}</Line>
       {sk.map(([k, v], i) => (
-        <Line n={15 + i} key={k}>{"    "}<span style={T.prop}>{k}</span>: <span style={T.str}>"{v}"</span>,</Line>
+        <Line n={16 + i} key={k}>{"    "}<span style={T.prop}>{k}</span>: <span style={T.str}>"{v}"</span>,</Line>
       ))}
-      <Line n={15 + sk.length}>{"  "}{"}"},</Line>
-      <Line n={16 + sk.length}>{"}"};</Line>
-      <Line n={17 + sk.length}> </Line>
-      <Line n={18 + sk.length}><span style={T.cmt}>/* I love turning ideas into interactive things. Open to new opportunities. */</span></Line>
-      <Line n={19 + sk.length}>
+      <Line n={16 + sk.length}>{"  "}{"}"},</Line>
+      <Line n={17 + sk.length}>{"}"};</Line>
+      <Line n={18 + sk.length}> </Line>
+      <Line n={19 + sk.length}><span style={T.cmt}>/* I love turning ideas into interactive things. Open to new opportunities. */</span></Line>
+      <Line n={20 + sk.length}>
         <span style={T.cmt}>
           {"/* Questions or collaboration → "}
           <a href="mailto:yingciluo1015@gmail.com" style={{ color: "inherit", textDecoration: "underline" }}>yingciluo1015@gmail.com</a>
           {" */"}
         </span>
       </Line>
-      <Line n={20 + sk.length}><span style={T.kw}>export default</span> <span style={T.fn}>developer</span>;</Line>
+      <Line n={21 + sk.length}><span style={T.kw}>export default</span> <span style={T.fn}>developer</span>;</Line>
     </>
   );
 }
