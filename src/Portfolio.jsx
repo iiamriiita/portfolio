@@ -82,6 +82,10 @@ const PROJECTS = [
         ],
       },
       {
+        title: "回顧",
+        text: "這是我第一次以 AI 協作的方式完成完整產品。最大的收穫不是寫了多少程式，而是學會如何當一個好的「技術決策者」：把模糊的想法拆成 AI 能執行的明確任務、對每個產出追問「為什麼這樣寫」、在不同技術方案間做取捨。既有的程式基礎讓我能看懂 AI 的輸出、與它討論，並做出最好的決策。",
+      },
+      {
         title: "技術棧",
         text: "Next.js 15 (App Router / RSC) · React 19 · TypeScript · Tailwind CSS · Supabase (PostgreSQL / RLS / Auth / Realtime) · Google Gemini API (JSON mode / response schema) · Vercel",
       },
