@@ -568,7 +568,7 @@ export default function Portfolio() {
               ☰
             </button>
             <span style={S.mTitle}>
-              YING CI<span className="brandCursor">_</span>
+              YING CI
             </span>
             <span style={S.mFile}>{fileNameOf(openFile)}</span>
           </div>
@@ -582,7 +582,7 @@ export default function Portfolio() {
         {/* ---- Explorer ---- */}
         <aside style={sideStyle}>
           <div style={S.root}>
-            YING CI<span className="brandCursor">_</span>
+            YING CI
           </div>
           {/* 點資料夾名稱 → 開首頁專案頁；點三角形 → 展開/收合 */}
           <div
@@ -607,7 +607,7 @@ export default function Portfolio() {
             PROJECTS.map((p) => (
               <FileRow key={p.id} label={p.file} sub active={openFile === p.id} onClick={() => openTab(p.id)} />
             ))}
-          <FileRow icon={<SolidIcon path={ICON.file} />} label="about" active={openFile === "about"} onClick={() => openTab("about")} />
+          <FileRow icon={<SolidIcon path={ICON.file} />} label="about me" active={openFile === "about"} onClick={() => openTab("about")} />
 
           {/* 外部連結：設計作品集（之後會導到另一個網站） */}
           <div
@@ -951,7 +951,7 @@ function splitExt(label) { const i = label.lastIndexOf("."); return i < 0 ? [lab
 function fileNameOf(id) {
   const p = PROJECTS.find((x) => x.id === id);
   if (p) return p.file;
-  return { projects: "projects", about: "about" }[id] || id;
+  return { projects: "projects", about: "about me" }[id] || id;
 }
 
 // ---- styles ----

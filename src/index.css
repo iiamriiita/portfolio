@@ -17,7 +17,6 @@
   --link-underline: #cfcfcf44;
   --thumb-a: #3a3a3a;
   --thumb-b: #242424;
-  --green: #27c93f;
   --syn-kw: #cba6f7;
   --syn-str: #a6e3a1;
   --syn-fn: #89b4fa;
@@ -43,7 +42,6 @@
   --link-underline: #3c3c3c55;
   --thumb-a: #ececea;
   --thumb-b: #dcdcda;
-  --green: #148425;
   --syn-kw: #66399a;
   --syn-str: #33702c;
   --syn-fn: #274f9e;
@@ -84,15 +82,4 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border);
-}
-
-/* 標題尾端的終端機游標 */
-.brandCursor {
-  color: var(--green);
-  animation: brand-blink 1.1s steps(1) infinite;
-}
-@keyframes brand-blink {
-  50% {
-    opacity: 0;
-  }
 }
