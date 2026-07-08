@@ -25,16 +25,16 @@ const PROJECTS = [
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     link: "github.com/iiamriiita/retro",
     zh: {
-    name: "Team Retro — AI 團隊回顧平台",
+    name: "Team Retro：AI 團隊回顧平台",
     role: "獨立開發 · AI-assisted programming",
     tags: ["Next.js 15", "TypeScript", "Supabase", "Gemini API", "Prompt Engineering", "RLS", "i18n", "Tailwind CSS"],
     short: "用一條分享連結發起團隊回顧（Retrospective），AI 根據回答自動產出洞察與調整建議，支援逐句討論與跨場趨勢洞察。",
     detail:
-      "一個全端 SaaS 網站。發起人選擇情境模板建立回顧，成員免登入填寫。截止後 AI 生成結構化報告——一句話總結、綠色亮點區、紅色待改善區、行動建議——每條結論都附上可點擊的來源標籤。發起人可開啟「逐句討論」讓團隊針對某句話留言。Dashboard 彙整多場回顧，用圖表與 AI 短評追蹤團隊健康度的走向。",
+      "一個全端 SaaS 網站。發起人選擇情境模板建立回顧，成員免登入填寫。截止後 AI 生成結構化報告，內容包含一句話總結、綠色亮點區、紅色待改善區與行動建議，每條結論都附上可點擊的來源標籤。發起人可開啟「逐句討論」讓團隊針對某句話留言。Dashboard 彙整多場回顧，用圖表與 AI 短評追蹤團隊健康度的走向。",
     sections: [
       {
         title: "動機",
-        text: "團隊回顧常見兩個死法：當面講太尷尬，沒人說真話；線上表單收完沒人整理，回饋石沉大海。我想做一個「降低說真話成本」的工具——匿名降低心理門檻、AI 負責整理歸納，讓回顧的產出直接是可以行動的結論，而不是一堆散落的便利貼。",
+        text: "團隊回顧常見兩個死法：當面講太尷尬，沒人說真話；線上表單收完沒人整理，回饋石沉大海。我想做一個「降低說真話成本」的工具，用匿名降低心理門檻、讓 AI 負責整理歸納，回顧的產出直接是可以行動的結論，而不是一堆散落的便利貼。",
       },
       {
         title: "核心功能",
@@ -53,7 +53,7 @@ const PROJECTS = [
             title: "與 LLM 的結構化協作（本專案最花心思的部分）",
             text: "AI 報告不是「丟 prompt 拿文章」，而是用 Gemini 的 JSON mode + response schema 強制輸出結構。過程中踩過並解決了一系列 LLM 工程的實際問題：",
             items: [
-              "逐條標註取代自由歸納：直接要求模型填「亮點陣列＋待改善陣列」時，flash 級模型會系統性地漏填其中一欄，甚至把「效率差」改寫成「效率很好」。最後改成要求模型逐條為每個回答貼標籤（{text, kind: \"well\"|\"improve\"}，enum 鎖死），綠紅兩欄由後端依標籤拆分——把「模型可以偷懶的欄位」變成「從標籤推導的結果」，漏填問題徹底消失。",
+              "逐條標註取代自由歸納：直接要求模型填「亮點陣列＋待改善陣列」時，flash 級模型會系統性地漏填其中一欄，甚至把「效率差」改寫成「效率很好」。最後改成要求模型逐條為每個回答貼標籤（{text, kind: \"well\"|\"improve\"}，enum 鎖死），綠紅兩欄由後端依標籤拆分，把「模型可以偷懶的欄位」變成「從標籤推導的結果」，漏填問題徹底消失。",
               "欄位生成順序控制：一句話總結偶爾會失控寫成長篇（thinking 模型的退化模式），把 token 預算耗盡導致後面的分類陣列變空。用 propertyOrdering 強制「分類先生成、總結最後」，再加上後端硬截斷（只保留第一句、長度上限），讓失控只影響它自己。",
               "來源可追溯（citation）：組 context 時為每條回答編號 [#N]，schema 要求模型回傳每個結論引用的編號；後端把編號解析回 answer id 與回覆者，前端渲染成小圓標籤，點擊平滑捲動到原始回答並高亮。具名場次顯示名字首字母，匿名場次只給編號。",
               "可靠性：503/500 指數退避重試、429 額度與各種錯誤的雙語友善訊息、code fence 剝除與最外層 JSON 擷取、關閉不必要的 thinking（thinkingBudget: 0）避免簡單任務被思考 token 吃掉輸出。",
@@ -69,7 +69,7 @@ const PROJECTS = [
           },
           {
             title: "無套件的 UX 細節",
-            text: "自製全站頂部路由進度條（攔截站內連結點擊＋pathname 變化偵測，含 10 秒失效保護）、AI 生成中的階段動畫、圖表長條進場與數字 count-up、全站彈窗統一進場動效——全部原生 CSS/React 實作，零額外依賴，且都尊重 prefers-reduced-motion。插圖（首頁場景、空狀態帆船）為手刻 inline SVG，用設計 token 上色以跟主題一致。",
+            text: "自製全站頂部路由進度條（攔截站內連結點擊＋pathname 變化偵測，含 10 秒失效保護）、AI 生成中的階段動畫、圖表長條進場與數字 count-up、全站彈窗統一進場動效，全部原生 CSS/React 實作，零額外依賴，且都尊重 prefers-reduced-motion。插圖（首頁場景、空狀態帆船）為手刻 inline SVG，用設計 token 上色以跟主題一致。",
           },
           {
             title: "自製輕量 i18n",
@@ -80,8 +80,8 @@ const PROJECTS = [
       {
         title: "挑戰與取捨",
         text: [
-          "最大的挑戰是讓 LLM 的輸出穩定到可以當產品功能。同一個 prompt，模型十次有八次對、兩次錯，對 demo 夠用、對產品是災難。我的結論是：能用結構解決的就不要用措辭解決——把任務拆小（逐條分類 > 整體歸納）、用 schema 與 enum 收窄輸出空間、把驗證與兜底放在後端（截斷、預設值、來源解析失敗就靜默降級成無標籤），prompt 只負責語意判斷本身。過程中也學到用「生成順序」管理 token 預算這類非直覺的技巧。",
-          "另一個取捨是匿名與可追溯的平衡：報告需要來源標籤才有說服力，但匿名場次不能洩露身份。最後設計成雙軌——標籤資料只存 answer id 與回覆者索引，名字首字母只在具名場次於生成當下寫入，匿名場次從頭到尾不查名字表。",
+          "最大的挑戰是讓 LLM 的輸出穩定到可以當產品功能。同一個 prompt，模型十次有八次對、兩次錯，對 demo 夠用、對產品是災難。我的結論是：能用結構解決的就不要用措辭解決。把任務拆小（逐條分類 > 整體歸納）、用 schema 與 enum 收窄輸出空間、把驗證與兜底放在後端（截斷、預設值、來源解析失敗就靜默降級成無標籤），prompt 只負責語意判斷本身。過程中也學到用「生成順序」管理 token 預算這類非直覺的技巧。",
+          "另一個取捨是匿名與可追溯的平衡：報告需要來源標籤才有說服力，但匿名場次不能洩露身份。最後設計成雙軌，標籤資料只存 answer id 與回覆者索引，名字首字母只在具名場次於生成當下寫入，匿名場次從頭到尾不查名字表。",
         ],
       },
       {
@@ -95,16 +95,16 @@ const PROJECTS = [
     ],
     },
     en: {
-      name: "Team Retro — AI Retrospective Platform",
+      name: "Team Retro: AI Retrospective Platform",
       role: "Solo project · AI-assisted programming",
       tags: ["Next.js 15", "TypeScript", "Supabase", "Gemini API", "Prompt Engineering", "RLS", "i18n", "Tailwind CSS"],
-      short: "Launch a team retrospective with one share link — AI turns the answers into insights and action suggestions, with per-sentence discussion and cross-session trend insights.",
+      short: "Launch a team retrospective with one share link. AI turns the answers into insights and action suggestions, with per-sentence discussion and cross-session trend insights.",
       detail:
-        "A full-stack SaaS website. The organizer picks a scenario template to create a retrospective; members fill it in without signing up. After the deadline, AI generates a structured report — a one-line summary, a green highlights section, a red to-improve section, and action suggestions — and every conclusion carries a clickable source tag. The organizer can turn on per-sentence discussion so the team can comment on any sentence. A dashboard aggregates multiple retrospectives, tracking team health over time with charts and short AI commentary.",
+        "A full-stack SaaS website. The organizer picks a scenario template to create a retrospective; members fill it in without signing up. After the deadline, AI generates a structured report: a one-line summary, a green highlights section, a red to-improve section, and action suggestions. Every conclusion carries a clickable source tag. The organizer can turn on per-sentence discussion so the team can comment on any sentence. A dashboard aggregates multiple retrospectives, tracking team health over time with charts and short AI commentary.",
       sections: [
         {
           title: "Motivation",
-          text: "Team retrospectives usually die one of two ways: face to face it's too awkward, so nobody tells the truth; online forms get collected but never organized, so the feedback sinks without a trace. I wanted a tool that lowers the cost of telling the truth — anonymity lowers the psychological bar, AI does the organizing, and a retro's output becomes actionable conclusions instead of a pile of scattered sticky notes.",
+          text: "Team retrospectives usually die one of two ways: face to face it's too awkward, so nobody tells the truth; online forms get collected but never organized, so the feedback sinks without a trace. I wanted a tool that lowers the cost of telling the truth. Anonymity lowers the psychological bar, AI does the organizing, and a retro's output becomes actionable conclusions instead of a pile of scattered sticky notes.",
         },
         {
           title: "Core Features",
@@ -121,9 +121,9 @@ const PROJECTS = [
           subs: [
             {
               title: "Structured collaboration with the LLM (where most of the effort went)",
-              text: "The AI report is not \"throw in a prompt, get an essay\" — it uses Gemini's JSON mode + response schema to force structured output. Along the way I hit and solved a series of practical LLM-engineering problems:",
+              text: "The AI report is not \"throw in a prompt, get an essay\". It uses Gemini's JSON mode + response schema to force structured output. Along the way I hit and solved a series of practical LLM-engineering problems:",
               items: [
-                "Per-item labeling instead of free-form summarization: when asked to fill a \"highlights array + improvements array\" directly, flash-tier models systematically leave one column empty — or even rewrite \"inefficient\" as \"very efficient\". I switched to having the model label every answer ({text, kind: \"well\"|\"improve\"}, locked with an enum) and let the backend split the green and red columns from the labels — turning \"fields the model can slack on\" into \"results derived from labels\". The missing-column problem disappeared completely.",
+                "Per-item labeling instead of free-form summarization: when asked to fill a \"highlights array + improvements array\" directly, flash-tier models systematically leave one column empty, or even rewrite \"inefficient\" as \"very efficient\". I switched to having the model label every answer ({text, kind: \"well\"|\"improve\"}, locked with an enum) and let the backend split the green and red columns from the labels, turning \"fields the model can slack on\" into \"results derived from labels\". The missing-column problem disappeared completely.",
                 "Controlling field generation order: the one-line summary occasionally spirals into a long essay (a degenerate mode of thinking models), burning the token budget so the classification arrays behind it come back empty. propertyOrdering forces \"classification first, summary last\", plus a hard backend truncation (keep the first sentence, cap the length), so a runaway only hurts itself.",
                 "Source traceability (citations): every answer is numbered [#N] when the context is assembled; the schema requires the model to return the numbers each conclusion cites. The backend resolves the numbers back to answer ids and respondents, and the frontend renders them as small round tags that smooth-scroll to and highlight the original answer. Named sessions show initials; anonymous sessions only show numbers.",
                 "Reliability: exponential-backoff retries on 503/500, bilingual friendly messages for 429 quota and other errors, code-fence stripping and outermost-JSON extraction, and turning off unnecessary thinking (thinkingBudget: 0) so simple tasks don't get their output eaten by thinking tokens.",
@@ -139,7 +139,7 @@ const PROJECTS = [
             },
             {
               title: "Zero-dependency UX details",
-              text: "A hand-rolled site-wide route progress bar (intercepting in-site link clicks + pathname-change detection, with a 10-second failsafe), staged animations while AI generates, bar-chart entrances and number count-ups, and unified modal transitions — all in plain CSS/React with zero extra dependencies, all respecting prefers-reduced-motion. Illustrations (home scene, empty-state sailboat) are hand-drawn inline SVG colored with design tokens to match the theme.",
+              text: "A hand-rolled site-wide route progress bar (intercepting in-site link clicks + pathname-change detection, with a 10-second failsafe), staged animations while AI generates, bar-chart entrances and number count-ups, and unified modal transitions, all in plain CSS/React with zero extra dependencies, all respecting prefers-reduced-motion. Illustrations (home scene, empty-state sailboat) are hand-drawn inline SVG colored with design tokens to match the theme.",
             },
             {
               title: "Lightweight homemade i18n",
@@ -150,8 +150,8 @@ const PROJECTS = [
         {
           title: "Challenges & Trade-offs",
           text: [
-            "The biggest challenge was making LLM output stable enough to ship as a product feature. With the same prompt the model gets it right eight times out of ten — fine for a demo, a disaster for a product. My conclusion: whatever can be solved with structure should not be solved with wording — split the task smaller (per-item labeling > holistic summarization), narrow the output space with schemas and enums, put validation and fallbacks in the backend (truncation, defaults, silently degrading to no tag when citation parsing fails), and let the prompt handle only the semantic judgment itself. I also picked up non-obvious tricks like managing the token budget through generation order.",
-            "The other trade-off was balancing anonymity with traceability: the report needs source tags to be convincing, but anonymous sessions must not leak identities. The final design is dual-track — tag data only stores answer ids and respondent indexes; initials are written in at generation time only for named sessions, and anonymous sessions never touch the name table at all.",
+            "The biggest challenge was making LLM output stable enough to ship as a product feature. With the same prompt the model gets it right eight times out of ten: fine for a demo, a disaster for a product. My conclusion is that whatever can be solved with structure should not be solved with wording. Split the task smaller (per-item labeling > holistic summarization), narrow the output space with schemas and enums, put validation and fallbacks in the backend (truncation, defaults, silently degrading to no tag when citation parsing fails), and let the prompt handle only the semantic judgment itself. I also picked up non-obvious tricks like managing the token budget through generation order.",
+            "The other trade-off was balancing anonymity with traceability: the report needs source tags to be convincing, but anonymous sessions must not leak identities. The final design is dual-track. Tag data only stores answer ids and respondent indexes; initials are written in at generation time only for named sessions, and anonymous sessions never touch the name table at all.",
           ],
         },
         {
@@ -208,7 +208,7 @@ const PROJECTS = [
       {
         title: "挑戰與取捨",
         text: [
-          "最大的挑戰在「握拳」判定的穩定性——不同手掌大小、與鏡頭的距離、光線都會影響關節座標。這對復健場景尤其重要，因為使用者的手部動作可能不如常人靈活、幅度也較小，判定必須夠寬容又不能誤觸。若用固定的絕對距離判定，遠近手勢就會失準；最後改用指尖相對於掌心的比例來判定，讓辨識不受手的遠近與個人手型影響。",
+          "最大的挑戰在「握拳」判定的穩定性：不同手掌大小、與鏡頭的距離、光線都會影響關節座標。這對復健場景尤其重要，因為使用者的手部動作可能不如常人靈活、幅度也較小，判定必須夠寬容又不能誤觸。若用固定的絕對距離判定，遠近手勢就會失準；最後改用指尖相對於掌心的比例來判定，讓辨識不受手的遠近與個人手型影響。",
           "後端則遇到金鑰授權問題：新版金鑰在 REST 端點回傳 401，透過瀏覽器開發者工具直接對 API 發請求逐步排查，最終定位到金鑰類型與資料表權限（RLS / schema grant）的設定，理解了「公開金鑰為何能安全放在前端」的權限模型。",
         ],
       },
@@ -222,13 +222,13 @@ const PROJECTS = [
       name: "AR Butterfly-Catching Rehab Game",
       role: "Solo project",
       tags: ["JavaScript", "MediaPipe", "Computer Vision", "Canvas API", "Supabase", "Real-time Gesture Recognition"],
-      short: "A finger-rehab game that tracks your hand through the camera in real time — catch fluttering butterflies with a fist gesture, with photo capture and an online leaderboard.",
+      short: "A finger-rehab game that tracks your hand through the camera in real time. Catch fluttering butterflies with a fist gesture, take a photo, and climb the online leaderboard.",
       detail:
         "An AR motion game that runs in the browser. It tracks hand joints in real time: move your hand over a butterfly and make a fist to complete the catch. Before the game ends it automatically takes a commemorative photo with the game elements composited in, and the final score is uploaded to a cross-device shared online leaderboard.",
       sections: [
         {
           title: "Motivation",
-          text: "I often watched my mom do finger-rehab exercises — pure mechanical repetition that is boring and hard to keep up. I wanted to hide that movement inside a fun game. The core interaction is designed as exactly \"open hand → make a fist\", so she can play along with the finger-tension bands she already practices with.",
+          text: "I often watched my mom do finger-rehab exercises: pure mechanical repetition that is boring and hard to keep up. I wanted to hide that movement inside a fun game. The core interaction is designed as exactly \"open hand → make a fist\", so she can play along with the finger-tension bands she already practices with.",
         },
         {
           title: "Core Features",
@@ -244,15 +244,15 @@ const PROJECTS = [
           items: [
             "In-browser computer vision: the hand-tracking model runs entirely in the browser (WebAssembly) with no server compute, which is good for both privacy and latency. Coordinates need mirror flipping and screen-ratio mapping so the virtual hand cursor lines up with the real hand.",
             "Canvas compositing: the photo feature maps the live video and the game sprites (procedurally generated pixel-style vector art, not bitmap assets) into screen coordinates and composites them onto a single exported Canvas.",
-            "Serverless backend: Supabase (PostgreSQL) accessed directly over its REST API, with Row-Level Security policies restricting the public key to reading and inserting scores — making it safe to ship the database key in a pure frontend.",
-            "Zero-build deployment: a single plain HTML/CSS/JS file, deployable to GitHub Pages or any static host, so family members can practice on any device just by opening a URL — no installation barrier.",
+            "Serverless backend: Supabase (PostgreSQL) accessed directly over its REST API, with Row-Level Security policies restricting the public key to reading and inserting scores, which makes it safe to ship the database key in a pure frontend.",
+            "Zero-build deployment: a single plain HTML/CSS/JS file, deployable to GitHub Pages or any static host, so family members can practice on any device just by opening a URL, with no installation barrier.",
           ],
         },
         {
           title: "Challenges & Trade-offs",
           text: [
-            "The hardest part was making the \"fist\" detection stable — palm size, distance from the camera, and lighting all affect the landmark coordinates. This matters even more in a rehab context, where users' hands may be less nimble and their range of motion smaller, so the detection has to be forgiving without misfiring. Fixed absolute-distance thresholds break as the hand moves closer or farther; the final solution judges fingertips relative to the palm as a ratio, making recognition independent of hand distance and hand shape.",
-            "On the backend I hit a key-authorization problem: the new-style key returned 401 on REST endpoints. I debugged by issuing requests directly against the API from the browser devtools, eventually pinning it down to the key type and table permissions (RLS / schema grants) — and came away actually understanding the permission model behind \"why a public key can safely live in the frontend\".",
+            "The hardest part was making the \"fist\" detection stable: palm size, distance from the camera, and lighting all affect the landmark coordinates. This matters even more in a rehab context, where users' hands may be less nimble and their range of motion smaller, so the detection has to be forgiving without misfiring. Fixed absolute-distance thresholds break as the hand moves closer or farther; the final solution judges fingertips relative to the palm as a ratio, making recognition independent of hand distance and hand shape.",
+            "On the backend I hit a key-authorization problem: the new-style key returned 401 on REST endpoints. I debugged by issuing requests directly against the API from the browser devtools, eventually pinning it down to the key type and table permissions (RLS / schema grants), and came away actually understanding the permission model behind \"why a public key can safely live in the frontend\".",
           ],
         },
         {
@@ -297,12 +297,12 @@ const PROJECTS = [
         title: "技術亮點",
         items: [
           "純 Canvas 2D 逐幀繪製，維持 60fps；所有圖案為程式生成的向量構件，非點陣圖，故任意解析度皆清晰。",
-          "節拍以「衰減脈衝值」驅動視覺——一個每幀衰減的變數乘進大小／亮度／位移，即得到跟拍鼓動的效果。",
+          "節拍以「衰減脈衝值」驅動視覺：一個每幀衰減的變數乘進大小／亮度／位移，即得到跟拍鼓動的效果。",
         ],
       },
       {
         title: "挑戰與取捨",
-        text: "最初嘗試用 Web Audio 即時分析音訊自動偵測 kick，但麥克風收音在吵雜現場極不穩定，常漏拍或誤觸。最終改採 tap-tempo 手動定速——犧牲全自動，換取現場可靠性，並且如果遇到過門想改變拍子也較好掌控。",
+        text: "最初嘗試用 Web Audio 即時分析音訊自動偵測 kick，但麥克風收音在吵雜現場極不穩定，常漏拍或誤觸。最終改採 tap-tempo 手動定速，犧牲全自動、換取現場可靠性，並且如果遇到過門想改變拍子也較好掌控。",
       },
       {
         title: "技術棧",
@@ -314,7 +314,7 @@ const PROJECTS = [
       name: "Eastern Techno VJ",
       role: "Solo project",
       tags: ["JavaScript", "Canvas API", "Web Audio API", "Real-time Graphics"],
-      short: "Tap to lock the tempo — ten Eastern-aesthetic effects pulse with the techno beat in a zero-dependency visual performance tool.",
+      short: "Tap to lock the tempo, and ten Eastern-aesthetic effects pulse with the techno beat in a zero-dependency visual performance tool.",
       detail:
         "A real-time visual performance (VJ) system built for live techno. The performer taps the spacebar along with the music to set the tempo; the visuals lock onto the beat and keep pulsing, with ten full-screen animated effects themed on traditional Chinese architectural elements that can be switched live.",
       sections: [
@@ -334,12 +334,12 @@ const PROJECTS = [
           title: "Technical Highlights",
           items: [
             "Pure Canvas 2D drawn frame by frame at a steady 60fps; every pattern is a procedurally generated vector construction, not a bitmap, so it stays crisp at any resolution.",
-            "The beat drives the visuals through a \"decaying pulse value\" — a variable that decays every frame is multiplied into size / brightness / displacement, producing motion that thumps with the beat.",
+            "The beat drives the visuals through a \"decaying pulse value\": a variable that decays every frame is multiplied into size / brightness / displacement, producing motion that thumps with the beat.",
           ],
         },
         {
           title: "Challenges & Trade-offs",
-          text: "I first tried Web Audio real-time analysis to auto-detect the kick, but microphone pickup at a loud venue is wildly unreliable — missed beats and false triggers. I switched to manual tap-tempo: trading full automation for on-stage reliability, and it is also easier to take control when a transition calls for a tempo change.",
+          text: "I first tried Web Audio real-time analysis to auto-detect the kick, but microphone pickup at a loud venue is wildly unreliable, with missed beats and false triggers. I switched to manual tap-tempo, trading full automation for on-stage reliability, and it is also easier to take control when a transition calls for a tempo change.",
         },
         {
           title: "Tech Stack",
@@ -860,11 +860,11 @@ function AboutCode() {
     <>
       <Line n={1}><span style={T.hero}>// about me 🙋‍♀️</span></Line>
       <Line n={2}> </Line>
-      <Line n={3}><span style={T.cmt}>/* I built my foundations through university coursework — small games,</span></Line>
-      <Line n={4}><span style={T.cmt}>interactive art pieces, and websites — and learned how the frontend and</span></Line>
+      <Line n={3}><span style={T.cmt}>/* I built my foundations through university coursework: small games,</span></Line>
+      <Line n={4}><span style={T.cmt}>interactive art pieces, and websites. I learned how the frontend and</span></Line>
       <Line n={5}><span style={T.cmt}>backend connect: databases, external API integrations, and how they work. */</span></Line>
       <Line n={6}> </Line>
-      <Line n={7}><span style={T.cmt}>/* AI-assisted development then got me hooked on shipping complete products —</span></Line>
+      <Line n={7}><span style={T.cmt}>/* AI-assisted development then got me hooked on shipping complete products,</span></Line>
       <Line n={8}><span style={T.cmt}>from digital tools for my family to a SaaS product. */</span></Line>
       <Line n={9}> </Line>
       <Line n={10}><span style={T.kw}>const</span> <span style={T.fn}>developer</span> = {"{"}</Line>
