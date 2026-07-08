@@ -90,7 +90,7 @@ const PROJECTS = [
       },
       {
         title: "技術棧",
-        text: "Next.js 15 (App Router / RSC) · React 19 · TypeScript · Tailwind CSS · Supabase (PostgreSQL / RLS / Auth / Realtime) · Google Gemini API (JSON mode / response schema) · Vercel",
+        tags: ["Next.js 15 (App Router / RSC)", "React 19", "TypeScript", "Tailwind CSS", "Supabase (PostgreSQL / RLS / Auth / Realtime)", "Google Gemini API (JSON mode / response schema)", "Prompt Engineering", "i18n", "Vercel"],
       },
     ],
     },
@@ -160,7 +160,7 @@ const PROJECTS = [
         },
         {
           title: "Tech Stack",
-          text: "Next.js 15 (App Router / RSC) · React 19 · TypeScript · Tailwind CSS · Supabase (PostgreSQL / RLS / Auth / Realtime) · Google Gemini API (JSON mode / response schema) · Vercel",
+          tags: ["Next.js 15 (App Router / RSC)", "React 19", "TypeScript", "Tailwind CSS", "Supabase (PostgreSQL / RLS / Auth / Realtime)", "Google Gemini API (JSON mode / response schema)", "Prompt Engineering", "i18n", "Vercel"],
         },
       ],
     },
@@ -214,7 +214,7 @@ const PROJECTS = [
       },
       {
         title: "技術棧",
-        text: "JavaScript · MediaPipe Hands · HTML Canvas API · Supabase (PostgreSQL / REST) · requestAnimationFrame",
+        tags: ["JavaScript", "MediaPipe Hands", "電腦視覺", "HTML Canvas API", "Supabase (PostgreSQL / REST)", "即時手勢辨識", "requestAnimationFrame"],
       },
     ],
     },
@@ -257,7 +257,7 @@ const PROJECTS = [
         },
         {
           title: "Tech Stack",
-          text: "JavaScript · MediaPipe Hands · HTML Canvas API · Supabase (PostgreSQL / REST) · requestAnimationFrame",
+          tags: ["JavaScript", "MediaPipe Hands", "Computer Vision", "HTML Canvas API", "Supabase (PostgreSQL / REST)", "Real-time Gesture Recognition", "requestAnimationFrame"],
         },
       ],
     },
@@ -306,7 +306,7 @@ const PROJECTS = [
       },
       {
         title: "技術棧",
-        text: "JavaScript · HTML Canvas API · Web Audio API · requestAnimationFrame",
+        tags: ["JavaScript", "HTML Canvas API", "Web Audio API", "即時繪圖", "requestAnimationFrame"],
       },
     ],
     },
@@ -343,7 +343,7 @@ const PROJECTS = [
         },
         {
           title: "Tech Stack",
-          text: "JavaScript · HTML Canvas API · Web Audio API · requestAnimationFrame",
+          tags: ["JavaScript", "HTML Canvas API", "Web Audio API", "Real-time Graphics", "requestAnimationFrame"],
         },
       ],
     },
@@ -819,6 +819,11 @@ function ProjectShowcase({ p, onOpen }) {
             <h3 style={S.secH}>{sec.title}</h3>
             <SecText text={sec.text} />
             <SecItems items={sec.items} />
+            {sec.tags && (
+              <div style={S.stRow}>
+                {sec.tags.map((tag) => (<span key={tag} style={S.stBig}>{tag}</span>))}
+              </div>
+            )}
             {sec.subs?.map((sub) => (
               <div key={sub.title}>
                 <h4 style={S.secH4}>{sub.title}</h4>
@@ -829,7 +834,6 @@ function ProjectShowcase({ p, onOpen }) {
           </div>
         ))}
 
-        <div style={S.stRow}>{t.tags.map((tag) => (<span key={tag} style={S.stBig}>{tag}</span>))}</div>
       </div>
     </div>
   );
