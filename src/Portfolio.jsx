@@ -9,7 +9,7 @@ const DEV = {
     frontend: "HTML, CSS, JavaScript",
     backend: "Supabase (PostgreSQL / RLS), REST API, Python",
     creative: "p5.js, Canvas API, Web Audio, MediaPipe",
-    aiCollab: "Gemini API, prompt engineering, building with AI",
+    aiCollab: "Gemini API, prompt engineering, building with AI (Agentic Engineering)",
   },
 };
 
