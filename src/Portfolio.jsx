@@ -18,7 +18,6 @@ const PROJECTS = [
     id: "team-retro",
     file: "team-retro.pj",
     codeName: "Team Retro (AI product)",
-    emoji: "💬",
     img: "/team-retro-banner.png",
     video: "", // ← 貼 YouTube 網址（例如 "https://www.youtube.com/watch?v=xxxx"），留空不顯示
     demo: "https://retro-six-orcin.vercel.app/", // ← 線上 demo 網址，卡片右上角會出現「Try now ↗」按鈕；留空不顯示
@@ -169,7 +168,6 @@ const PROJECTS = [
     id: "catch-butterfly",
     file: "butterfly.pj",
     codeName: "AR Butterfly Catch Game",
-    emoji: "🦋",
     img: "/butterfly-banner.png",
     video: "",
     demo: "https://iiamriiita.github.io/butterflygame/finalver",
@@ -266,7 +264,6 @@ const PROJECTS = [
     id: "music-viz",
     file: "techno-vj.pj",
     codeName: "Eastern Techno VJ",
-    emoji: "🎵",
     img: "/music-viz-banner.jpg",
     video: "https://vimeo.com/1207678884",
     demo: "",
@@ -385,6 +382,23 @@ function MoonIcon({ size = 14 }) {
     </svg>
   );
 }
+
+// ---- 灰色實心 icon（取代 emoji，跟著主題變色）----
+function SolidIcon({ path, size = 15, style }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0, color: "var(--text-mid)", ...style }}>
+      <path d={path} />
+    </svg>
+  );
+}
+const ICON = {
+  folder: "M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z",
+  file: "M6 2c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z",
+  palette: "M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10c1.38 0 2.5-1.12 2.5-2.5 0-.61-.23-1.2-.64-1.67-.08-.1-.13-.21-.13-.33 0-.28.22-.5.5-.5H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 8 6.5 8 8 8.67 8 9.5 7.33 11 6.5 11zm3-4C8.67 7 8 6.33 8 5.5S8.67 4 9.5 4s1.5.67 1.5 1.5S10.33 7 9.5 7zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 4 14.5 4s1.5.67 1.5 1.5S15.33 7 14.5 7zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 8 17.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z",
+  hand: "M8 11V3.75a1.75 1.75 0 0 1 3.5 0V10h1V2.75a1.75 1.75 0 0 1 3.5 0V10h1V4.75a1.75 1.75 0 0 1 3.5 0V14a8 8 0 0 1-16 0v-3.5a1.75 1.75 0 0 1 3.5 0z",
+  person: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
+  image: "M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z",
+};
 
 // ---- 影片網址 → 內嵌來源（支援 YouTube / Vimeo / 直接 mp4）----
 function videoEmbed(url) {
@@ -578,13 +592,13 @@ export default function Portfolio() {
             >
               {foldersOpen ? "▾" : "▸"}
             </span>
-            📂 projects
+            <SolidIcon path={ICON.folder} /> projects
           </div>
           {foldersOpen &&
             PROJECTS.map((p) => (
               <FileRow key={p.id} label={p.file} sub active={openFile === p.id} onClick={() => openTab(p.id)} />
             ))}
-          <FileRow icon="📄" label="about" active={openFile === "about"} onClick={() => openTab("about")} />
+          <FileRow icon={<SolidIcon path={ICON.file} />} label="about" active={openFile === "about"} onClick={() => openTab("about")} />
 
           {/* 外部連結：設計作品集（之後會導到另一個網站） */}
           <div
@@ -594,7 +608,7 @@ export default function Portfolio() {
             onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
           >
-            🎨 Design portfolio
+            <SolidIcon path={ICON.palette} /> Design portfolio
             <span style={{ marginLeft: "auto", color: "var(--text-dim)" }}>↗</span>
           </div>
 
@@ -701,7 +715,7 @@ function FileRow({ icon, label, sub, active, onClick }) {
       onMouseEnter={(e) => !active && (e.currentTarget.style.background = "var(--hover)")}
       onMouseLeave={(e) => !active && (e.currentTarget.style.background = "transparent")}
     >
-      {icon ? `${icon} ` : ""}{dot}<span style={{ color: "var(--text-dim)" }}>{ext}</span>
+      {icon}{dot}<span style={{ color: "var(--text-dim)" }}>{ext}</span>
     </div>
   );
 }
@@ -723,7 +737,7 @@ function Line({ n, children }) {
 function ProjectsIndex() {
   return (
     <>
-      <Line n={1}><span style={T.hero}>// Hi, I'm YING CI 👋</span></Line>
+      <Line n={1}><span style={T.hero}>// Hi, I'm YING CI <SolidIcon path={ICON.hand} size={18} style={{ verticalAlign: "-3px" }} /></span></Line>
       <Line n={2}> </Line>
       <Line n={3}>
         <span style={T.kw}>const</span> <span style={T.fn}>role</span><span style={T.dim}> = </span>
@@ -800,7 +814,7 @@ function ProjectShowcase({ p, onOpen }) {
           <img src={p.img} alt={t.name} style={{ ...S.hero, ...(isMobile ? S.heroM : {}), width: "100%", objectFit: "cover", display: "block" }} />
         ) : (
           <div style={{ ...S.hero, ...(isMobile ? S.heroM : {}), background: p.grad }}>
-            <span style={{ fontSize: isMobile ? 52 : 72 }}>{p.emoji}</span>
+            <SolidIcon path={ICON.image} size={isMobile ? 52 : 72} />
           </div>
         )}
         {(p.link || p.demo) && (
@@ -862,7 +876,7 @@ function AboutCode() {
   const sk = Object.entries(DEV.skills);
   return (
     <>
-      <Line n={1}><span style={T.hero}>// about me 🙋‍♀️</span></Line>
+      <Line n={1}><span style={T.hero}>// about me <SolidIcon path={ICON.person} size={18} style={{ verticalAlign: "-3px" }} /></span></Line>
       <Line n={2}> </Line>
       <Line n={3}><span style={T.cmt}>/* I built my foundations through university coursework: small games,</span></Line>
       <Line n={4}><span style={T.cmt}>interactive art pieces, and websites. I learned how the frontend and</span></Line>
@@ -911,7 +925,7 @@ function PCard({ p, onClick }) {
       {p.img ? (
         <img src={p.img} alt={t.name} style={{ ...S.thumb, width: "100%", objectFit: "cover", display: "block" }} />
       ) : (
-        <div style={{ ...S.thumb, background: p.grad }}>{p.emoji}</div>
+        <div style={{ ...S.thumb, background: p.grad }}><SolidIcon path={ICON.image} size={38} /></div>
       )}
       <div style={{ padding: "13px 16px 15px" }}>
         <h4 style={S.pcardH}>{t.cardName || t.name}</h4>
