@@ -1003,7 +1003,7 @@ const S = {
   detailP: { fontSize: 13, color: "var(--text-soft)", lineHeight: 1.7, marginBottom: 12 },
   link: { display: "inline-block", marginTop: 14, color: "var(--syn-fn)", fontSize: 13, textDecoration: "none" },
   showcase: { overflowY: "auto", background: "var(--bg)", padding: "32px 24px" },
-  showInner: { maxWidth: 620, margin: "0 auto" },
+  showInner: { maxWidth: 700, margin: "0 auto" },
   hero: { height: 220, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24, border: "1px solid var(--border)" },
   showRole: { fontSize: 14, color: "var(--text-mid)", marginBottom: 6, fontFamily: sans },
   showTitle: { fontSize: 30, fontWeight: 700, color: "var(--text-bright)", letterSpacing: "-.01em", marginBottom: 14, lineHeight: 1.3, fontFamily: sans },
