@@ -383,6 +383,15 @@ function MoonIcon({ size = 14 }) {
   );
 }
 
+// ---- 樹狀分支線（檔案總管子項目前的 └ 形）----
+function BranchIcon({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="var(--text-dim)" strokeWidth="1.2" aria-hidden="true" style={{ flexShrink: 0 }}>
+      <path d="M5 0v10.5h7" />
+    </svg>
+  );
+}
+
 // ---- 灰色實心 icon（取代 emoji，跟著主題變色）----
 function SolidIcon({ path, size = 15, style }) {
   return (
@@ -715,6 +724,7 @@ function FileRow({ icon, label, sub, active, onClick }) {
       onMouseEnter={(e) => !active && (e.currentTarget.style.background = "var(--hover)")}
       onMouseLeave={(e) => !active && (e.currentTarget.style.background = "transparent")}
     >
+      {sub && <BranchIcon />}
       {icon}{dot}<span style={{ color: "var(--text-dim)" }}>{ext}</span>
     </div>
   );
