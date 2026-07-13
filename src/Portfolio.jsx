@@ -348,7 +348,7 @@ const PROJECTS = [
 ];
 
 // ---- 之後把你的設計作品集網址貼進來（例如 "https://www.behance.net/yourname"）----
-const DESIGN_PORTFOLIO_URL = "";
+const DESIGN_PORTFOLIO_URL = "https://portfoliothi.framer.website/";
 
 // ---- 語法高亮小工具 ----
 const T = {
@@ -568,6 +568,7 @@ export default function Portfolio() {
               ☰
             </button>
             <span style={S.mTitle}>
+              <img src="/yc-flower.png" alt="" style={{ width: 16, height: 16 }} />
               YING CI
             </span>
             <span style={S.mFile}>{fileNameOf(openFile)}</span>
@@ -582,6 +583,7 @@ export default function Portfolio() {
         {/* ---- Explorer ---- */}
         <aside style={sideStyle}>
           <div style={S.root}>
+            <img src="/yc-flower.png" alt="" style={{ width: 20, height: 20 }} />
             YING CI
           </div>
           {/* 點資料夾名稱 → 開首頁專案頁；點三角形 → 展開/收合 */}
@@ -961,7 +963,7 @@ const sans = "-apple-system,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft J
 const S = {
   app: { display: "grid", gridTemplateColumns: "220px 1fr", height: "100dvh", fontFamily: mono, background: "var(--bg)", color: "var(--text)", fontSize: 14 },
   side: { background: "var(--bg-side)", borderRight: "1px solid var(--border)", overflowY: "auto", padding: "8px 0" },
-  root: { fontSize: 18, fontWeight: 700, color: "var(--text-bright)", letterSpacing: ".22em", padding: "16px 14px 12px", userSelect: "none" },
+  root: { display: "flex", alignItems: "center", gap: 8, fontSize: 18, fontWeight: 700, color: "var(--text-bright)", letterSpacing: ".22em", padding: "16px 14px 12px", userSelect: "none" },
   sideTitle: { fontSize: 11, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: ".1em", padding: "8px 14px" },
   folder: { fontSize: 14, color: "var(--text)", padding: "9px 14px", display: "flex", alignItems: "center", gap: 6, cursor: "pointer" },
   file: { display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", fontSize: 14, color: "var(--text)", cursor: "pointer" },
@@ -1019,7 +1021,7 @@ const S = {
   // ---- 手機頂部列 / 抽屜 ----
   mtop: { display: "flex", alignItems: "center", gap: 10, background: "var(--bg-side)", borderBottom: "1px solid var(--border)", padding: "8px 12px", flexShrink: 0 },
   mBurger: { background: "none", border: "none", color: "var(--text)", fontSize: 20, lineHeight: 1, cursor: "pointer", padding: "2px 4px" },
-  mTitle: { fontSize: 14, fontWeight: 700, color: "var(--text-bright)", letterSpacing: ".18em", userSelect: "none" },
+  mTitle: { display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, fontWeight: 700, color: "var(--text-bright)", letterSpacing: ".18em", userSelect: "none" },
   mFile: { fontSize: 12, color: "var(--link)", marginLeft: "auto", maxWidth: "45%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
   backdrop: { position: "fixed", inset: 0, background: "#000a", zIndex: 40 },
 
