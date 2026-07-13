@@ -268,7 +268,7 @@ const PROJECTS = [
     video: "https://vimeo.com/1207678884",
     demo: "",
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
-    link: "", // ← 留空則專案頁不顯示 GitHub 按鈕
+    link: "",
     zh: {
     name: "東方電音 Eastern Techno VJ",
     cardName: "中國風即時音樂 VJ 系統",
@@ -471,12 +471,12 @@ export default function Portfolio() {
   });
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [lang, setLang] = useState(() => {
-    // 記住使用者選過的；沒選過就跟瀏覽器語言（中文→中文版，其餘英文版）
+    // 記住使用者選過的；沒選過一律預設英文
     try {
       const saved = localStorage.getItem("lang");
       if (saved === "zh" || saved === "en") return saved;
-      return (navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "en";
-    } catch { return "zh"; }
+      return "en";
+    } catch { return "en"; }
   });
 
   useEffect(() => {
@@ -823,16 +823,15 @@ function ProjectShowcase({ p, onOpen }) {
             />
           )
         ) : p.img ? (
-          <img src={p.img} alt={t.name} style={{ ...S.hero, ...(isMobile ? S.heroM : {}), width: "100%", objectFit: "cover", display: "block" }} />
+          <img src={p.img} alt={t.name} style={{ ...S.hero, ...(isMobile ? S.heroM : {}), width: "100%", height: "auto", display: "block" }} />
         ) : (
           <div style={{ ...S.hero, ...(isMobile ? S.heroM : {}), background: p.grad }}>
             <SolidIcon path={ICON.image} size={isMobile ? 52 : 72} />
           </div>
         )}
-        {(p.link || p.demo) && (
+        {p.demo && (
           <div style={S.heroBtns}>
-            {p.link && <BtnLink href={"https://" + p.link} style={S.heroBtn}>GitHub ↗</BtnLink>}
-            {p.demo && <BtnLink href={p.demo} style={S.heroBtn} cta>Try it now ↗</BtnLink>}
+            <BtnLink href={p.demo} style={S.heroBtn} cta>Try it now ↗</BtnLink>
           </div>
         )}
         <div style={S.showRole}>{t.role}</div>
