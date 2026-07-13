@@ -19,7 +19,7 @@ const PROJECTS = [
     file: "team-retro.pj",
     codeName: "Team Retro (AI product)",
     img: "/team-retro-banner.png",
-    video: "", // ← 貼 YouTube 網址（例如 "https://www.youtube.com/watch?v=xxxx"），留空不顯示
+    video: "https://vimeo.com/1209583153",
     demo: "https://retro-six-orcin.vercel.app/", // ← 線上 demo 網址，卡片右上角會出現「Try now ↗」按鈕；留空不顯示
     grad: "linear-gradient(135deg,var(--thumb-a),var(--thumb-b))",
     link: "github.com/iiamriiita/retro",
