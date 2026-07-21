@@ -359,30 +359,6 @@ const T = {
   hero: { color: "var(--text-bright)", fontStyle: "italic", fontSize: 20, fontWeight: 700 }, // 開頭打招呼那行
 };
 
-// ---- 單色主題 icon（跟文字同色）----
-function SunIcon({ size = 14 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" />
-      <line x1="12" y1="2" x2="12" y2="4.5" />
-      <line x1="12" y1="19.5" x2="12" y2="22" />
-      <line x1="2" y1="12" x2="4.5" y2="12" />
-      <line x1="19.5" y1="12" x2="22" y2="12" />
-      <line x1="4.9" y1="4.9" x2="6.7" y2="6.7" />
-      <line x1="17.3" y1="17.3" x2="19.1" y2="19.1" />
-      <line x1="4.9" y1="19.1" x2="6.7" y2="17.3" />
-      <line x1="17.3" y1="6.7" x2="19.1" y2="4.9" />
-    </svg>
-  );
-}
-function MoonIcon({ size = 14 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-    </svg>
-  );
-}
-
 // ---- 樹狀分支線（檔案總管子項目前的 └ 形）----
 function BranchIcon({ size = 14 }) {
   return (
@@ -461,15 +437,6 @@ export default function Portfolio() {
   });
   const [foldersOpen, setFoldersOpen] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false); // 手機側邊抽屜
-  const [theme, setTheme] = useState(() => {
-    // 記住使用者選過的；沒選過就跟系統，系統沒偏好預設亮色
-    try {
-      const saved = localStorage.getItem("theme");
-      if (saved) return saved;
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    } catch { return "light"; }
-  });
-  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [lang, setLang] = useState(() => {
     // 記住使用者選過的；沒選過一律預設英文
     try {
@@ -479,10 +446,6 @@ export default function Portfolio() {
     } catch { return "en"; }
   });
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    try { localStorage.setItem("theme", theme); } catch { /* ignore */ }
-  }, [theme]);
   useEffect(() => {
     try { localStorage.setItem("lang", lang); } catch { /* ignore */ }
   }, [lang]);
@@ -638,51 +601,17 @@ export default function Portfolio() {
               ))}
             </div>
 
-            {/* 右上角：語言切換＋主題下拉選單 */}
+            {/* 右上角：語言切換 */}
             <div style={S.themeWrap}>
               <button
                 aria-label="Switch language"
                 onClick={() => setLang((v) => (v === "zh" ? "en" : "zh"))}
-                style={{ ...S.themeBtn, marginRight: 8 }}
+                style={S.themeBtn}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
               >
                 {lang === "zh" ? "EN" : "中"}
               </button>
-              <button
-                aria-label="Select theme"
-                onClick={() => setThemeMenuOpen((v) => !v)}
-                style={S.themeBtn}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-              >
-                {theme === "dark" ? <MoonIcon /> : <SunIcon />}
-                {theme === "dark" ? "Dark" : "Light"}
-                <span style={{ color: "var(--text-dim)", fontSize: 10 }}>▾</span>
-              </button>
-              {themeMenuOpen && (
-                <>
-                  <div style={S.menuBackdrop} onClick={() => setThemeMenuOpen(false)} />
-                  <div style={S.themeMenu}>
-                    {[
-                      { id: "dark", Icon: MoonIcon, label: "Dark" },
-                      { id: "light", Icon: SunIcon, label: "Light" },
-                    ].map((opt) => (
-                      <div
-                        key={opt.id}
-                        onClick={() => { setTheme(opt.id); setThemeMenuOpen(false); }}
-                        style={{ ...S.themeItem, ...(theme === opt.id ? S.themeItemActive : {}) }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = "var(--hover)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = theme === opt.id ? "var(--bg-active)" : "transparent")}
-                      >
-                        <opt.Icon />
-                        <span>{opt.label}</span>
-                        {theme === opt.id && <span style={{ marginLeft: "auto", color: "var(--text-dim)" }}>✓</span>}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
             </div>
           </div>
 
@@ -973,10 +902,6 @@ const S = {
   tabActive: { color: "var(--text)", background: "var(--bg)", borderTop: "2px solid var(--border-strong)" },
   themeWrap: { position: "relative", flexShrink: 0, display: "flex", alignItems: "center", padding: "0 10px" },
   themeBtn: { display: "flex", alignItems: "center", gap: 6, background: "none", border: "1px solid var(--border)", color: "var(--text-mid)", fontFamily: mono, fontSize: 13, padding: "6px 12px", cursor: "pointer", borderRadius: 6, lineHeight: 1, whiteSpace: "nowrap" },
-  menuBackdrop: { position: "fixed", inset: 0, zIndex: 60 },
-  themeMenu: { position: "absolute", top: "calc(100% - 4px)", right: 10, zIndex: 61, background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 8, padding: 4, minWidth: 130, boxShadow: "0 8px 24px #0006" },
-  themeItem: { display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", fontSize: 13, fontFamily: mono, color: "var(--text)", borderRadius: 6, cursor: "pointer", whiteSpace: "nowrap" },
-  themeItemActive: { background: "var(--bg-active)" },
   close: { color: "var(--text-dim)", fontSize: 15, lineHeight: 1 },
   split: { display: "grid", flex: 1, overflow: "hidden", minHeight: 0 },
   codePane: { overflowY: "auto", padding: "14px 0", background: "var(--bg)", borderRight: "1px solid var(--border)", lineHeight: 1.75 },
